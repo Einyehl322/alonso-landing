@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, MouseEvent } from 'react'
+import { toHref } from './base'
 import { useRouter } from './context'
 
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -29,7 +30,7 @@ export function Link({ to, beforeNavigate, onClick, children, ...rest }: Props) 
   const isCurrent = !to.includes('#') && pathname === to
 
   return (
-    <a href={to} onClick={handleClick} aria-current={isCurrent ? 'page' : undefined} {...rest}>
+    <a href={toHref(to)} onClick={handleClick} aria-current={isCurrent ? 'page' : undefined} {...rest}>
       {children}
     </a>
   )

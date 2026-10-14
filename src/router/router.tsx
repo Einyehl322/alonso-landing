@@ -14,12 +14,13 @@ import { ScrollTrigger, prefersReducedMotion } from '../motion/gsap'
 
 import { RouterContext, type NavKind, type RouterState } from './context'
 import { scrollToHash } from './scroll'
+import { stripBase, toHref } from './base'
 
 const supportsViewTransitions = () =>
   typeof document !== 'undefined' && 'startViewTransition' in document
 
 function readLocation() {
-  return { pathname: normalize(window.location.pathname), hash: window.location.hash }
+  return { pathname: normalize(stripBase(normalize(window.location.pathname))), hash: window.location.hash }
 }
 
 function normalize(pathname: string) {
@@ -68,7 +69,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
   }
 
   async function navigate(to: string, opts: { replace?: boolean } = {}) {
-    const url = new URL(to, window.location.href)
+    const url = new URL(toHref(to), window.location.href)
     if (url.origin !== window.location.origin) {
       window.location.assign(url)
       return
