@@ -17,7 +17,7 @@ export const site = {
   /** Contacto comercial. `null` = pendiente de configurar. */
   contact: {
     /** Número en formato internacional sin "+" ni espacios, p. ej. "51987654321". */
-    whatsappNumber: null as string | null,
+    whatsappNumber: '51981367735' as string | null,
     whatsappDefaultMessage: 'Hola, quiero información sobre sus productos.',
     whatsappProductMessage: 'Hola, quiero información sobre el modelo {producto}.',
     email: null as string | null,
