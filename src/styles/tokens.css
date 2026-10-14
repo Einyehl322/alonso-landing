@@ -1,0 +1,79 @@
+:root {
+  /* ---- Paleta ---- */
+  --c-black: #050608;
+  --c-ink: #0a0b0e;
+  --c-graphite-900: #101216;
+  --c-graphite-800: #171a1f;
+  --c-graphite-700: #22252b;
+  --c-graphite-600: #2f333a;
+  --c-steel-500: #6d737c;
+  --c-steel-400: #8f959e;
+  --c-steel-300: #b6bbc2;
+  --c-steel-200: #d8dbe0;
+  --c-paper: #f3efe8;
+  --c-paper-2: #e8e3d9;
+  --c-paper-ink: #131418;
+
+  /* Acento: azul tecnológico (coherente con el LED del producto). */
+  --c-accent: #7088ff;
+  --c-accent-strong: #4f68ee;
+  --c-accent-ink: #3550d8;
+  --c-accent-glow: rgb(112 136 255 / 0.22);
+
+  /* ---- Tipografía ---- */
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --fs-hero: clamp(3.1rem, 1.2rem + 7.6vw, 9.25rem);
+  --fs-display: clamp(2.5rem, 1.25rem + 5vw, 6.25rem);
+  --fs-h2: clamp(2rem, 1.2rem + 3.2vw, 4.25rem);
+  --fs-h3: clamp(1.4rem, 1.1rem + 1.1vw, 2.1rem);
+  --fs-lead: clamp(1.12rem, 1rem + 0.5vw, 1.45rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-label: 0.75rem;
+
+  /* ---- Espacio ---- */
+  --gutter: clamp(1rem, 0.4rem + 2.6vw, 3rem);
+  --section: clamp(5.5rem, 3rem + 8vw, 10rem);
+  --max: 1360px;
+  --max-text: 38rem;
+
+  --radius-stage: clamp(20px, 1.2rem + 1vw, 34px);
+  --radius-panel: 18px;
+
+  --header-h: 64px;
+
+  /* ---- Movimiento ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.7, 0, 0.2, 1);
+  --dur-micro: 220ms;
+}
+
+/* Esquemas por sección: cada bloque declara data-scheme y hereda estos roles. */
+[data-scheme='dark'],
+:root {
+  --bg: var(--c-ink);
+  --surface: var(--c-graphite-800);
+  --fg: #f5f5f7;
+  --fg-muted: var(--c-steel-400);
+  --fg-soft: var(--c-steel-300);
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.22);
+  --link: var(--c-accent);
+  --btn-bg: #f5f5f7;
+  --btn-fg: var(--c-ink);
+}
+
+[data-scheme='light'] {
+  --bg: var(--c-paper);
+  --surface: var(--c-paper-2);
+  --fg: var(--c-paper-ink);
+  --fg-muted: #5f636b;
+  --fg-soft: #42454c;
+  --line: rgb(19 20 24 / 0.1);
+  --line-strong: rgb(19 20 24 / 0.22);
+  --link: var(--c-accent-ink);
+  --btn-bg: var(--c-paper-ink);
+  --btn-fg: var(--c-paper);
+}

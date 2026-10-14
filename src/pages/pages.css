@@ -1,0 +1,124 @@
+/* ---------- hero de categoría ---------- */
+
+.chero {
+  position: relative;
+  min-height: 92svh;
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: clip;
+  padding-block: calc(var(--header-h) + 3rem) 4rem;
+}
+
+.chero__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.chero__copy {
+  display: grid;
+  gap: 1.4rem;
+  justify-items: start;
+}
+
+.chero__copy .t-lead {
+  max-width: 30rem;
+}
+
+.chero__beats {
+  list-style: none;
+  padding: 1.5rem 0 0;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.9rem;
+  max-width: 30rem;
+}
+
+.chero__beats li {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 1rem;
+  font-size: var(--fs-small);
+}
+
+.chero__stage {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, calc(100svh - var(--header-h) - 5rem));
+  justify-self: center;
+}
+
+.chero__stage::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--c-accent-glow), transparent);
+}
+
+[data-scheme='light'] .chero__stage::before {
+  background: radial-gradient(closest-side, #fff, transparent);
+}
+
+.chero__visual {
+  position: relative;
+  overflow: visible;
+  filter: drop-shadow(0 40px 50px rgb(0 0 0 / 0.35));
+}
+
+@media (max-width: 899px) {
+  .chero__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .chero__stage {
+    order: -1;
+    width: min(100%, 460px);
+    margin-inline: auto;
+  }
+
+  .chero__beats li {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
+/* ---------- salto a la otra categoría ---------- */
+
+.cross__link {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+  padding-block: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.cross__title {
+  transition:
+    color 400ms ease,
+    transform 700ms var(--ease-out);
+}
+
+.cross__link:hover .cross__title {
+  transform: translateX(12px);
+}
+
+/* ---------- 404 ---------- */
+
+.notfound {
+  min-height: 80svh;
+  display: flex;
+  align-items: center;
+  padding-top: var(--header-h);
+  background: var(--bg);
+}
+
+.notfound .container {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+}

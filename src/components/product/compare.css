@@ -1,0 +1,102 @@
+.compare {
+  background: var(--c-graphite-900);
+}
+
+.compare .eyebrow {
+  margin-bottom: 1.25rem;
+}
+
+.compare__title {
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.compare__scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-panel);
+  border: 1px solid var(--line);
+}
+
+.compare__table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: var(--fs-small);
+}
+
+.compare__table th,
+.compare__table td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare__table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.compare__table thead th {
+  font-weight: 400;
+  padding-block: 1.5rem;
+}
+
+.compare__table tbody th {
+  font-weight: 500;
+  color: var(--fg-soft);
+  width: 30%;
+}
+
+/* Primera columna fija al desplazar en móvil. */
+.compare__table tr > :first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--c-graphite-900);
+}
+
+.compare__table .is-current {
+  background: rgb(112 136 255 / 0.06);
+}
+
+.compare__product {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+
+.compare__thumb {
+  width: 120px;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.compare__thumb .pv--cover {
+  margin: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+}
+
+.compare__name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.compare__here {
+  font-size: 0.82rem;
+  color: var(--link);
+}
+
+.compare__group {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 0.2rem;
+}
