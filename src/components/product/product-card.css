@@ -33,6 +33,10 @@
   order: 2;
 }
 
+.pcard__copy {
+  min-width: 0;
+}
+
 .pcard__tilt {
   --rx: 0deg;
   --ry: 0deg;

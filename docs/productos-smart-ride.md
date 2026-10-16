@@ -36,7 +36,7 @@ FreedConn Hero se actualizó sobre su slug existente, sin duplicarlo. Se elimina
 
 ## Alcance
 
-Se mantienen el hero principal de la landing, navegación global, footer, configuración de despliegue y los datos de los otros siete productos. Los cambios de presentación se realizan en los componentes compartidos de producto; los ajustes de composición del hero fotográfico se limitan a `.product-page--photograph`.
+Se mantienen el hero principal de la landing, navegación global, footer, configuración de despliegue y los datos de los otros siete productos. Los cambios de presentación se realizan en los componentes compartidos de producto; la corrección posterior de solapamientos comparte una composición en columnas para todas las fichas de producto, incluidas las CarPlay.
 
 ## Validación realizada
 
@@ -48,3 +48,11 @@ Se mantienen el hero principal de la landing, navegación global, footer, config
 - Galería: acercar/restablecer y tecla Escape comprobados. Comparador: categorías, modelos, ausencia de filas duplicadas de alcance y HTML válido sin `tbody` anidados.
 - Con movimiento completo: transición compartida desde tarjeta al hero y regreso mediante historial comprobados en Y13 Pro y S7, sin nombres de transición duplicados.
 - Inspección visual de tarjeta, hero de escritorio y móvil, ficha técnica y galería. Las pruebas de responsive usan navegador con tamaños simulados, no dispositivos físicos.
+
+## Corrección de solapamientos de texto e imagen
+
+El hero anterior permitía que el título ocupase todo el ancho por encima de la imagen (`max-width: none !important`). Ahora todos los productos utilizan una cuadrícula con columnas independientes para contenido y visual; en móvil la imagen y el contenido se apilan en el flujo normal. La tipografía responde al ancho de su columna. Las animaciones compartidas mantienen el mismo escenario y nombres de transición.
+
+Los títulos de categoría también se ajustan a su columna. Las vistas de acercamiento fijadas al hacer scroll separan la cámara y los textos en columnas; el encuadre animado permanece dentro de su marco. Se revisaron además las tarjetas y secciones de tecnología de inicio.
+
+Validación adicional: los 13 productos y ambas categorías, en 360, 768, 900, 1024, 1366, 1876 y 2560 píxeles de ancho, con comprobaciones de rectángulos y texto. Las secciones de tecnología y paneles de inicio se verificaron en cuatro tamaños. Se comprobó la separación de imagen y textos durante scroll real en CarPlay, Y13 Pro y EJEAS Q8, así como la transición de tarjeta CarPlay a ficha y el regreso con historial. Build de producción correcto; sin cambios en datos comerciales, rutas o despliegue.

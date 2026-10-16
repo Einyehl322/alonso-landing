@@ -13,35 +13,46 @@
   color: var(--fg);
 }
 
-.phero > .stage {
-  position: absolute;
-  inset: 0;
+.phero__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 5rem);
+  padding-block: calc(var(--header-h) + 3rem) 4rem;
+}
+
+.phero__layout > .stage {
+  position: relative;
+  order: 2;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-stage);
 }
 
 .phero .stage--object .stage__visual {
-  inset: 17% 6% 15% 49%;
+  inset: 6%;
 }
 
-.phero .stage--cover::after {
-  background:
-    linear-gradient(90deg, rgb(5 6 8 / 0.92) 0%, rgb(5 6 8 / 0.55) 38%, transparent 62%),
-    linear-gradient(0deg, rgb(5 6 8 / 0.7) 0%, transparent 30%);
+.phero .stage--photograph .stage__visual,
+.phero .stage--cover .stage__visual {
+  inset: 0;
 }
 
 .phero .stage--object::after {
-  left: 46%;
-  right: 4%;
-  bottom: 13%;
+  left: 8%;
+  right: 8%;
+  bottom: 8%;
 }
 
 .phero__content {
   position: relative;
   z-index: 2;
-  padding-block: calc(var(--header-h) + 3rem) 4rem;
+  min-width: 0;
+  container-type: inline-size;
 }
 
 .phero__content > * {
-  max-width: min(36rem, 46%);
+  max-width: 100%;
 }
 
 .phero__crumbs {
@@ -65,10 +76,10 @@
 }
 
 .phero__name {
-  font-size: var(--fs-hero);
+  font-size: clamp(2.4rem, 12cqi, 6.5rem);
   line-height: var(--lh-hero);
   letter-spacing: var(--tracking-tighter);
-  max-width: none !important;
+  overflow-wrap: anywhere;
 }
 
 .phero__tagline {
@@ -114,39 +125,33 @@
   align-items: center;
   gap: 0.75rem;
   margin-top: 2.25rem;
-  /* Las acciones no deben invadir el producto: se reparten en dos líneas si hace falta. */
-  max-width: min(40rem, 46%) !important;
+  max-width: 100%;
+}
+
+.phero__actions > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.phero__actions .v360-pending {
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 899px) {
   .phero {
-    align-items: flex-end;
+    min-height: auto;
   }
 
-  .phero .stage--object .stage__visual {
-    inset: 11% 6% 50% 6%;
+  .phero__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    padding-block: calc(var(--header-h) + 1rem) 3rem;
   }
 
-  .phero .stage--object::after {
-    left: 10%;
-    right: 10%;
-    bottom: 49%;
-  }
-
-  .phero .stage--cover .pv img {
-    object-position: 62% 40%;
-  }
-
-  .phero .stage--cover::after {
-    background: linear-gradient(0deg, rgb(5 6 8 / 0.95) 34%, rgb(5 6 8 / 0.5) 55%, transparent 75%);
-  }
-
-  .phero__content {
-    padding-bottom: 3rem;
-  }
-
-  .phero__content > * {
-    max-width: none;
+  .phero__layout > .stage {
+    order: -1;
+    width: min(100%, 620px);
+    justify-self: center;
   }
 
   .phero__crumbs {
@@ -154,11 +159,7 @@
   }
 
   .phero__name {
-    font-size: clamp(2.4rem, 6vw + 1rem, 4.5rem);
-  }
-
-  .phero__actions {
-    max-width: none !important;
+    font-size: clamp(2.2rem, 11cqi, 4.5rem);
   }
 
   .phero__actions .btn {
@@ -267,13 +268,19 @@ html[data-header='visible'] .psubnav {
 
 .pintro__desktop {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 5rem);
   height: 100svh;
+  padding-block: calc(var(--header-h) + 2rem) 3rem;
+  padding-inline: max(var(--gutter), calc((100% - var(--max)) / 2));
   overflow: hidden;
 }
 
 .pintro__frame {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  min-width: 0;
+  border-radius: var(--radius-stage);
   overflow: hidden;
 }
 
@@ -284,8 +291,7 @@ html[data-header='visible'] .psubnav {
 }
 
 .pintro__visual.pv--contain {
-  inset: 12% 14%;
-  overflow: visible;
+  inset: 0;
 }
 
 .pintro__visual.pv--cover {
@@ -293,15 +299,16 @@ html[data-header='visible'] .psubnav {
 }
 
 .pintro__captions {
-  position: absolute;
-  inset: auto 0 clamp(2rem, 6vh, 4rem);
+  position: relative;
   z-index: 2;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
   gap: 2rem;
-  left: 50%;
-  translate: -50% 0;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
 }
 
 .pintro__count {
@@ -894,16 +901,12 @@ html[data-header='visible'] .psubnav {
 }
 
 @media (min-width: 900px) and (max-height: 820px) {
-  .phero__content {
+  .phero__layout {
     padding-block: calc(var(--header-h) + 1.25rem) 2rem;
   }
 
   .phero__crumbs {
     margin-bottom: 1rem;
-  }
-
-  .phero__name {
-    font-size: clamp(2.4rem, 10vh, 6rem);
   }
 
   .phero__tagline {
@@ -919,10 +922,6 @@ html[data-header='visible'] .psubnav {
     margin-top: 1.4rem;
   }
 
-  .pintro__visual.pv--contain {
-    inset: 16% 22% 18%;
-  }
-
   .pintro__caption {
     padding: 1.1rem 1.25rem;
   }
@@ -933,19 +932,7 @@ html[data-header='visible'] .psubnav {
   }
 }
 
-/* Fotografías premium: ajustes locales a las seis fichas comerciales. */
-.product-page--photograph .phero .stage__visual {
-  inset: 15% 3% 12% 48%;
-  overflow: hidden;
-  border-radius: var(--radius-stage);
-}
-
-.product-page--photograph .phero__name {
-  max-width: 45% !important;
-  font-size: clamp(2.8rem, 5.5vw, 6.5rem);
-  overflow-wrap: anywhere;
-}
-
+/* Fotografías premium: el encuadre se conserva dentro de su columna. */
 .phero__summary {
   margin-top: 1rem;
   font-size: var(--fs-small);
@@ -991,37 +978,6 @@ html[data-header='visible'] .psubnav {
 }
 
 @media (max-width: 899px) {
-  .product-page--photograph .phero {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    padding-top: calc(var(--header-h) + 1rem);
-    min-height: auto;
-  }
-
-  .product-page--photograph .phero > .stage {
-    position: relative;
-    inset: auto;
-    aspect-ratio: 4 / 3;
-    width: min(92%, 620px);
-    margin-inline: auto;
-    border-radius: var(--radius-stage);
-  }
-
-  .product-page--photograph .phero .stage__visual {
-    inset: 0;
-    border-radius: inherit;
-  }
-
-  .product-page--photograph .phero__content {
-    padding-top: 1.75rem;
-  }
-
-  .product-page--photograph .phero__name {
-    max-width: 100% !important;
-    font-size: clamp(2.4rem, 8vw, 4.5rem);
-  }
-
   .product-page--photograph .phero__actions > .actions,
   .product-page--photograph .phero__actions > .text-link {
     width: 100%;

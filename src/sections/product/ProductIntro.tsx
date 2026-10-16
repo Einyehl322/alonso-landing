@@ -74,7 +74,7 @@ export function ProductIntro({ product }: { product: Product }) {
         <div className="pintro__frame" style={{ background: product.theme.surface }}>
           <ProductVisual visual={product.visual} cameraRef={camera} sizes="100vw" className="pintro__visual" />
         </div>
-        <div className="pintro__captions container">
+        <div className="pintro__captions">
           <p className="pintro__count" aria-hidden="true">
             <span className="pintro__count-window">
               <span className="pintro__reel">

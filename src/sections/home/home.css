@@ -231,6 +231,13 @@
   margin-bottom: 1.5rem;
 }
 
+.universe__copy,
+.carplay__beats,
+.chooser__copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .universe__title {
   max-width: 13ch;
 }

@@ -41,7 +41,7 @@ export function ProductHero({ product }: { product: Product }) {
         tl.from('.phero__crumbs, .phero__meta', { autoAlpha: 0, y: 12, duration: 0.9, stagger: 0.08 }, t0)
           .from('.phero__name .line-mask > span', { yPercent: 110, duration: 1.2 }, t0 + 0.05)
           .from('.phero__tagline', { autoAlpha: 0, y: 18, duration: 1 }, t0 + 0.25)
-          .from('.phero__summary', { autoAlpha: 0, y: 12, duration: 0.9 }, t0 + 0.3)
+          .from(ref.current!.querySelectorAll('.phero__summary'), { autoAlpha: 0, y: 12, duration: 0.9 }, t0 + 0.3)
           .from('.phero__commerce > *', { autoAlpha: 0, y: 12, duration: 0.8, stagger: 0.06 }, t0 + 0.4)
           .from('.phero__actions .btn, .phero__actions .v360-pending', { autoAlpha: 0, y: 12, scale: 0.97, duration: 0.8, stagger: 0.08 }, t0 + 0.5)
       })
@@ -59,63 +59,65 @@ export function ProductHero({ product }: { product: Product }) {
 
   return (
     <section ref={ref} className="phero" data-scheme={product.theme.scheme} aria-labelledby="product-title">
-      <ProductStage
-        product={product}
-        variant="hero"
-        shared
-        priority
-        sizes="(min-width: 900px) 60vw, 100vw"
-        spin={product.category === 'intercomunicadores'}
-      />
+      <div className="phero__layout container">
+        <ProductStage
+          product={product}
+          variant="hero"
+          shared
+          priority
+          sizes="(min-width: 1360px) 660px, (min-width: 900px) 48vw, 92vw"
+          spin={product.category === 'intercomunicadores'}
+        />
 
-      <div className="phero__content container">
-        <nav className="phero__crumbs" aria-label="Ruta de navegación">
-          <Link to="/">Inicio</Link>
-          <span aria-hidden="true">/</span>
-          <Link to={categoryPath(category.id)}>{category.name}</Link>
-        </nav>
-        <div className="phero__meta">
-          <span className="eyebrow">{product.productType ? productCategoryLabel(product) : category.eyebrow}</span>
-          {product.isDemo ? <DemoBadge /> : null}
-        </div>
-        <h1 id="product-title" className="phero__name t-hero">
-          <span className="line-mask">
-            <span>{product.name}</span>
-          </span>
-        </h1>
-        <p className="phero__tagline t-lead">{product.tagline}</p>
-        {product.productType ? <p className="phero__summary t-muted">{product.summary}</p> : null}
+        <div className="phero__content">
+          <nav className="phero__crumbs" aria-label="Ruta de navegación">
+            <Link to="/">Inicio</Link>
+            <span aria-hidden="true">/</span>
+            <Link to={categoryPath(category.id)}>{category.name}</Link>
+          </nav>
+          <div className="phero__meta">
+            <span className="eyebrow">{product.productType ? productCategoryLabel(product) : category.eyebrow}</span>
+            {product.isDemo ? <DemoBadge /> : null}
+          </div>
+          <h1 id="product-title" className="phero__name t-hero">
+            <span className="line-mask">
+              <span>{product.name}</span>
+            </span>
+          </h1>
+          <p className="phero__tagline t-lead">{product.tagline}</p>
+          {product.productType ? <p className="phero__summary t-muted">{product.summary}</p> : null}
 
-        <dl className="phero__commerce">
-          <div>
-            <dt>Precio</dt>
-            <dd>
-              <Maybe value={product.commerce.price} />
-            </dd>
-          </div>
-          <div>
-            <dt>Disponibilidad</dt>
-            <dd>
-              <Maybe value={product.commerce.availability} />
-            </dd>
-          </div>
-          {product.commerce.promotion && product.commerce.promotion.status !== 'pending' ? (
+          <dl className="phero__commerce">
             <div>
-              <dt>Promoción</dt>
-              <dd>{product.commerce.promotion.display}</dd>
+              <dt>Precio</dt>
+              <dd>
+                <Maybe value={product.commerce.price} />
+              </dd>
             </div>
-          ) : null}
-        </dl>
+            <div>
+              <dt>Disponibilidad</dt>
+              <dd>
+                <Maybe value={product.commerce.availability} />
+              </dd>
+            </div>
+            {product.commerce.promotion && product.commerce.promotion.status !== 'pending' ? (
+              <div>
+                <dt>Promoción</dt>
+                <dd>{product.commerce.promotion.display}</dd>
+              </div>
+            ) : null}
+          </dl>
 
-        <div className="phero__actions">
-          <ContactActions product={product} withBuy />
-          <InterestToggleButton slug={product.slug} />
-          <View360Button product={product} />
-          <Link to="#resumen" className="btn btn--ghost">
-            Ver características
-            <Icon name="arrow-down" />
-          </Link>
-          {product.productType ? <Link to="#galeria" className="text-link">Ver galería <Icon name="arrow-down" /></Link> : null}
+          <div className="phero__actions">
+            <ContactActions product={product} withBuy />
+            <InterestToggleButton slug={product.slug} />
+            <View360Button product={product} />
+            <Link to="#resumen" className="btn btn--ghost">
+              Ver características
+              <Icon name="arrow-down" />
+            </Link>
+            {product.productType ? <Link to="#galeria" className="text-link">Ver galería <Icon name="arrow-down" /></Link> : null}
+          </div>
         </div>
       </div>
     </section>
