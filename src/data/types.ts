@@ -16,6 +16,8 @@ export type Visual =
       alt: string
       width: number
       height: number
+      /** Fotografía de escena: conserva el encuadre, sin giro en perspectiva. */
+      presentation?: 'photograph'
       /** `contain` para recortes con fondo transparente, `cover` para fotografías. */
       fit: 'contain' | 'cover'
       /** object-position para `cover`, p. ej. "62% 48%". */
@@ -104,6 +106,8 @@ export interface View360 {
 export interface Product {
   slug: string
   category: CategoryId
+  /** Tipo comercial dentro de la colección y su ruta existentes. */
+  productType?: 'intercom' | 'helmet-audio'
   name: string
   /**
    * Marca el producto como demostrativo (no disponible para la venta).

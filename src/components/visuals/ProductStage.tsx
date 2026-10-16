@@ -50,7 +50,7 @@ export function ProductStage({
   return (
     <div
       ref={stageRef}
-      className={`stage stage--${variant} ${isCover ? 'stage--cover' : 'stage--object'} ${className}`}
+      className={`stage stage--${variant} ${isCover ? 'stage--cover' : 'stage--object'} ${visual.kind === 'image' && visual.presentation === 'photograph' ? 'stage--photograph' : ''} ${className}`}
       data-scheme={theme.scheme}
       data-product-slug={slug}
       data-card-stage
@@ -64,7 +64,7 @@ export function ProductStage({
           priority={priority}
           sizes={sizes}
           cameraRef={cameraRef}
-          spin={spin}
+          spin={spin && !(visual.kind === 'image' && visual.presentation === 'photograph')}
           transition={shared && !isCover ? { name: vtName.visual(slug), className: 'product-visual' } : undefined}
         />
       </div>

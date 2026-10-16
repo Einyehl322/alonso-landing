@@ -1,13 +1,14 @@
 import { useRef, type MouseEvent, type PointerEvent } from 'react'
 import { InterestToggleButton } from '../interest/InterestToggleButton'
-import { getCategory, productPath } from '../../data/catalog'
+import { productCategoryLabel, productPath } from '../../data/catalog'
+import { productWhatsappMessage, whatsappHref } from '../../config/site'
 import type { Product } from '../../data/types'
-import { gsap, MQ, useGSAP } from '../../motion/gsap'
+import { gsap, MQ, prefersReducedMotion, useGSAP } from '../../motion/gsap'
 import { playProductExit } from '../../motion/productTransition'
 import { Link } from '../../router/Link'
 import { useRouter } from '../../router/context'
 import { Icon } from '../ui/Icon'
-import { DemoBadge, Maybe } from '../ui/Placeholders'
+import { DemoBadge, Maybe, specDisplay } from '../ui/Placeholders'
 import { ProductStage } from '../visuals/ProductStage'
 import './product-card.css'
 
@@ -25,7 +26,7 @@ export function ProductCard({ product, align }: Props) {
   const ref = useRef<HTMLElement>(null)
   const { nav } = useRouter()
   const href = productPath(product)
-  const category = getCategory(product.category)
+  const contactHref = whatsappHref(productWhatsappMessage(product.name, specDisplay(product.commerce.price)))
 
   useGSAP(
     () => {
@@ -40,7 +41,7 @@ export function ProductCard({ product, align }: Props) {
           { clipPath: 'inset(100% 0% 0% 0% round 28px)' },
           { clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1.3, ease: 'expo.inOut', clearProps: 'clipPath' },
         )
-          .from('.stage__visual', { yPercent: 14, scale: 1.1, duration: 1.6, ease: 'expo.out' }, 0.35)
+          .from('.stage__visual', { yPercent: 4, scale: 0.96, autoAlpha: 0, duration: 1.3, ease: 'expo.out' }, 0.35)
           .from('.pcard__rule', { scaleX: 0, transformOrigin: '0 50%', duration: 1.1, ease: 'expo.inOut' }, 0.2)
           .from('.pcard__name .line-mask > span', { yPercent: 110, duration: 1, ease: 'expo.out' }, 0.45)
           .from('.pcard__reveal', { autoAlpha: 0, y: 16, stagger: 0.07, duration: 0.9 }, 0.6)
@@ -51,12 +52,12 @@ export function ProductCard({ product, align }: Props) {
 
   // Inclinación sutil siguiendo el cursor (solo punteros finos).
   const onPointerMove = (e: PointerEvent<HTMLElement>) => {
-    if (e.pointerType !== 'mouse') return
+    if (e.pointerType !== 'mouse' || prefersReducedMotion()) return
     const r = e.currentTarget.getBoundingClientRect()
     const x = (e.clientX - r.left) / r.width - 0.5
     const y = (e.clientY - r.top) / r.height - 0.5
-    e.currentTarget.style.setProperty('--rx', `${(-y * 4).toFixed(2)}deg`)
-    e.currentTarget.style.setProperty('--ry', `${(x * 5).toFixed(2)}deg`)
+    e.currentTarget.style.setProperty('--rx', `${(-y * 2).toFixed(2)}deg`)
+    e.currentTarget.style.setProperty('--ry', `${(x * 2).toFixed(2)}deg`)
     e.currentTarget.style.setProperty('--mx', `${((x + 0.5) * 100).toFixed(1)}%`)
     e.currentTarget.style.setProperty('--my', `${((y + 0.5) * 100).toFixed(1)}%`)
   }
@@ -91,7 +92,7 @@ export function ProductCard({ product, align }: Props) {
 
       <div className="pcard__copy">
         <div className="pcard__meta" data-card-text>
-          <span className="eyebrow">{category.name}</span>
+          <span className="eyebrow">{productCategoryLabel(product)}</span>
           {product.badge ? <span className="badge">{product.badge}</span> : null}
           {product.isDemo ? <DemoBadge /> : null}
         </div>
@@ -120,13 +121,13 @@ export function ProductCard({ product, align }: Props) {
         </dl>
         <div className="pcard__actions pcard__reveal" data-card-text>
           <Link to={href} beforeNavigate={exit} className="btn btn--primary" aria-label={`Explorar ${product.name}`}>
-            Explorar
+            Explorar producto
             <Icon name="arrow" />
           </Link>
-          <Link to={href} beforeNavigate={exit} className="btn btn--ghost btn--sm" aria-label={`Consultar ${product.name} por WhatsApp`}>
+          {contactHref ? <a href={contactHref} target="_blank" rel="noopener" className="btn btn--ghost btn--sm" aria-label={`Consultar ${product.name} por WhatsApp`}>
             <Icon name="whatsapp" />
             Consultar
-          </Link>
+          </a> : null}
           <InterestToggleButton slug={product.slug} className="pcard__reveal" />
         </div>
       </div>

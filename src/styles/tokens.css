@@ -24,14 +24,42 @@
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --fs-hero: clamp(3.1rem, 1.2rem + 7.6vw, 9.25rem);
-  --fs-display: clamp(2.5rem, 1.25rem + 5vw, 6.25rem);
-  --fs-h2: clamp(2rem, 1.2rem + 3.2vw, 4.25rem);
-  --fs-h3: clamp(1.4rem, 1.1rem + 1.1vw, 2.1rem);
-  --fs-lead: clamp(1.12rem, 1rem + 0.5vw, 1.45rem);
+  /* Tamaños fluidos */
+  --fs-hero: clamp(3rem, 1.1rem + 7.2vw, 8.5rem);
+  --fs-display: clamp(2.4rem, 1.15rem + 4.8vw, 5.8rem);
+  --fs-h2: clamp(1.9rem, 1.1rem + 3vw, 3.8rem);
+  --fs-h3: clamp(1.3rem, 1.05rem + 1vw, 1.85rem);
+  --fs-lead: clamp(1.08rem, 0.95rem + 0.52vw, 1.35rem);
   --fs-body: 1.0625rem;
   --fs-small: 0.9375rem;
+  --fs-caption: 0.8125rem;
   --fs-label: 0.75rem;
+
+  /* Line-height por escala */
+  --lh-hero: 0.95;
+  --lh-display: 1.0;
+  --lh-h2: 1.05;
+  --lh-h3: 1.1;
+  --lh-lead: 1.48;
+  --lh-body: 1.55;
+
+  /* Pesos tipográficos */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Tracking (letter-spacing) */
+  --tracking-tighter: -0.04em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+  --tracking-wider: 0.1em;
+  --tracking-widest: 0.15em;
+
+  /* Anchuras de lectura */
+  --max-prose: 32rem;
+  --max-text: 38rem;
 
   /* ---- Espacio ---- */
   --gutter: clamp(1rem, 0.4rem + 2.6vw, 3rem);

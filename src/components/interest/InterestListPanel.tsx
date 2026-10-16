@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { site } from '../../config/site'
-import { getCategory, products } from '../../data/catalog'
+import { getCategory, productCategoryLabel, products } from '../../data/catalog'
 import { specDisplay } from '../ui/Placeholders'
 import type { Product } from '../../data/types'
 import { gsap, prefersReducedMotion } from '../../motion/gsap'
@@ -12,7 +12,7 @@ import './interest-list.css'
 /** Builds the WhatsApp message for the selected products. */
 function buildInterestMessage(items: Product[]): string {
   const lines = items.map((p) => {
-    const cat = getCategory(p.category).name
+    const cat = productCategoryLabel(p)
     const price = specDisplay(p.commerce.price) ? ` — ${specDisplay(p.commerce.price)}` : ''
     return `• ${cat} ${p.name}${price}`
   })
@@ -73,7 +73,7 @@ export function InterestListPanel({ open, onClose }: { open: boolean; onClose: (
               {selected.map((p) => (
                 <li key={p.slug} className="ilist__item">
                   <Link to={`/${getCategory(p.category).slug}/${p.slug}`} className="ilist__item-info" onClick={onClose}>
-                    <span className="eyebrow">{getCategory(p.category).name}</span>
+                    <span className="eyebrow">{productCategoryLabel(p)}</span>
                     <strong>{p.name}</strong>
                     {specDisplay(p.commerce.price) ? <span>{specDisplay(p.commerce.price)}</span> : null}
                   </Link>

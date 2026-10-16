@@ -1,4 +1,4 @@
-import { getCategory, getProducts, productPath } from '../../data/catalog'
+import { getCategory, getProducts, productCategoryLabel, productPath } from '../../data/catalog'
 import type { CategoryId, Product, SpecCell } from '../../data/types'
 import { Link } from '../../router/Link'
 import { Icon } from '../ui/Icon'
@@ -18,12 +18,18 @@ interface CompareRow {
   key: string
   groupLabel: string
   itemLabel: string
-  cells: (SpecCell)[]
+  cells: SpecCell[]
 }
 
 /** Devuelve true si al menos una celda de la fila tiene un dato confirmado o con discrepancia. */
 function rowHasData(row: CompareRow): boolean {
   return row.cells.some((c) => c !== null && c.status !== 'pending')
+}
+
+function compareLabel(label: string) {
+  if (label === 'Alcance') return 'Alcance declarado'
+  if (label === 'Music Sharing') return 'Compartir música'
+  return label
 }
 
 /**
@@ -38,18 +44,26 @@ export function ProductCompare({ category, current, id = 'comparar' }: Props) {
   const all = getProducts(category)
   if (all.length < 2) return null
   const list = current ? [current, ...all.filter((p) => p !== current)] : all
-  const groups = list[0].specs
+  // Unión de especificaciones: el modelo actual no determina las filas ajenas.
+  const groups = new Map<string, Set<string>>()
+  for (const product of list) {
+    for (const group of product.specs) {
+      const labels = groups.get(group.group) ?? new Set<string>()
+      group.items.forEach((item) => labels.add(compareLabel(item.label)))
+      groups.set(group.group, labels)
+    }
+  }
 
   // Construir filas
-  const rows: CompareRow[] = groups.flatMap((g) =>
-    g.items.map((item) => ({
-      key: `${g.group}-${item.label}`,
-      groupLabel: g.group,
-      itemLabel: item.label,
+  const rows: CompareRow[] = Array.from(groups).flatMap(([group, labels]) =>
+    Array.from(labels).map((label) => ({
+      key: `${group}-${label}`,
+      groupLabel: group,
+      itemLabel: label,
       cells: list.map((p) =>
-        p.specs.find((sg) => sg.group === g.group)?.items.find((si) => si.label === item.label)?.value ?? null
+        p.specs.find((sg) => sg.group === group)?.items.find((si) => compareLabel(si.label) === label)?.value ?? null,
       ),
-    }))
+    })),
   )
 
   // Filtrar filas que no tienen ningún dato confirmado
@@ -89,6 +103,7 @@ export function ProductCompare({ category, current, id = 'comparar' }: Props) {
                         <ProductVisual visual={p.visual} sizes="160px" />
                       </div>
                       <span className="compare__name">{p.name}</span>
+                      <span className="compare__category">{productCategoryLabel(p)}</span>
                       {p.isDemo && <DemoBadge>Fotos pendientes</DemoBadge>}
                       {p === current ? (
                         <span className="compare__here">Estás viendo este modelo</span>
@@ -113,26 +128,28 @@ export function ProductCompare({ category, current, id = 'comparar' }: Props) {
                   </td>
                 ))}
               </tr>
-
-              {/* Filas agrupadas */}
-              {groupedRows.map((grp) => (
-                <tbody key={grp.group}>
-                  {grp.rows.map((row) => (
-                    <tr key={row.key}>
-                      <th scope="row">
-                        <span className="compare__group">{row.groupLabel}</span>
-                        {row.itemLabel}
-                      </th>
-                      {row.cells.map((cell, i) => (
-                        <td key={`${row.key}-${list[i].slug}`}>
-                          <Maybe value={cell} />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              ))}
             </tbody>
+
+            {/* Filas agrupadas */}
+            {groupedRows.map((grp) => (
+              <tbody key={grp.group}>
+                {grp.rows.map((row) => (
+                  <tr key={row.key}>
+                    <th scope="row">
+                      <span className="compare__group">{row.groupLabel}</span>
+                      {row.itemLabel}
+                    </th>
+                    {row.cells.map((cell, i) => (
+                      <td key={`${row.key}-${list[i].slug}`}>
+                        {list[i].productType === 'helmet-audio' && ['Alcance', 'Alcance declarado', 'Participantes', 'Autonomía (intercom)'].includes(row.itemLabel)
+                          ? <span className="t-muted">No aplica</span>
+                          : <Maybe value={cell} />}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            ))}
           </table>
         </div>
       </div>

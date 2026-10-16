@@ -171,6 +171,15 @@
   border-radius: 0;
 }
 
+/* Escenas fotográficas: encuadre completo, sin suelo ni perspectiva simulados. */
+.stage--photograph .stage__visual {
+  inset: 0;
+}
+
+.stage--photograph::after {
+  display: none;
+}
+
 /* ---------- Placeholder para productos sin foto ---------- */
 
 .pv--placeholder {

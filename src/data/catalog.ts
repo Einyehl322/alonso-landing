@@ -9,7 +9,7 @@
  *
  * Para actualizar un precio, busca `commerce.price` en el modelo correspondiente.
  */
-import { media } from './media'
+import { media, productMedia } from './media'
 import type { Category, CategoryId, Product, SpecCell, SpecGroup, Visual } from './types'
 import { spec, specPending, specDiscrepancy } from './types'
 
@@ -322,64 +322,132 @@ const ejeasQ8: Product = {
 }
 
 /**
- * FreedConn Hero — S/ 290.90
- * Fuente: catálogo SMART RIDE.
- * Nota: hasta 1500 m, 6 usuarios, hasta 35 h, IP67, reducción de ruido avanzada.
- * Discrepancia: catálogo dice 35 h; datos externos indican 30 h conversación / 26 h música.
+ * Fichas comerciales suministradas por SMART RIDE (16/10/2026).
+ * Solo se publican los datos del catálogo autorizado. La autonomía es general:
+ * no se asigna a conversación o música sin confirmar la versión exacta.
  */
-const freedConnHero: Product = {
-  slug: 'freedconn-hero',
-  category: 'intercomunicadores',
-  name: 'FreedConn Hero',
-  isDemo: false,
-  tagline: 'Kilómetros de camino. Conversaciones que continúan.',
-  summary:
-    'El FreedConn Hero ofrece el mayor alcance declarado de la línea (hasta 1500 m) y hasta 6 usuarios conectados. Con reducción de ruido avanzada y compartición de música, está pensado para los viajes largos.',
-  theme: { bg: '#0c0d10', surface: '#161820', scheme: 'dark' },
-  visual: intercomHelmet,
-  highlights: [
-    { title: spec('Hasta 1500 m'), body: spec('El mayor alcance declarado de la línea para grupos dispersos.'), focus: { x: 50, y: 50, zoom: 1 } },
-    { title: spec('Hasta 6 usuarios'), body: spec('Conecta con todo el grupo sin perder comunicación.'), focus: { x: 68, y: 45, zoom: 1.3 } },
-    { title: spec('Reducción avanzada'), body: spec('Cancelación de ruido para voz clara incluso a alta velocidad.'), focus: { x: 40, y: 58, zoom: 1.4 } },
-  ],
-  details: [
-    { caption: spec('Vista general del FreedConn Hero'), visual: intercomHelmet, focus: { x: 50, y: 50, zoom: 1.4 } },
-    { caption: spec('Puerto de carga'), visual: intercomHelmet, focus: { x: 70, y: 68, zoom: 1.7 } },
-    { caption: spec('Instalado en casco'), visual: intercomHelmet, focus: { x: 55, y: 48, zoom: 1.3 } },
-  ],
-  benefits: [
-    { title: spec('Máximo alcance'), body: spec('Hasta 1500 m declarados: el intercomunicador con mayor rango de la línea.') },
-    { title: spec('Hasta 35 h'), body: spec('Autonomía declarada de hasta 35 h (catálogo). Verificar por modalidad.') },
-    { title: spec('Todo clima'), body: spec('IP67 y reducción de ruido avanzada para lluvia y viento.') },
-  ],
-  specs: intercomSpecs({
-    bluetooth: spec('Bluetooth 5.1'),
-    alcance: spec('Hasta 1500 m'),
-    participantes: spec('Hasta 6 usuarios'),
-    autonomiaIntercom: specDiscrepancy('Hasta 35 h', 'Catálogo: 35 h. Fuente externa: 30 h conversación. Verificar con producto físico.'),
-    autonomiaMusica: spec('Hasta 26 h'),
-    carga: spec('2 h'),
-    resistencia: spec('IP67'),
-    peso: spec('48 g'),
-    montaje: spec('Clip / abrazadera al casco'),
-    reduccionRuido: spec('Sí (avanzada)'),
-  }),
-  gallery: [
-    { visual: intercomHelmet, caption: 'Vista general' },
-    { visual: intercomHelmet, focus: { x: 70, y: 68, zoom: 1.7 }, caption: 'Puerto de carga' },
-    { visual: intercomHelmet, focus: { x: 34, y: 40, zoom: 1.5 }, caption: 'Controles' },
-    { visual: intercomHelmet, caption: 'Montado en el casco' },
-  ],
-  faqs: [
-    { question: '¿Cuál es la autonomía real del FreedConn Hero?', answer: spec('Catálogo: hasta 35 h. Fuentes externas: 30 h conversación, 26 h música. Consultar para confirmar.') },
-    { question: '¿Cuántos participantes puede conectar?', answer: spec('Hasta 6 usuarios.') },
-    { question: '¿Es compatible con mi casco?', answer: spec('Compatible con la mayoría de cascos mediante clip. Consúltanos si tienes dudas.') },
-    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
-    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
-  ],
-  commerce: commercePEN('S/ 290.90'),
+function rideProduct(opts: {
+  slug: keyof typeof productMedia
+  name: string
+  price: string
+  productType?: Product['productType']
+  tagline: string
+  summary: string
+  specs: SpecGroup[]
+  featureLabels: string[]
+  faqs?: Product['faqs']
+}): Product {
+  const visual: Visual = {
+    kind: 'image',
+    ...productMedia[opts.slug],
+    fit: 'contain',
+    presentation: 'photograph',
+    alt: `${opts.name}, fotografía de producto con iluminación sobre fondo azul oscuro`,
+  }
+  const features = opts.featureLabels.map((label) => {
+    const item = opts.specs.flatMap((g) => g.items).find((i) => i.label === label)!
+    return { title: item.value, body: spec(label) }
+  })
+  return {
+    slug: opts.slug,
+    category: 'intercomunicadores',
+    productType: opts.productType ?? 'intercom',
+    name: opts.name,
+    isDemo: false,
+    tagline: opts.tagline,
+    summary: opts.summary,
+    theme: { bg: '#060e19', surface: '#0c1a2a', scheme: 'dark' },
+    visual,
+    highlights: features.map((feature, i) => ({
+      ...feature,
+      focus: { x: 50, y: 50, zoom: 1 + i * 0.015 },
+    })),
+    details: [{ caption: spec(`Fotografía de ${opts.name}`), visual, focus: { x: 50, y: 50, zoom: 1 } }],
+    benefits: features,
+    specs: opts.specs,
+    gallery: [{ visual, caption: opts.name }],
+    faqs: [
+      ...(opts.faqs ?? []),
+      { question: '¿Cómo confirmo disponibilidad y compatibilidad?', answer: spec('Escríbenos por WhatsApp indicando el modelo y tu equipamiento para confirmar disponibilidad y compatibilidad.') },
+    ],
+    commerce: commercePEN(opts.price),
+  }
 }
+
+function rideSpecs(opts: {
+  bluetooth: string
+  alcance?: string
+  participantes?: string
+  autonomia: SpecCell
+  proteccion: string
+  ruido?: string
+  funciones?: { label: string; value: string }[]
+}): SpecGroup[] {
+  return [
+    { group: 'Comunicación', items: [
+      { label: 'Bluetooth', value: spec(opts.bluetooth) },
+      ...(opts.alcance ? [{ label: 'Alcance declarado', value: spec(opts.alcance) }] : []),
+      ...(opts.participantes ? [{ label: 'Participantes', value: spec(opts.participantes) }] : []),
+      { label: 'Reducción de ruido', value: spec(opts.ruido ?? 'Sí') },
+      ...(opts.funciones ?? []).map((f) => ({ label: f.label, value: spec(f.value) })),
+    ] },
+    { group: 'Batería', items: [{ label: 'Autonomía declarada', value: opts.autonomia }] },
+    { group: 'Diseño', items: [{ label: 'Resistencia al agua', value: spec(opts.proteccion) }] },
+  ]
+}
+
+const y13Pro = rideProduct({
+  slug: 'y13-pro', name: 'Y13 Pro', price: 'S/ 75.00',
+  tagline: 'Comparte la ruta. Mantén la conexión.',
+  summary: 'Disfruta de tus recorridos con comunicación entre dos motociclistas y funciones para compartir música. Una alternativa accesible para mantenerte conectado durante tus viajes.',
+  specs: rideSpecs({ bluetooth: 'Bluetooth 6.0', alcance: '700 metros', participantes: '2 riders', autonomia: spec('22 horas'), proteccion: 'IP56', funciones: [{ label: 'Music Sharing', value: 'Sí' }, { label: 'Modo mixto', value: 'Sí' }] }),
+  featureLabels: ['Participantes', 'Autonomía declarada', 'Bluetooth'],
+})
+
+const freedConnHero = rideProduct({
+  slug: 'freedconn-hero', name: 'FreedConn Hero', price: 'S/ 290.90',
+  tagline: 'Más camino. Más conversaciones.',
+  summary: 'Pensado para quienes disfrutan recorrer grandes distancias acompañados. FreedConn Hero combina comunicación grupal, funciones de audio y un diseño preparado para diferentes condiciones de ruta.',
+  specs: rideSpecs({
+    bluetooth: 'Bluetooth 5.1', alcance: 'Hasta 1500 metros', participantes: 'Hasta 6 riders',
+    autonomia: specDiscrepancy('Hasta 35 horas', 'Fuente vigente: catálogo SMART RIDE aportado por el usuario. La ficha anterior registraba datos externos de 30 h de conversación / 26 h de música, sin fuente trazable ni versión confirmada. Revisar manual y versión exacta antes de validar o publicar esas cifras. Las 35 h son autonomía general, no una modalidad específica.'),
+    proteccion: 'IP67', ruido: 'Avanzada', funciones: [{ label: 'Compartir música', value: 'Sí' }],
+  }),
+  featureLabels: ['Participantes', 'Alcance declarado', 'Autonomía declarada'],
+})
+
+const s7Pro = rideProduct({
+  slug: 's7-pro', name: 'S7 PRO', price: 'S/ 90.00',
+  tagline: 'Conectado a cada kilómetro.',
+  summary: 'Una opción para quienes buscan comunicación durante sus recorridos, buena autonomía declarada y un diseño moderno para equipar su casco.',
+  specs: rideSpecs({ bluetooth: 'Bluetooth 5.4', alcance: '700 metros', participantes: '2 riders', autonomia: spec('30 horas'), proteccion: 'IP67', funciones: [{ label: 'Emparejamiento universal', value: 'Sí' }] }),
+  featureLabels: ['Participantes', 'Autonomía declarada', 'Resistencia al agua'],
+})
+
+const s7 = rideProduct({
+  slug: 's7', name: 'S7', price: 'S/ 75.00', productType: 'helmet-audio',
+  tagline: 'Tu música también forma parte del viaje.',
+  summary: 'Disfruta de conectividad Bluetooth y funciones de audio durante tus recorridos, con un diseño pensado para integrarse con tu equipamiento.',
+  specs: rideSpecs({ bluetooth: 'Bluetooth 5.4', autonomia: spec('30 horas'), proteccion: 'IP67', funciones: [{ label: 'Emparejamiento universal', value: 'Sí' }] }),
+  featureLabels: ['Bluetooth', 'Autonomía declarada', 'Resistencia al agua'],
+  faqs: [{ question: '¿El S7 permite conversar con otro motociclista?', answer: spec('El S7 se comercializa como audífono Bluetooth para casco. La comunicación entre motociclistas no está confirmada para este modelo.') }],
+})
+
+const q58Max = rideProduct({
+  slug: 'q58-max', name: 'Q58 MAX', price: 'S/ 84.90',
+  tagline: 'Tecnología que acompaña tu recorrido.',
+  summary: 'Un dispositivo de diseño moderno que reúne conectividad Bluetooth y funciones de audio para acompañarte durante tus rutas.',
+  specs: rideSpecs({ bluetooth: 'Bluetooth 5.4', alcance: '800 metros', autonomia: spec('25 horas'), proteccion: 'IP56' }),
+  featureLabels: ['Alcance declarado', 'Autonomía declarada', 'Bluetooth'],
+})
+
+const p30Pro = rideProduct({
+  slug: 'p30-pro', name: 'P30 PRO', price: 'S/ 85.00',
+  tagline: 'Cada conversación, parte de la aventura.',
+  summary: 'Comunicación para dos motociclistas, conectividad Bluetooth y una presentación moderna para quienes quieren disfrutar sus recorridos acompañados.',
+  specs: rideSpecs({ bluetooth: 'Bluetooth 6.0', alcance: '700 metros', participantes: '2 riders', autonomia: spec('25 horas'), proteccion: 'IP67' }),
+  featureLabels: ['Participantes', 'Autonomía declarada', 'Bluetooth'],
+})
 
 /**
  * EJEAS V6 Pro Plus — S/ 125.00
@@ -654,9 +722,14 @@ const carplay625FreedConn: Product = {
 /* ---------- exportar catálogo ---------- */
 
 export const products: Product[] = [
+  y13Pro,
+  freedConnHero,
+  s7Pro,
+  s7,
+  q58Max,
+  p30Pro,
   v12Earphone,
   ejeasQ8,
-  freedConnHero,
   ejeasV6ProPlus,
   carplay625Full,
   carplay81HD,
@@ -696,4 +769,11 @@ export function productPath(p: Product) {
 export function nextProduct(p: Product) {
   const list = getProducts(p.category)
   return list[(list.indexOf(p) + 1) % list.length]
+}
+
+/** Categoría comercial visible; la colección de navegación conserva su URL. */
+export function productCategoryLabel(product: Product) {
+  return product.productType === 'helmet-audio'
+    ? 'Audífonos Bluetooth para casco'
+    : getCategory(product.category).name
 }

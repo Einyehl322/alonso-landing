@@ -27,7 +27,7 @@ export function ProductPage({ product }: { product: Product }) {
   ]
 
   return (
-    <div style={{ background: product.theme.bg }}>
+    <div className={product.visual.kind === 'image' && product.visual.presentation === 'photograph' ? 'product-page--photograph' : undefined} style={{ background: product.theme.bg }}>
       <ProductHero product={product} />
       <div className="product-body">
         <ProductSubnav product={product} items={items} />

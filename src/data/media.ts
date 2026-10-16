@@ -1,8 +1,8 @@
 /**
  * Recursos fotográficos.
  *
- * TODO(contenido): sustituir por fotografías oficiales en alta resolución y
- * confirmar los derechos de uso de cada una.
+ * Las fuentes PNG se conservan. Los seis modelos nuevos usan WebP a resolución
+ * nativa (1448 × 1086) y variantes responsive, sin ampliar la imagen original.
  */
 import casco1280 from '../assets/media/casco-1280.webp'
 import casco1920 from '../assets/media/casco-1920.webp'
@@ -13,6 +13,26 @@ import ruta1920 from '../assets/media/ruta-1920.webp'
 import ruta2560 from '../assets/media/ruta-2560.webp'
 import ruta3840 from '../assets/media/ruta-3840.webp'
 import v12Hero from '../assets/media/v12-pro-hero.png'
+
+/** Fotografías premium aportadas por SMART RIDE, una fuente distinta por modelo. */
+import y13Pro480 from '../assets/media/products/y13-pro-480.webp'
+import y13Pro960 from '../assets/media/products/y13-pro-960.webp'
+import y13Pro1448 from '../assets/media/products/y13-pro-1448.webp'
+import freedconnHero480 from '../assets/media/products/freedconn-hero-480.webp'
+import freedconnHero960 from '../assets/media/products/freedconn-hero-960.webp'
+import freedconnHero1448 from '../assets/media/products/freedconn-hero-1448.webp'
+import s7Pro480 from '../assets/media/products/s7-pro-480.webp'
+import s7Pro960 from '../assets/media/products/s7-pro-960.webp'
+import s7Pro1448 from '../assets/media/products/s7-pro-1448.webp'
+import s7480 from '../assets/media/products/s7-480.webp'
+import s7960 from '../assets/media/products/s7-960.webp'
+import s71448 from '../assets/media/products/s7-1448.webp'
+import q58Max480 from '../assets/media/products/q58-max-480.webp'
+import q58Max960 from '../assets/media/products/q58-max-960.webp'
+import q58Max1448 from '../assets/media/products/q58-max-1448.webp'
+import p30Pro480 from '../assets/media/products/p30-pro-480.webp'
+import p30Pro960 from '../assets/media/products/p30-pro-960.webp'
+import p30Pro1448 from '../assets/media/products/p30-pro-1448.webp'
 
 export const media = {
   /** Intercomunicador montado en casco, fondo oscuro (hasta 4K). */
@@ -34,5 +54,44 @@ export const media = {
     src: v12Hero,
     width: 1920, /* Estimated width */
     height: 1080, /* Estimated height */
+  },
+} as const
+
+export const productMedia = {
+  'y13-pro': {
+    src: y13Pro1448,
+    srcSet: `${y13Pro480} 480w, ${y13Pro960} 960w, ${y13Pro1448} 1448w`,
+    width: 1448,
+    height: 1086,
+  },
+  'freedconn-hero': {
+    src: freedconnHero1448,
+    srcSet: `${freedconnHero480} 480w, ${freedconnHero960} 960w, ${freedconnHero1448} 1448w`,
+    width: 1448,
+    height: 1086,
+  },
+  's7-pro': {
+    src: s7Pro1448,
+    srcSet: `${s7Pro480} 480w, ${s7Pro960} 960w, ${s7Pro1448} 1448w`,
+    width: 1448,
+    height: 1086,
+  },
+  's7': {
+    src: s71448,
+    srcSet: `${s7480} 480w, ${s7960} 960w, ${s71448} 1448w`,
+    width: 1448,
+    height: 1086,
+  },
+  'q58-max': {
+    src: q58Max1448,
+    srcSet: `${q58Max480} 480w, ${q58Max960} 960w, ${q58Max1448} 1448w`,
+    width: 1448,
+    height: 1086,
+  },
+  'p30-pro': {
+    src: p30Pro1448,
+    srcSet: `${p30Pro480} 480w, ${p30Pro960} 960w, ${p30Pro1448} 1448w`,
+    width: 1448,
+    height: 1086,
   },
 } as const

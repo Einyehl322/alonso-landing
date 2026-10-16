@@ -19,13 +19,14 @@ export function View360Button({ product }: { product: Product }) {
   const [source, setSource] = useState<HTMLElement | null>(null)
   const [preparing, setPreparing] = useState(false)
 
-  const available = Boolean(product.view360) || testMode()
+  const hasRealSequence = (product.view360?.frames.length ?? 0) >= 24
+  const available = hasRealSequence || testMode()
   if (!available) {
-    return site.demoMode ? <span className="pending v360-pending">Vista 360° · pendiente de fotografías</span> : null
+    return !product.productType && site.demoMode ? <span className="pending v360-pending">Vista 360° · pendiente de fotografías</span> : null
   }
 
   const open = async () => {
-    let seq = product.view360 ?? null
+    let seq = hasRealSequence ? product.view360! : null
     if (import.meta.env.DEV && !seq && testMode()) {
       setPreparing(true)
       const { createTestSequence } = await import('./testSequence')

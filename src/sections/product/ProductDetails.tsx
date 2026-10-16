@@ -47,7 +47,7 @@ export function ProductDetails({ product }: { product: Product }) {
             Cada detalle, a la vista.
           </h2>
         </div>
-        <div className="pdetails__grid">
+        <div className={`pdetails__grid ${product.details.length === 1 ? 'pdetails__grid--single' : ''}`}>
           {product.details.map((d, i) => (
             <figure key={i} className={`pdetail pdetail--${i}`}>
               <div className="pdetail__frame" style={{ background: product.theme.surface }}>

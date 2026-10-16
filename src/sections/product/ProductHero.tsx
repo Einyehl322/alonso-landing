@@ -5,7 +5,7 @@ import { Icon } from '../../components/ui/Icon'
 import { DemoBadge, Maybe } from '../../components/ui/Placeholders'
 import { View360Button } from '../../components/viewer360/View360Button'
 import { ProductStage } from '../../components/visuals/ProductStage'
-import { categoryPath, getCategory } from '../../data/catalog'
+import { categoryPath, getCategory, productCategoryLabel } from '../../data/catalog'
 import type { Product } from '../../data/types'
 import { EASE, gsap, MQ, MQ_CONDITIONS, useGSAP } from '../../motion/gsap'
 import { Link } from '../../router/Link'
@@ -33,7 +33,7 @@ export function ProductHero({ product }: { product: Product }) {
           tl.from('.stage__light', { opacity: 0, duration: 1.8, ease: 'power2.inOut' }, 0)
             .from(
               '.stage__visual',
-              { scale: 0.86, autoAlpha: 0, filter: 'blur(14px)', duration: 1.8, clearProps: 'filter' },
+              { scale: 0.96, y: 16, autoAlpha: 0, duration: 1.5 },
               0.15,
             )
         }
@@ -41,6 +41,7 @@ export function ProductHero({ product }: { product: Product }) {
         tl.from('.phero__crumbs, .phero__meta', { autoAlpha: 0, y: 12, duration: 0.9, stagger: 0.08 }, t0)
           .from('.phero__name .line-mask > span', { yPercent: 110, duration: 1.2 }, t0 + 0.05)
           .from('.phero__tagline', { autoAlpha: 0, y: 18, duration: 1 }, t0 + 0.25)
+          .from('.phero__summary', { autoAlpha: 0, y: 12, duration: 0.9 }, t0 + 0.3)
           .from('.phero__commerce > *', { autoAlpha: 0, y: 12, duration: 0.8, stagger: 0.06 }, t0 + 0.4)
           .from('.phero__actions .btn, .phero__actions .v360-pending', { autoAlpha: 0, y: 12, scale: 0.97, duration: 0.8, stagger: 0.08 }, t0 + 0.5)
       })
@@ -74,7 +75,7 @@ export function ProductHero({ product }: { product: Product }) {
           <Link to={categoryPath(category.id)}>{category.name}</Link>
         </nav>
         <div className="phero__meta">
-          <span className="eyebrow">{category.eyebrow}</span>
+          <span className="eyebrow">{product.productType ? productCategoryLabel(product) : category.eyebrow}</span>
           {product.isDemo ? <DemoBadge /> : null}
         </div>
         <h1 id="product-title" className="phero__name t-hero">
@@ -83,6 +84,7 @@ export function ProductHero({ product }: { product: Product }) {
           </span>
         </h1>
         <p className="phero__tagline t-lead">{product.tagline}</p>
+        {product.productType ? <p className="phero__summary t-muted">{product.summary}</p> : null}
 
         <dl className="phero__commerce">
           <div>
@@ -113,6 +115,7 @@ export function ProductHero({ product }: { product: Product }) {
             Ver características
             <Icon name="arrow-down" />
           </Link>
+          {product.productType ? <Link to="#galeria" className="text-link">Ver galería <Icon name="arrow-down" /></Link> : null}
         </div>
       </div>
     </section>

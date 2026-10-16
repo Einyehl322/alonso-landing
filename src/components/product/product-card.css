@@ -113,6 +113,16 @@
   margin: 0;
 }
 
+.pcard__commerce > :first-child dd {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.pcard__name .line-mask > span {
+  overflow-wrap: anywhere;
+}
+
 .pcard__actions {
   margin-top: 2.25rem;
   display: flex;
@@ -145,5 +155,12 @@
   .pcard .stage {
     max-height: calc(100svh - var(--header-h) - 3rem);
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard .stage,
+  .pcard__tilt:hover .stage--object .stage__visual {
+    transform: none;
   }
 }

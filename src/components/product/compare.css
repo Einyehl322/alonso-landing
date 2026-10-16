@@ -61,7 +61,7 @@
 .compare__table tbody th {
   font-weight: 500;
   color: var(--fg-soft);
-  width: 28%;
+  min-width: 160px;
   font-size: 0.92rem;
 }
 
@@ -96,6 +96,13 @@
   display: grid;
   gap: 0.5rem;
   justify-items: start;
+  min-width: 155px;
+}
+
+.compare__category {
+  color: var(--fg-muted);
+  font-size: 0.75rem;
+  max-width: 22ch;
 }
 
 .compare__thumb {
