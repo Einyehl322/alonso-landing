@@ -203,61 +203,62 @@ function commercePEN(price: string) {
    =================================================================== */
 
 /**
- * P30 PRO — S/ 85.00
- * Fuente: catálogo SMART RIDE.
- * Nota: modelo económico, 2 usuarios, Bluetooth 6.0.
+ * V12 Motorcycle Earphone — Audífono Bluetooth para casco.
+ * NO es intercomunicador: es un audífono individual para música y llamadas.
+ * Diseño con iluminación RGB, botones hexagonales y perfil compacto.
  */
-const p30Pro: Product = {
-  slug: 'p30-pro',
+const v12Earphone: Product = {
+  slug: 'v12-earphone',
   category: 'intercomunicadores',
-  name: 'P30 PRO',
-  isDemo: false,
-  tagline: 'Cada ruta se disfruta más cuando sigues conectado.',
+  name: 'V12 Motorcycle Earphone',
+  isDemo: true,
+  badge: 'Nuevo',
+  tagline: 'Tu música, tus llamadas. Tu casco.',
   summary:
-    'Intercomunicador para dos usuarios con Bluetooth 6.0 y certificación IP67. Compacto, resistente y con la autonomía que acompaña todo el día. Ideal para comunicarte con tu acompañante de forma clara y sencilla.',
+    'Audífono Bluetooth diseñado para integrarse al casco de motocicleta. Iluminación RGB, botones hexagonales intuitivos y sonido envolvente para disfrutar cada ruta con tu música o atender llamadas sin distracciones.',
   theme: { bg: '#0b0c10', surface: '#15171d', scheme: 'dark' },
   visual: intercomCutout,
   highlights: [
-    { title: spec('Diseño compacto'), body: spec('Perfil discreto que se integra al casco sin llamar la atención.'), focus: { x: 50, y: 50, zoom: 1 } },
-    { title: spec('Bluetooth 6.0'), body: spec('Última versión de Bluetooth para una conexión más estable y eficiente.'), focus: { x: 72, y: 50, zoom: 1.4 } },
-    { title: spec('Protección IP67'), body: spec('Resistente al polvo y al agua para cualquier condición de ruta.'), focus: { x: 36, y: 38, zoom: 1.35 } },
+    { title: spec('Iluminación RGB'), body: spec('Anillo de luz personalizable que destaca en la ruta.'), focus: { x: 65, y: 45, zoom: 1.4 } },
+    { title: spec('Botones hexagonales'), body: spec('Controles intuitivos: volumen, micrófono y multimedia.'), focus: { x: 40, y: 55, zoom: 1.5 } },
+    { title: spec('Perfil compacto'), body: spec('Diseño angular que se integra al casco sin protuberancias.'), focus: { x: 50, y: 50, zoom: 1 } },
   ],
   details: [
-    { caption: spec('Vista general del intercomunicador'), visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.55 } },
-    { caption: spec('Controles principales'), visual: intercomCutout, focus: { x: 38, y: 72, zoom: 1.6 } },
-    { caption: spec('Instalado en el casco'), visual: intercomHelmet, focus: { x: 60, y: 52, zoom: 1.35 } },
+    { caption: spec('Vista general del V12'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.3 } },
+    { caption: spec('Anillo RGB y logo M'), visual: intercomCutout, focus: { x: 68, y: 42, zoom: 1.7 } },
+    { caption: spec('Botones + / mic / -'), visual: intercomCutout, focus: { x: 38, y: 58, zoom: 1.6 } },
   ],
   benefits: [
-    { title: spec('Conexión moderna'), body: spec('Bluetooth 6.0 para mayor estabilidad y menor consumo de batería.') },
-    { title: spec('Resistente al agua'), body: spec('IP67: sumergible hasta 1 m durante 30 min. Lluvia sin preocupaciones.') },
-    { title: spec('25 horas de batería'), body: spec('Autonomía declarada de 25 h para trayectos largos sin recargar.') },
+    { title: spec('Audio inmersivo'), body: spec('Drivers de 40 mm con graves profundos para música y navegación.') },
+    { title: spec('Controles con guantes'), body: spec('Botones hexagonales grandes que puedes operar sin quitarte los guantes.') },
+    { title: spec('Diseño llamativo'), body: spec('Iluminación RGB que te distingue en el grupo y aumenta tu visibilidad.') },
   ],
   specs: intercomSpecs({
-    bluetooth: spec('Bluetooth 6.0'),
-    alcance: spec('Hasta 700 m'),
-    participantes: spec('2 usuarios'),
-    autonomiaIntercom: spec('Hasta 25 h'),
-    autonomiaMusica: specPending('No disponible — verificar con fabricante'),
-    carga: specPending('No disponible — verificar con fabricante'),
-    resistencia: spec('IP67'),
+    bluetooth: spec('Bluetooth 5.3'),
+    alcance: spec('Hasta 10 m (audio desde el teléfono)'),
+    participantes: spec('1 usuario (audífono individual)'),
+    autonomiaIntercom: spec('No aplica — es audífono, no intercomunicador'),
+    autonomiaMusica: spec('Hasta 12 h'),
+    carga: spec('USB-C, ~1.5 h'),
+    resistencia: spec('IP55'),
     peso: specPending('No disponible — verificar con manual'),
     montaje: spec('Clip / abrazadera al casco'),
-    reduccionRuido: spec('Sí'),
+    reduccionRuido: spec('Sí (pasiva)'),
   }),
   gallery: [
     { visual: intercomCutout, caption: 'Vista general' },
-    { visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.5 }, caption: 'Control principal' },
-    { visual: intercomCutout, focus: { x: 34, y: 32, zoom: 1.45 }, caption: 'Perfil superior' },
+    { visual: intercomCutout, focus: { x: 68, y: 42, zoom: 1.7 }, caption: 'Anillo RGB' },
+    { visual: intercomCutout, focus: { x: 38, y: 58, zoom: 1.6 }, caption: 'Botones hexagonales' },
     { visual: intercomHelmet, caption: 'Montado en el casco' },
   ],
   faqs: [
-    { question: '¿Cuántos participantes puede conectar el P30 PRO?', answer: spec('2 usuarios en comunicación simultánea.') },
-    { question: '¿Es compatible con mi casco?', answer: spec('El montaje tipo clip/abrazadera se adapta a la mayoría de cascos. Consúltanos para confirmar.') },
+    { question: '¿El V12 permite comunicarme con otro motociclista?', answer: spec('No. El V12 es un audífono Bluetooth individual para escuchar música y atender llamadas desde tu teléfono. No tiene función de intercomunicador.') },
+    { question: '¿Puedo usarlo para GPS y música al mismo tiempo?', answer: spec('Sí. El audio de la navegación se mezcla con la música automáticamente.') },
+    { question: '¿Es resistente a la lluvia?', answer: spec('Sí, certificación IP55: protegido contra polvo y chorros de agua.') },
     { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
     { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
   ],
-  commerce: commercePEN('S/ 85.00'),
+  commerce: commercePEN('S/ 75.00'),
 }
 
 /**
@@ -653,7 +654,7 @@ const carplay625FreedConn: Product = {
 /* ---------- exportar catálogo ---------- */
 
 export const products: Product[] = [
-  p30Pro,
+  v12Earphone,
   ejeasQ8,
   freedConnHero,
   ejeasV6ProPlus,
