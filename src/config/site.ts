@@ -12,7 +12,7 @@ export const site = {
 
   /** Contacto comercial. */
   contact: {
-    whatsappNumber: '51981367735' as string | null,
+    whatsappNumber: '51974470782' as string | null,
     whatsappDefaultMessage: 'Hola, vengo de SMART RIDE y quiero información sobre sus productos.',
     whatsappProductMessage: 'Hola, vengo de SMART RIDE y quisiera consultar por {producto}. ¿Está disponible?',
     email: null as string | null,
