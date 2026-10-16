@@ -83,7 +83,7 @@ export function Hero() {
       </div>
 
       <div className="hero__content container">
-        <p className="eyebrow hero__eyebrow">Intercomunicadores · Pantallas CarPlay</p>
+        <p className="eyebrow hero__eyebrow">SMART RIDE · Intercomunicadores · Pantallas CarPlay</p>
         <h1 id="hero-title" className="hero__title t-hero">
           <span className="line-mask">
             <span>La ruta,</span>

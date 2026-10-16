@@ -121,6 +121,10 @@ export function ProductCard({ product, align }: Props) {
             Explorar
             <Icon name="arrow" />
           </Link>
+          <Link to={href} beforeNavigate={exit} className="btn btn--ghost btn--sm" aria-label={`Consultar ${product.name} por WhatsApp`}>
+            <Icon name="whatsapp" />
+            Consultar
+          </Link>
         </div>
       </div>
     </article>

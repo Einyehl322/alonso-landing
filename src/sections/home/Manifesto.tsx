@@ -3,7 +3,7 @@ import { gsap, MQ, useGSAP } from '../../motion/gsap'
 import './home.css'
 
 const TEXT =
-  'Hablar con tu grupo. Ver tu ruta. Escuchar tu música. Todo mientras el camino sigue frente a ti, sin distracciones.'
+  'Conectados a cada aventura. Hablar con tu grupo. Ver tu ruta. Escuchar tu música. Todo mientras el camino sigue frente a ti, sin distracciones.'
 
 /**
  * Manifiesto: las palabras se "encienden" una a una al ritmo del scroll,

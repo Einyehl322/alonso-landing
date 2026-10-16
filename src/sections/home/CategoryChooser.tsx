@@ -62,7 +62,7 @@ export function CategoryChooser() {
                 <p className="eyebrow">{c.eyebrow}</p>
                 <h3 className="t-h3">{c.name}</h3>
                 <p className="chooser__count t-muted">
-                  {getProducts(c.id).length} modelos · demostrativos
+                  {getProducts(c.id).length} modelos
                 </p>
               </div>
               <ProductVisual

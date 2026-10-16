@@ -9,7 +9,7 @@ const STEPS = [
   },
   {
     title: 'Consulta',
-    body: 'Escríbenos para confirmar precio, disponibilidad y compatibilidad antes de decidir.',
+    body: 'Escríbenos por WhatsApp para confirmar precio, disponibilidad y compatibilidad antes de decidir.',
   },
   {
     title: 'Coordina',

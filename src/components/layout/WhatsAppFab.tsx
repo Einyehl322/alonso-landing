@@ -19,7 +19,7 @@ export function WhatsAppFab({ product }: { product?: Product }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const href = whatsappHref(product ? productWhatsappMessage(product.name) : undefined)
+  const href = whatsappHref(product ? productWhatsappMessage(product.name, product.commerce.price) : undefined)
   const label = product ? `Consultar ${product.name}` : 'Consultar'
   const className = `wa-fab ${visible ? 'is-visible' : ''}`
   const content = (

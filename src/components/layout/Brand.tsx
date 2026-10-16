@@ -1,7 +1,7 @@
 import { site } from '../../config/site'
 import { Link } from '../../router/Link'
 
-/** PROVISIONAL — marca temporal hasta recibir el logotipo oficial. */
+/** Marca tipográfica de SMART RIDE — reemplazar por logotipo oficial cuando esté disponible. */
 export function BrandMark({ className = '' }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true" fill="none">

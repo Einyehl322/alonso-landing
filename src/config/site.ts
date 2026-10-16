@@ -1,25 +1,20 @@
 /**
  * Configuración central de la marca.
  *
- * TODO(contenido): todo lo marcado como PROVISIONAL debe reemplazarse con los
- * datos reales antes de publicar. Los valores `null` se muestran en la web como
- * "Pendiente" para que sean fáciles de detectar.
+ * Marca: SMART RIDE — Tecnología para motociclistas en Perú.
  */
 export const site = {
-  /** PROVISIONAL — nombre de marca temporal. */
   brand: {
-    name: 'AXIA',
-    descriptor: 'Tecnología para motociclistas',
-    /** Texto legal del pie de página. */
-    legalName: 'AXIA (nombre provisional)',
+    name: 'SMART RIDE',
+    descriptor: 'Conectados a cada aventura',
+    legalName: 'SMART RIDE',
   },
 
-  /** Contacto comercial. `null` = pendiente de configurar. */
+  /** Contacto comercial. */
   contact: {
-    /** Número en formato internacional sin "+" ni espacios, p. ej. "51987654321". */
     whatsappNumber: '51981367735' as string | null,
-    whatsappDefaultMessage: 'Hola, quiero información sobre sus productos.',
-    whatsappProductMessage: 'Hola, quiero información sobre el modelo {producto}.',
+    whatsappDefaultMessage: 'Hola, vengo de SMART RIDE y quiero información sobre sus productos.',
+    whatsappProductMessage: 'Hola, vengo de SMART RIDE y quisiera consultar por {producto}. ¿Está disponible?',
     email: null as string | null,
     phone: null as string | null,
     address: null as string | null,
@@ -30,16 +25,15 @@ export const site = {
 
   seo: {
     siteUrl: '',
-    defaultTitle: 'AXIA — Intercomunicadores y pantallas CarPlay para motocicleta',
+    defaultTitle: 'SMART RIDE — Intercomunicadores y pantallas CarPlay para motocicleta',
     defaultDescription:
-      'Intercomunicadores y pantallas CarPlay para motocicleta. Explora la tecnología pensada para viajar conectado.',
-    /** Mientras el contenido sea demostrativo conviene no indexar. */
+      'Intercomunicadores Bluetooth y pantallas CarPlay para motocicleta. Tecnología para disfrutar cada ruta en Perú.',
     indexable: false,
   },
 
   /**
    * Mientras sea `true`, la web muestra avisos de "contenido demostrativo".
-   * Ponerlo en `false` cuando el catálogo contenga solo modelos reales.
+   * Ponerlo en `false` cuando el catálogo contenga solo modelos reales con fotografías oficiales.
    */
   demoMode: true,
 } as const
@@ -50,6 +44,8 @@ export function whatsappHref(message: string = site.contact.whatsappDefaultMessa
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`
 }
 
-export function productWhatsappMessage(productName: string) {
-  return site.contact.whatsappProductMessage.replace('{producto}', productName)
+export function productWhatsappMessage(productName: string, price?: string | null) {
+  const base = site.contact.whatsappProductMessage.replace('{producto}', productName)
+  if (price) return `${base} Lo veo a ${price}. ¿Está disponible?`
+  return base
 }

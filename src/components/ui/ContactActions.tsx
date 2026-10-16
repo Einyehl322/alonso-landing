@@ -17,7 +17,7 @@ interface Props {
  * de abrir un enlace roto. Nunca simula una compra.
  */
 export function ContactActions({ product, size = 'md', withBuy, className = '' }: Props) {
-  const message = product ? productWhatsappMessage(product.name) : site.contact.whatsappDefaultMessage
+  const message = product ? productWhatsappMessage(product.name, product.commerce.price) : site.contact.whatsappDefaultMessage
   const href = whatsappHref(message)
   const sm = size === 'sm' ? 'btn--sm' : ''
   const label = product ? 'Consultar este modelo' : 'Consultar por WhatsApp'
