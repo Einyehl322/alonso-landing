@@ -91,6 +91,7 @@ export function ProductCard({ product, align }: Props) {
       <div className="pcard__copy">
         <div className="pcard__meta" data-card-text>
           <span className="eyebrow">{category.name}</span>
+          {product.badge ? <span className="badge">{product.badge}</span> : null}
           {product.isDemo ? <DemoBadge /> : null}
         </div>
         <div className="pcard__rule" aria-hidden="true" />

@@ -83,6 +83,8 @@ export interface Product {
   name: string
   /** Marca el producto como demostrativo (no disponible para la venta). */
   isDemo: boolean
+  /** Etiqueta opcional: "Nuevo", "Popular", etc. */
+  badge?: string
   tagline: string
   summary: string
   theme: {

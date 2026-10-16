@@ -346,6 +346,22 @@ body::after {
   background: #e0a84a;
 }
 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.3em 0.7em;
+  border-radius: 999px;
+  background: var(--c-accent-glow);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  white-space: nowrap;
+}
+
 .pending {
   display: inline-flex;
   align-items: center;
