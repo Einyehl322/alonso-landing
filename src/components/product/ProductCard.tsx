@@ -1,4 +1,5 @@
 import { useRef, type MouseEvent, type PointerEvent } from 'react'
+import { InterestToggleButton } from '../interest/InterestToggleButton'
 import { getCategory, productPath } from '../../data/catalog'
 import type { Product } from '../../data/types'
 import { gsap, MQ, useGSAP } from '../../motion/gsap'
@@ -126,6 +127,7 @@ export function ProductCard({ product, align }: Props) {
             <Icon name="whatsapp" />
             Consultar
           </Link>
+          <InterestToggleButton slug={product.slug} className="pcard__reveal" />
         </div>
       </div>
     </article>

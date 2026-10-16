@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { InterestListPanel } from './components/interest/InterestListPanel'
+import { InterestListProvider } from './components/interest/InterestListContext'
+import { InterestListFab } from './components/interest/InterestListFab'
 import { Footer } from './components/layout/Footer'
 import { Header } from './components/layout/Header'
 import { WhatsAppFab } from './components/layout/WhatsAppFab'
@@ -15,6 +18,7 @@ function Shell() {
   const route = matchRoute(pathname)
   const product = route.name === 'product' ? route.product : undefined
   const headerScheme = product?.theme.scheme ?? (route.name === 'category' && route.category.id === 'carplay' ? 'light' : 'dark')
+  const [ilistOpen, setIlistOpen] = useState(false)
 
   // Anuncia el cambio de página a lectores de pantalla.
   const [announcement, setAnnouncement] = useState('')
@@ -37,6 +41,8 @@ function Shell() {
       </main>
       <Footer product={product} />
       <WhatsAppFab product={product} />
+      <InterestListFab onClick={() => setIlistOpen(true)} />
+      <InterestListPanel open={ilistOpen} onClose={() => setIlistOpen(false)} />
       <p className="sr-only" aria-live="polite">
         {announcement}
       </p>
@@ -47,7 +53,9 @@ function Shell() {
 export default function App() {
   return (
     <RouterProvider>
-      <Shell />
+      <InterestListProvider>
+        <Shell />
+      </InterestListProvider>
     </RouterProvider>
   )
 }

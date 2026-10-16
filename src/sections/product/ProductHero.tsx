@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { InterestToggleButton } from '../../components/interest/InterestToggleButton'
 import { ContactActions } from '../../components/ui/ContactActions'
 import { Icon } from '../../components/ui/Icon'
 import { DemoBadge, Maybe } from '../../components/ui/Placeholders'
@@ -106,6 +107,7 @@ export function ProductHero({ product }: { product: Product }) {
 
         <div className="phero__actions">
           <ContactActions product={product} withBuy />
+          <InterestToggleButton slug={product.slug} />
           <View360Button product={product} />
           <Link to="#resumen" className="btn btn--ghost">
             Ver características
