@@ -6,7 +6,7 @@ import { SpinImage } from './SpinImage'
 import './visuals.css'
 
 interface Props {
-  visual: Visual
+  visual: Visual | null
   /** Encuadre estático inicial. Las coreografías pueden animar `cameraRef`. */
   focus?: Focus
   /** Carga prioritaria (imágenes por encima del pliegue). */
@@ -23,9 +23,21 @@ interface Props {
 
 /**
  * Muestra un visual de producto, sea fotografía o render.
+ * Si `visual` es null, muestra un placeholder indicando que la foto está pendiente.
  * Estructura: .pv (marco) > .pv__camera (encuadre animable) > img | svg
  */
 export function ProductVisual({ visual, focus, priority, sizes, className = '', style, cameraRef, transition, spin }: Props) {
+  if (!visual) {
+    return (
+      <div className={`pv pv--placeholder ${className}`} style={style}>
+        <div className="pv__camera" ref={cameraRef} style={focus ? { transform: focusToCss(focus) } : undefined}>
+          <div className="pv__placeholder">
+            <span>Fotografía pendiente</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
   const fit = visual.kind === 'image' ? visual.fit : 'contain'
   const frameStyle: CSSProperties = {
     ...style,

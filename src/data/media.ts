@@ -1,9 +1,6 @@
 /**
  * Recursos fotográficos.
  *
- * Las imágenes de referencia originales medían ~1000 px; las versiones grandes se
- * reescalaron x4 con IA (Real-ESRGAN) para que se vean nítidas a pantalla completa.
- *
  * TODO(contenido): sustituir por fotografías oficiales en alta resolución y
  * confirmar los derechos de uso de cada una.
  */
@@ -15,9 +12,7 @@ import ruta1280 from '../assets/media/ruta-1280.webp'
 import ruta1920 from '../assets/media/ruta-1920.webp'
 import ruta2560 from '../assets/media/ruta-2560.webp'
 import ruta3840 from '../assets/media/ruta-3840.webp'
-import cutout800 from '../assets/media/intercom-cutout-800.webp'
-import cutout1200 from '../assets/media/intercom-cutout-1200.webp'
-import cutout1800 from '../assets/media/intercom-cutout-1800.webp'
+import v12Hero from '../assets/media/v12-pro-hero.png'
 
 export const media = {
   /** Intercomunicador montado en casco, fondo oscuro (hasta 4K). */
@@ -34,11 +29,10 @@ export const media = {
     width: 3840,
     height: 3840,
   },
-  /** Intercomunicador recortado sobre fondo transparente. */
-  intercomCutout: {
-    src: cutout1200,
-    srcSet: `${cutout800} 800w, ${cutout1200} 1200w, ${cutout1800} 1800w`,
-    width: 1800,
-    height: 1697,
+  /** V12 Pro: Audífono con iluminación RGB. */
+  v12Hero: {
+    src: v12Hero,
+    width: 1920, /* Estimated width */
+    height: 1080, /* Estimated height */
   },
 } as const

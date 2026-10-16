@@ -52,6 +52,7 @@ export function ProductStage({
       ref={stageRef}
       className={`stage stage--${variant} ${isCover ? 'stage--cover' : 'stage--object'} ${className}`}
       data-scheme={theme.scheme}
+      data-product-slug={slug}
       data-card-stage
       style={style}
     >

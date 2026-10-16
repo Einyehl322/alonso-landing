@@ -15,13 +15,6 @@ import { spec, specPending, specDiscrepancy } from './types'
 
 /* ---------- visuales compartidos ---------- */
 
-const intercomCutout: Visual = {
-  kind: 'image',
-  ...media.intercomCutout,
-  fit: 'contain',
-  alt: 'Intercomunicador para casco de motocicleta, vista en tres cuartos',
-}
-
 const intercomHelmet: Visual = {
   kind: 'image',
   ...media.casco,
@@ -42,6 +35,13 @@ const displaySand: Visual = {
   render: 'display',
   tone: 'sand',
   alt: 'Pantalla CarPlay para motocicleta en acabado claro',
+}
+
+const v12Visual: Visual = {
+  kind: 'image',
+  ...media.v12Hero,
+  fit: 'contain',
+  alt: 'V12 Pro Wireless Earphone con iluminación RGB, vista en tres cuartos',
 }
 
 /* ---------- categorías ---------- */
@@ -71,7 +71,7 @@ export const categories: Category[] = [
         focus: { x: 40, y: 42, zoom: 1.18 },
       },
     ],
-    visual: intercomCutout,
+    visual: v12Visual,
   },
   {
     id: 'carplay',
@@ -210,23 +210,23 @@ function commercePEN(price: string) {
 const v12Earphone: Product = {
   slug: 'v12-earphone',
   category: 'intercomunicadores',
-  name: 'V12 Motorcycle Earphone',
-  isDemo: true,
+  name: 'V12 Pro Motorcycle Earphone',
+  isDemo: false,
   badge: 'Nuevo',
   tagline: 'Tu música, tus llamadas. Tu casco.',
   summary:
     'Audífono Bluetooth diseñado para integrarse al casco de motocicleta. Iluminación RGB, botones hexagonales intuitivos y sonido envolvente para disfrutar cada ruta con tu música o atender llamadas sin distracciones.',
   theme: { bg: '#0b0c10', surface: '#15171d', scheme: 'dark' },
-  visual: intercomCutout,
+  visual: v12Visual,
   highlights: [
     { title: spec('Iluminación RGB'), body: spec('Anillo de luz personalizable que destaca en la ruta.'), focus: { x: 65, y: 45, zoom: 1.4 } },
     { title: spec('Botones hexagonales'), body: spec('Controles intuitivos: volumen, micrófono y multimedia.'), focus: { x: 40, y: 55, zoom: 1.5 } },
     { title: spec('Perfil compacto'), body: spec('Diseño angular que se integra al casco sin protuberancias.'), focus: { x: 50, y: 50, zoom: 1 } },
   ],
   details: [
-    { caption: spec('Vista general del V12'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.3 } },
-    { caption: spec('Anillo RGB y logo M'), visual: intercomCutout, focus: { x: 68, y: 42, zoom: 1.7 } },
-    { caption: spec('Botones + / mic / -'), visual: intercomCutout, focus: { x: 38, y: 58, zoom: 1.6 } },
+    { caption: spec('Vista general del V12'), visual: v12Visual, focus: { x: 50, y: 50, zoom: 1.1 } },
+    { caption: spec('Anillo RGB y logo M'), visual: v12Visual, focus: { x: 68, y: 42, zoom: 1.7 } },
+    { caption: spec('Botones + / mic / -'), visual: v12Visual, focus: { x: 38, y: 58, zoom: 1.6 } },
   ],
   benefits: [
     { title: spec('Audio inmersivo'), body: spec('Drivers de 40 mm con graves profundos para música y navegación.') },
@@ -246,9 +246,9 @@ const v12Earphone: Product = {
     reduccionRuido: spec('Sí (pasiva)'),
   }),
   gallery: [
-    { visual: intercomCutout, caption: 'Vista general' },
-    { visual: intercomCutout, focus: { x: 68, y: 42, zoom: 1.7 }, caption: 'Anillo RGB' },
-    { visual: intercomCutout, focus: { x: 38, y: 58, zoom: 1.6 }, caption: 'Botones hexagonales' },
+    { visual: v12Visual, caption: 'Vista general' },
+    { visual: v12Visual, focus: { x: 68, y: 42, zoom: 1.7 }, caption: 'Anillo RGB' },
+    { visual: v12Visual, focus: { x: 38, y: 58, zoom: 1.6 }, caption: 'Botones hexagonales' },
     { visual: intercomHelmet, caption: 'Montado en el casco' },
   ],
   faqs: [
@@ -336,15 +336,15 @@ const freedConnHero: Product = {
   summary:
     'El FreedConn Hero ofrece el mayor alcance declarado de la línea (hasta 1500 m) y hasta 6 usuarios conectados. Con reducción de ruido avanzada y compartición de música, está pensado para los viajes largos.',
   theme: { bg: '#0c0d10', surface: '#161820', scheme: 'dark' },
-  visual: intercomCutout,
+  visual: intercomHelmet,
   highlights: [
     { title: spec('Hasta 1500 m'), body: spec('El mayor alcance declarado de la línea para grupos dispersos.'), focus: { x: 50, y: 50, zoom: 1 } },
     { title: spec('Hasta 6 usuarios'), body: spec('Conecta con todo el grupo sin perder comunicación.'), focus: { x: 68, y: 45, zoom: 1.3 } },
     { title: spec('Reducción avanzada'), body: spec('Cancelación de ruido para voz clara incluso a alta velocidad.'), focus: { x: 40, y: 58, zoom: 1.4 } },
   ],
   details: [
-    { caption: spec('Vista general del FreedConn Hero'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
-    { caption: spec('Puerto de carga'), visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 } },
+    { caption: spec('Vista general del FreedConn Hero'), visual: intercomHelmet, focus: { x: 50, y: 50, zoom: 1.4 } },
+    { caption: spec('Puerto de carga'), visual: intercomHelmet, focus: { x: 70, y: 68, zoom: 1.7 } },
     { caption: spec('Instalado en casco'), visual: intercomHelmet, focus: { x: 55, y: 48, zoom: 1.3 } },
   ],
   benefits: [
@@ -365,9 +365,9 @@ const freedConnHero: Product = {
     reduccionRuido: spec('Sí (avanzada)'),
   }),
   gallery: [
-    { visual: intercomCutout, caption: 'Vista general' },
-    { visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 }, caption: 'Puerto de carga' },
-    { visual: intercomCutout, focus: { x: 34, y: 40, zoom: 1.5 }, caption: 'Controles' },
+    { visual: intercomHelmet, caption: 'Vista general' },
+    { visual: intercomHelmet, focus: { x: 70, y: 68, zoom: 1.7 }, caption: 'Puerto de carga' },
+    { visual: intercomHelmet, focus: { x: 34, y: 40, zoom: 1.5 }, caption: 'Controles' },
     { visual: intercomHelmet, caption: 'Montado en el casco' },
   ],
   faqs: [
@@ -396,15 +396,15 @@ const ejeasV6ProPlus: Product = {
   summary:
     'El EJEAS V6 Pro Plus ofrece hasta 6 usuarios vinculados con reducción de ruido DSP. Opción equilibrada entre funciones completas y precio accesible. Nota: existen discrepancias entre nuestro catálogo y las specs públicas del fabricante para este modelo.',
   theme: { bg: '#0a0b0f', surface: '#141620', scheme: 'dark' },
-  visual: intercomCutout,
+  visual: intercomHelmet,
   highlights: [
     { title: spec('Hasta 6 vinculados'), body: spec('Conecta varios cascos; conversación simultánea entre 2 usuarios.'), focus: { x: 50, y: 50, zoom: 1 } },
     { title: spec('Reducción DSP'), body: spec('Cancelación de ruido digital para llamadas más claras.'), focus: { x: 62, y: 48, zoom: 1.35 } },
     { title: spec('Precio accesible'), body: spec('Funciones completas a un precio competitivo.'), focus: { x: 40, y: 42, zoom: 1.3 } },
   ],
   details: [
-    { caption: spec('Vista general'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
-    { caption: spec('Detalle de controles'), visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 } },
+    { caption: spec('Vista general'), visual: intercomHelmet, focus: { x: 50, y: 50, zoom: 1.4 } },
+    { caption: spec('Detalle de controles'), visual: intercomHelmet, focus: { x: 68, y: 55, zoom: 1.6 } },
     { caption: spec('Instalado en casco'), visual: intercomHelmet, focus: { x: 55, y: 50, zoom: 1.3 } },
   ],
   benefits: [
@@ -425,8 +425,8 @@ const ejeasV6ProPlus: Product = {
     reduccionRuido: spec('Sí (DSP)'),
   }),
   gallery: [
-    { visual: intercomCutout, caption: 'Vista general' },
-    { visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 }, caption: 'Controles' },
+    { visual: intercomHelmet, caption: 'Vista general' },
+    { visual: intercomHelmet, focus: { x: 68, y: 55, zoom: 1.6 }, caption: 'Controles' },
     { visual: intercomHelmet, caption: 'Montado en el casco' },
   ],
   faqs: [
