@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { site } from '../../config/site'
 import { getCategory, products } from '../../data/catalog'
+import { specDisplay } from '../ui/Placeholders'
 import type { Product } from '../../data/types'
 import { gsap, prefersReducedMotion } from '../../motion/gsap'
 import { Link } from '../../router/Link'
@@ -12,7 +13,7 @@ import './interest-list.css'
 function buildInterestMessage(items: Product[]): string {
   const lines = items.map((p) => {
     const cat = getCategory(p.category).name
-    const price = p.commerce.price ? ` — ${p.commerce.price}` : ''
+    const price = specDisplay(p.commerce.price) ? ` — ${specDisplay(p.commerce.price)}` : ''
     return `• ${cat} ${p.name}${price}`
   })
   return [
@@ -74,7 +75,7 @@ export function InterestListPanel({ open, onClose }: { open: boolean; onClose: (
                   <Link to={`/${getCategory(p.category).slug}/${p.slug}`} className="ilist__item-info" onClick={onClose}>
                     <span className="eyebrow">{getCategory(p.category).name}</span>
                     <strong>{p.name}</strong>
-                    {p.commerce.price ? <span>{p.commerce.price}</span> : null}
+                    {specDisplay(p.commerce.price) ? <span>{specDisplay(p.commerce.price)}</span> : null}
                   </Link>
                   <button className="ilist__remove" onClick={() => remove(p.slug)} aria-label={`Quitar ${p.name} de la lista`}>
                     <Icon name="close" />

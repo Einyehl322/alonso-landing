@@ -2,13 +2,16 @@
  * Catálogo SMART RIDE.
  *
  * Modelos reales de intercomunicadores y pantallas CarPlay para motocicleta.
- * Los precios y especificaciones marcados como `null` están pendientes de
- * confirmación oficial y se muestran como "Pendiente" en la web.
+ * Los valores usan las funciones `spec()`, `specPending()` y `specDiscrepancy()`
+ * para registrar el estado de verificación de cada dato.
  *
- * Para actualizar precios, busca `commerce.price` en el modelo correspondiente.
+ * Precios en soles peruanos (S/).
+ *
+ * Para actualizar un precio, busca `commerce.price` en el modelo correspondiente.
  */
 import { media } from './media'
-import type { Category, CategoryId, Product, SpecGroup, Visual } from './types'
+import type { Category, CategoryId, Product, SpecCell, SpecGroup, Visual } from './types'
+import { spec, specPending, specDiscrepancy } from './types'
 
 /* ---------- visuales compartidos ---------- */
 
@@ -98,17 +101,19 @@ export const categories: Category[] = [
   },
 ]
 
-/* ---------- helpers de especificaciones ---------- */
+/* ---------- helpers de especificaciones: intercomunicadores ---------- */
 
 function intercomSpecs(opts: {
-  bluetooth: string | null
-  alcance: string | null
-  participantes: string | null
-  autonomia: string | null
-  carga: string | null
-  resistencia: string | null
-  peso: string | null
-  montaje: string | null
+  bluetooth: SpecCell
+  alcance: SpecCell
+  participantes: SpecCell
+  autonomiaIntercom: SpecCell
+  autonomiaMusica: SpecCell
+  carga: SpecCell
+  resistencia: SpecCell
+  peso: SpecCell
+  montaje: SpecCell
+  reduccionRuido: SpecCell
 }): SpecGroup[] {
   return [
     {
@@ -117,12 +122,14 @@ function intercomSpecs(opts: {
         { label: 'Bluetooth', value: opts.bluetooth },
         { label: 'Alcance', value: opts.alcance },
         { label: 'Participantes', value: opts.participantes },
+        { label: 'Reducción de ruido', value: opts.reduccionRuido },
       ],
     },
     {
       group: 'Batería',
       items: [
-        { label: 'Autonomía', value: opts.autonomia },
+        { label: 'Autonomía (intercom)', value: opts.autonomiaIntercom },
+        { label: 'Autonomía (música)', value: opts.autonomiaMusica },
         { label: 'Tiempo de carga', value: opts.carga },
       ],
     },
@@ -137,16 +144,18 @@ function intercomSpecs(opts: {
   ]
 }
 
+/* ---------- helpers de especificaciones: CarPlay ---------- */
+
 function displaySpecs(opts: {
-  tamano: string | null
-  resolucion: string | null
-  carplay: string | null
-  androidAuto: string | null
-  camaras: string | null
-  tpms: string | null
-  alimentacion: string | null
-  resistencia: string | null
-  montaje: string | null
+  tamano: SpecCell
+  resolucion: SpecCell
+  carplay: SpecCell
+  androidAuto: SpecCell
+  camaras: SpecCell
+  tpms: SpecCell
+  alimentacion: SpecCell
+  resistencia: SpecCell
+  montaje: SpecCell
 }): SpecGroup[] {
   return [
     {
@@ -181,414 +190,477 @@ function displaySpecs(opts: {
   ]
 }
 
-const noCommerce = { price: null, promotion: null, availability: null, buyUrl: null }
+/** Commerce sin precio ni disponibilidad definidos. */
+const noCommerce = { price: null, promotion: null, availability: null, buyUrl: null } as const
 
-/* ---------- productos: intercomunicadores ---------- */
+/** Commerce con precio en soles. */
+function commercePEN(price: string) {
+  return { price: spec(price), promotion: null, availability: null, buyUrl: null } as const
+}
+
+/* ===================================================================
+   INTERCOMUNICADORES — 4 modelos con datos del catálogo SMART RIDE
+   =================================================================== */
+
+/**
+ * P30 PRO — S/ 85.00
+ * Fuente: catálogo SMART RIDE.
+ * Nota: modelo económico, 2 usuarios, Bluetooth 6.0.
+ */
+const p30Pro: Product = {
+  slug: 'p30-pro',
+  category: 'intercomunicadores',
+  name: 'P30 PRO',
+  isDemo: false,
+  tagline: 'Cada ruta se disfruta más cuando sigues conectado.',
+  summary:
+    'Intercomunicador para dos usuarios con Bluetooth 6.0 y certificación IP67. Compacto, resistente y con la autonomía que acompaña todo el día. Ideal para comunicarte con tu acompañante de forma clara y sencilla.',
+  theme: { bg: '#0b0c10', surface: '#15171d', scheme: 'dark' },
+  visual: intercomCutout,
+  highlights: [
+    { title: spec('Diseño compacto'), body: spec('Perfil discreto que se integra al casco sin llamar la atención.'), focus: { x: 50, y: 50, zoom: 1 } },
+    { title: spec('Bluetooth 6.0'), body: spec('Última versión de Bluetooth para una conexión más estable y eficiente.'), focus: { x: 72, y: 50, zoom: 1.4 } },
+    { title: spec('Protección IP67'), body: spec('Resistente al polvo y al agua para cualquier condición de ruta.'), focus: { x: 36, y: 38, zoom: 1.35 } },
+  ],
+  details: [
+    { caption: spec('Vista general del intercomunicador'), visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.55 } },
+    { caption: spec('Controles principales'), visual: intercomCutout, focus: { x: 38, y: 72, zoom: 1.6 } },
+    { caption: spec('Instalado en el casco'), visual: intercomHelmet, focus: { x: 60, y: 52, zoom: 1.35 } },
+  ],
+  benefits: [
+    { title: spec('Conexión moderna'), body: spec('Bluetooth 6.0 para mayor estabilidad y menor consumo de batería.') },
+    { title: spec('Resistente al agua'), body: spec('IP67: sumergible hasta 1 m durante 30 min. Lluvia sin preocupaciones.') },
+    { title: spec('25 horas de batería'), body: spec('Autonomía declarada de 25 h para trayectos largos sin recargar.') },
+  ],
+  specs: intercomSpecs({
+    bluetooth: spec('Bluetooth 6.0'),
+    alcance: spec('Hasta 700 m'),
+    participantes: spec('2 usuarios'),
+    autonomiaIntercom: spec('Hasta 25 h'),
+    autonomiaMusica: specPending('No disponible — verificar con fabricante'),
+    carga: specPending('No disponible — verificar con fabricante'),
+    resistencia: spec('IP67'),
+    peso: specPending('No disponible — verificar con manual'),
+    montaje: spec('Clip / abrazadera al casco'),
+    reduccionRuido: spec('Sí'),
+  }),
+  gallery: [
+    { visual: intercomCutout, caption: 'Vista general' },
+    { visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.5 }, caption: 'Control principal' },
+    { visual: intercomCutout, focus: { x: 34, y: 32, zoom: 1.45 }, caption: 'Perfil superior' },
+    { visual: intercomHelmet, caption: 'Montado en el casco' },
+  ],
+  faqs: [
+    { question: '¿Cuántos participantes puede conectar el P30 PRO?', answer: spec('2 usuarios en comunicación simultánea.') },
+    { question: '¿Es compatible con mi casco?', answer: spec('El montaje tipo clip/abrazadera se adapta a la mayoría de cascos. Consúltanos para confirmar.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: commercePEN('S/ 85.00'),
+}
+
+/**
+ * EJEAS Q8 — S/ 299.90
+ * Fuente: catálogo SMART RIDE.
+ * Nota: Mesh + Bluetooth, hasta 6 usuarios, 1000 m.
+ * Autonomías diferenciadas por modo (Mesh / BT / música).
+ */
+const ejeasQ8: Product = {
+  slug: 'ejeas-q8',
+  category: 'intercomunicadores',
+  name: 'EJEAS Q8',
+  isDemo: false,
+  badge: 'Destacado',
+  tagline: 'Las mejores rutas también se comparten.',
+  summary:
+    'El EJEAS Q8 combina intercomunicación Mesh y Bluetooth para grupos de hasta 6 usuarios con un alcance de hasta 1000 m. Hasta 30 horas de autonomía y música compartida. El modelo más completo para quienes viajan en grupo.',
+  theme: { bg: '#090b10', surface: '#131824', scheme: 'dark' },
+  visual: intercomHelmet,
+  highlights: [
+    { title: spec('Intercom Mesh'), body: spec('Tecnología Mesh para grupos estables sin desconexiones.'), focus: { x: 55, y: 50, zoom: 1 } },
+    { title: spec('Hasta 1000 m'), body: spec('Alcance declarado de 1 km para mantener la comunicación en ruta abierta.'), focus: { x: 60, y: 51, zoom: 1.45 } },
+    { title: spec('30 horas'), body: spec('Autonomía declarada de hasta 30 h según el modo de uso.'), focus: { x: 42, y: 54, zoom: 1.5 } },
+  ],
+  details: [
+    { caption: spec('Vista lateral'), visual: intercomHelmet, focus: { x: 60, y: 51, zoom: 1.6 } },
+    { caption: spec('Botonera'), visual: intercomHelmet, focus: { x: 42, y: 54, zoom: 1.65 } },
+    { caption: spec('Detalle de montaje'), visual: intercomHelmet, focus: { x: 48, y: 62, zoom: 1.75 } },
+  ],
+  benefits: [
+    { title: spec('Mesh + Bluetooth'), body: spec('Conexión Mesh para grupos y Bluetooth individual. Lo mejor de ambas tecnologías.') },
+    { title: spec('Música compartida'), body: spec('Comparte música con tu acompañante mientras hablan.') },
+    { title: spec('Hasta 30 h'), body: spec('Autonomía declarada de hasta 30 h (varía según el modo).') },
+  ],
+  specs: intercomSpecs({
+    bluetooth: spec('Bluetooth 5.1 + Mesh'),
+    alcance: spec('Hasta 1000 m'),
+    participantes: spec('Hasta 6 usuarios (Mesh)'),
+    autonomiaIntercom: spec('9 h Mesh / 17 h BT'),
+    autonomiaMusica: spec('Hasta 29 h'),
+    carga: spec('2 h'),
+    resistencia: spec('IP67'),
+    peso: specPending('No disponible — verificar con manual'),
+    montaje: spec('Clip / abrazadera al casco'),
+    reduccionRuido: spec('Sí'),
+  }),
+  gallery: [
+    { visual: intercomHelmet, caption: 'Vista general' },
+    { visual: intercomHelmet, focus: { x: 60, y: 51, zoom: 1.5 }, caption: 'Control principal' },
+    { visual: intercomHelmet, focus: { x: 42, y: 55, zoom: 1.55 }, caption: 'Botonera' },
+  ],
+  faqs: [
+    { question: '¿Cuántos usuarios puede conectar el EJEAS Q8?', answer: spec('Hasta 6 usuarios en red Mesh.') },
+    { question: '¿Cuánto dura la batería en modo Mesh?', answer: spec('Hasta 9 horas en intercomunicación Mesh, 17 h en Bluetooth y 29 h en música.') },
+    { question: '¿Es compatible con mi casco?', answer: spec('Compatible con la mayoría de cascos mediante clip. Escríbenos para confirmar.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: commercePEN('S/ 299.90'),
+}
+
+/**
+ * FreedConn Hero — S/ 290.90
+ * Fuente: catálogo SMART RIDE.
+ * Nota: hasta 1500 m, 6 usuarios, hasta 35 h, IP67, reducción de ruido avanzada.
+ * Discrepancia: catálogo dice 35 h; datos externos indican 30 h conversación / 26 h música.
+ */
+const freedConnHero: Product = {
+  slug: 'freedconn-hero',
+  category: 'intercomunicadores',
+  name: 'FreedConn Hero',
+  isDemo: false,
+  tagline: 'Kilómetros de camino. Conversaciones que continúan.',
+  summary:
+    'El FreedConn Hero ofrece el mayor alcance declarado de la línea (hasta 1500 m) y hasta 6 usuarios conectados. Con reducción de ruido avanzada y compartición de música, está pensado para los viajes largos.',
+  theme: { bg: '#0c0d10', surface: '#161820', scheme: 'dark' },
+  visual: intercomCutout,
+  highlights: [
+    { title: spec('Hasta 1500 m'), body: spec('El mayor alcance declarado de la línea para grupos dispersos.'), focus: { x: 50, y: 50, zoom: 1 } },
+    { title: spec('Hasta 6 usuarios'), body: spec('Conecta con todo el grupo sin perder comunicación.'), focus: { x: 68, y: 45, zoom: 1.3 } },
+    { title: spec('Reducción avanzada'), body: spec('Cancelación de ruido para voz clara incluso a alta velocidad.'), focus: { x: 40, y: 58, zoom: 1.4 } },
+  ],
+  details: [
+    { caption: spec('Vista general del FreedConn Hero'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
+    { caption: spec('Puerto de carga'), visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 } },
+    { caption: spec('Instalado en casco'), visual: intercomHelmet, focus: { x: 55, y: 48, zoom: 1.3 } },
+  ],
+  benefits: [
+    { title: spec('Máximo alcance'), body: spec('Hasta 1500 m declarados: el intercomunicador con mayor rango de la línea.') },
+    { title: spec('Hasta 35 h'), body: spec('Autonomía declarada de hasta 35 h (catálogo). Verificar por modalidad.') },
+    { title: spec('Todo clima'), body: spec('IP67 y reducción de ruido avanzada para lluvia y viento.') },
+  ],
+  specs: intercomSpecs({
+    bluetooth: spec('Bluetooth 5.1'),
+    alcance: spec('Hasta 1500 m'),
+    participantes: spec('Hasta 6 usuarios'),
+    autonomiaIntercom: specDiscrepancy('Hasta 35 h', 'Catálogo: 35 h. Fuente externa: 30 h conversación. Verificar con producto físico.'),
+    autonomiaMusica: spec('Hasta 26 h'),
+    carga: spec('2 h'),
+    resistencia: spec('IP67'),
+    peso: spec('48 g'),
+    montaje: spec('Clip / abrazadera al casco'),
+    reduccionRuido: spec('Sí (avanzada)'),
+  }),
+  gallery: [
+    { visual: intercomCutout, caption: 'Vista general' },
+    { visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 }, caption: 'Puerto de carga' },
+    { visual: intercomCutout, focus: { x: 34, y: 40, zoom: 1.5 }, caption: 'Controles' },
+    { visual: intercomHelmet, caption: 'Montado en el casco' },
+  ],
+  faqs: [
+    { question: '¿Cuál es la autonomía real del FreedConn Hero?', answer: spec('Catálogo: hasta 35 h. Fuentes externas: 30 h conversación, 26 h música. Consultar para confirmar.') },
+    { question: '¿Cuántos participantes puede conectar?', answer: spec('Hasta 6 usuarios.') },
+    { question: '¿Es compatible con mi casco?', answer: spec('Compatible con la mayoría de cascos mediante clip. Consúltanos si tienes dudas.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: commercePEN('S/ 290.90'),
+}
+
+/**
+ * EJEAS V6 Pro Plus — S/ 125.00
+ * Fuente: catálogo SMART RIDE dice BT 5.3, 1200 m, 40 h, IP65.
+ * Discrepancia con specs públicas del fabricante: BT 5.1, 800 m, 18 h intercom, IP67.
+ * Se muestra el dato del catálogo con nota de discrepancia interna.
+ */
+const ejeasV6ProPlus: Product = {
+  slug: 'ejeas-v6-pro-plus',
+  category: 'intercomunicadores',
+  name: 'EJEAS V6 Pro Plus',
+  isDemo: false,
+  tagline: 'Todo lo que necesitas para comunicarte en la ruta.',
+  summary:
+    'El EJEAS V6 Pro Plus ofrece hasta 6 usuarios vinculados con reducción de ruido DSP. Opción equilibrada entre funciones completas y precio accesible. Nota: existen discrepancias entre nuestro catálogo y las specs públicas del fabricante para este modelo.',
+  theme: { bg: '#0a0b0f', surface: '#141620', scheme: 'dark' },
+  visual: intercomCutout,
+  highlights: [
+    { title: spec('Hasta 6 vinculados'), body: spec('Conecta varios cascos; conversación simultánea entre 2 usuarios.'), focus: { x: 50, y: 50, zoom: 1 } },
+    { title: spec('Reducción DSP'), body: spec('Cancelación de ruido digital para llamadas más claras.'), focus: { x: 62, y: 48, zoom: 1.35 } },
+    { title: spec('Precio accesible'), body: spec('Funciones completas a un precio competitivo.'), focus: { x: 40, y: 42, zoom: 1.3 } },
+  ],
+  details: [
+    { caption: spec('Vista general'), visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
+    { caption: spec('Detalle de controles'), visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 } },
+    { caption: spec('Instalado en casco'), visual: intercomHelmet, focus: { x: 55, y: 50, zoom: 1.3 } },
+  ],
+  benefits: [
+    { title: spec('Completo y accesible'), body: spec('Funciones esenciales a un precio competitivo.') },
+    { title: spec('DSP integrado'), body: spec('Reducción de ruido digital para llamadas y comunicación.') },
+    { title: spec('Versátil'), body: spec('Hasta 6 vinculados, música y llamadas.') },
+  ],
+  specs: intercomSpecs({
+    bluetooth: specDiscrepancy('Bluetooth 5.3', 'Catálogo: BT 5.3. Fabricante: BT 5.1. Verificar versión exacta del modelo vendido.'),
+    alcance: specDiscrepancy('Hasta 1200 m', 'Catálogo: 1200 m. Fabricante: 800 m. Verificar con producto físico.'),
+    participantes: spec('Hasta 6 vinculados (2 en conversación simultánea)'),
+    autonomiaIntercom: specDiscrepancy('Hasta 40 h', 'Catálogo: 40 h. Fabricante: 18 h intercom, 25 h música. Verificar.'),
+    autonomiaMusica: specPending('Verificar — fabricante reporta 25 h música para V6 Pro+'),
+    carga: specPending('Verificar con producto físico'),
+    resistencia: specDiscrepancy('IP65', 'Catálogo: IP65. Fabricante: IP67. Verificar versión exacta.'),
+    peso: specPending('No disponible — verificar con manual'),
+    montaje: spec('Clip / abrazadera al casco'),
+    reduccionRuido: spec('Sí (DSP)'),
+  }),
+  gallery: [
+    { visual: intercomCutout, caption: 'Vista general' },
+    { visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 }, caption: 'Controles' },
+    { visual: intercomHelmet, caption: 'Montado en el casco' },
+  ],
+  faqs: [
+    { question: '¿Cuántos participantes puede conectar el V6 Pro Plus?', answer: spec('Hasta 6 dispositivos vinculados, con conversación simultánea entre 2 usuarios.') },
+    { question: '¿Las especificaciones coinciden con el fabricante?', answer: spec('Existen diferencias entre nuestro catálogo y las specs públicas del fabricante. Consúltanos para confirmar la versión exacta.') },
+    { question: '¿Es compatible con mi casco?', answer: spec('Compatible con la mayoría de cascos. Escríbenos si necesitas confirmar.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: commercePEN('S/ 125.00'),
+}
+
+/* ===================================================================
+   CARPLAY — 4 modelos con renders ilustrativos
+   =================================================================== */
+
+/** CarPlay 6.25" Full */
+const carplay625Full: Product = {
+  slug: 'carplay-625-full',
+  category: 'carplay',
+  name: 'CarPlay 6.25" Full',
+  isDemo: true,
+  tagline: 'Tu navegación y conectividad, en una pantalla para tu moto.',
+  summary:
+    'Pantalla compacta con Apple CarPlay y Android Auto para llevar la navegación al manillar sin ocupar demasiado espacio. Ideal para motos de cualquier cilindrada.',
+  theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
+  visual: displayGraphite,
+  highlights: [
+    { title: spec('Tamaño compacto'), body: spec('Cabe en cualquier manillar sin estorbar.'), focus: { x: 50, y: 45, zoom: 1 } },
+    { title: spec('CarPlay y Android Auto'), body: spec('Tu teléfono, proyectado en la pantalla de la moto.'), focus: { x: 56, y: 40, zoom: 1.7 } },
+    { title: spec('Instalación sencilla'), body: spec('Se fija al manillar y se conecta para funcionar.'), focus: { x: 50, y: 86, zoom: 1.9 } },
+  ],
+  details: [
+    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
+    { caption: spec('Lateral'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
+    { caption: spec('Soporte de montaje'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
+  ],
+  benefits: [
+    { title: spec('Navegación a la vista'), body: spec('Mapas claros en una pantalla dedicada, sin sacar el teléfono.') },
+    { title: spec('Compatible con tu teléfono'), body: spec('Apple CarPlay y Android Auto incluidos.') },
+    { title: spec('Compacta y práctica'), body: spec('6.25 pulgadas que caben en cualquier manillar.') },
+  ],
+  specs: displaySpecs({
+    tamano: spec('6.25"'),
+    resolucion: specPending('No disponible — verificar con fabricante'),
+    carplay: spec('Sí'),
+    androidAuto: spec('Sí'),
+    camaras: specPending('No disponible — verificar modelo'),
+    tpms: specPending('No disponible — verificar modelo'),
+    alimentacion: spec('Cable a batería 12V'),
+    resistencia: specPending('No disponible — verificar con fabricante'),
+    montaje: spec('Abrazadera al manillar'),
+  }),
+  gallery: [
+    { visual: displayGraphite, caption: 'Vista general' },
+    { visual: displayGraphite, focus: { x: 58, y: 38, zoom: 1.9 }, caption: 'Pantalla' },
+    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
+  ],
+  faqs: [
+    { question: '¿Es compatible con mi teléfono?', answer: spec('Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas sobre tu modelo.') },
+    { question: '¿Cómo se instala?', answer: spec('Se fija al manillar con una abrazadera incluida y se conecta a la batería de la moto.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: noCommerce,
+}
+
+/** CarPlay 8.1" HD */
+const carplay81HD: Product = {
+  slug: 'carplay-81-hd',
+  category: 'carplay',
+  name: 'CarPlay 8.1" HD',
+  isDemo: true,
+  tagline: 'Más espacio para ver lo que importa en tu ruta.',
+  summary:
+    'Pantalla grande de 8.1 pulgadas para quienes prefieren ver el mapa con más detalle. CarPlay y Android Auto en un formato que no te deja con dudas en la ruta.',
+  theme: { bg: '#0b0c10', surface: '#161820', scheme: 'dark' },
+  visual: displayGraphite,
+  highlights: [
+    { title: spec('Pantalla grande'), body: spec('8.1 pulgadas para ver el mapa con comodidad.'), focus: { x: 50, y: 45, zoom: 1 } },
+    { title: spec('Alta definición'), body: spec('Detalles claros incluso bajo el sol.'), focus: { x: 56, y: 40, zoom: 1.7 } },
+    { title: spec('Con todo'), body: spec('CarPlay, Android Auto y funciones adicionales.'), focus: { x: 50, y: 86, zoom: 1.9 } },
+  ],
+  details: [
+    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
+    { caption: spec('Detalle de conexiones'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
+    { caption: spec('Soporte'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
+  ],
+  benefits: [
+    { title: spec('Más pantalla, más claridad'), body: spec('8.1 pulgadas para ver el mapa, las indicaciones y las apps con comodidad.') },
+    { title: spec('Visible al sol'), body: spec('Panel HD con brillo suficiente para condiciones de luz directa.') },
+    { title: spec('Completa'), body: spec('CarPlay y Android Auto con espacio para funciones adicionales.') },
+  ],
+  specs: displaySpecs({
+    tamano: spec('8.1" HD'),
+    resolucion: specPending('No disponible — verificar con fabricante'),
+    carplay: spec('Sí'),
+    androidAuto: spec('Sí'),
+    camaras: specPending('No disponible — verificar modelo'),
+    tpms: specPending('No disponible — verificar modelo'),
+    alimentacion: spec('Cable a batería 12V'),
+    resistencia: specPending('No disponible — verificar con fabricante'),
+    montaje: spec('Abrazadera al manillar'),
+  }),
+  gallery: [
+    { visual: displayGraphite, caption: 'Vista general' },
+    { visual: displayGraphite, focus: { x: 50, y: 50, zoom: 1.8 }, caption: 'Pantalla' },
+    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
+  ],
+  faqs: [
+    { question: '¿Es compatible con mi teléfono?', answer: spec('Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas.') },
+    { question: '¿Cabe en mi manillar?', answer: spec('8.1 pulgadas requiere un manillar con espacio suficiente. Escríbenos con el modelo de tu moto y te confirmamos.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: noCommerce,
+}
+
+/** CarPlay 7" Base magnética */
+const carplay7Magnetica: Product = {
+  slug: 'carplay-7-magnetica',
+  category: 'carplay',
+  name: 'CarPlay 7" Base magnética',
+  isDemo: true,
+  tagline: 'Se pone y se quita en un segundo.',
+  summary:
+    'Pantalla de 7 pulgadas con base magnética para quienes quieren llevarla y traerla sin herramientas. Ideal si compartes la moto o prefieres no dejarla puesta.',
+  theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
+  visual: displayGraphite,
+  highlights: [
+    { title: spec('Base magnética'), body: spec('Se monta y retira sin herramientas, en un segundo.'), focus: { x: 50, y: 45, zoom: 1 } },
+    { title: spec('7 pulgadas'), body: spec('Tamaño intermedio: más que la compacta, menos que la grande.'), focus: { x: 56, y: 40, zoom: 1.7 } },
+    { title: spec('CarPlay y Android Auto'), body: spec('Compatible con los teléfonos más usados.'), focus: { x: 50, y: 86, zoom: 1.9 } },
+  ],
+  details: [
+    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
+    { caption: spec('Base magnética'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
+    { caption: spec('Lateral'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
+  ],
+  benefits: [
+    { title: spec('Montaje magnético'), body: spec('La base queda fija en la moto y la pantalla se pone y quita fácilmente.') },
+    { title: spec('Tamaño versátil'), body: spec('7 pulgadas para ver bien sin ocupar demasiado espacio.') },
+    { title: spec('Llévala contigo'), body: spec('Si no quieres dejarla en la moto, simplemente retírala.') },
+  ],
+  specs: displaySpecs({
+    tamano: spec('7"'),
+    resolucion: specPending('No disponible — verificar con fabricante'),
+    carplay: spec('Sí'),
+    androidAuto: spec('Sí'),
+    camaras: specPending('No disponible — verificar modelo'),
+    tpms: specPending('No disponible — verificar modelo'),
+    alimentacion: spec('Cable a batería 12V'),
+    resistencia: specPending('No disponible — verificar con fabricante'),
+    montaje: spec('Base magnética'),
+  }),
+  gallery: [
+    { visual: displayGraphite, caption: 'Vista general' },
+    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 }, caption: 'Base magnética' },
+    { visual: displayGraphite, focus: { x: 56, y: 40, zoom: 1.8 }, caption: 'Pantalla' },
+  ],
+  faqs: [
+    { question: '¿La base magnética es segura en ruta?', answer: specPending('Verificar con pruebas reales.') },
+    { question: '¿Es compatible con mi teléfono?', answer: spec('Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo con nosotros.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: noCommerce,
+}
+
+/** CarPlay 6.25" FreedConn */
+const carplay625FreedConn: Product = {
+  slug: 'carplay-625-freedconn',
+  category: 'carplay',
+  name: 'CarPlay 6.25" FreedConn',
+  isDemo: true,
+  tagline: 'La compacta de FreedConn para tu moto.',
+  summary:
+    'FreedConn ofrece esta pantalla de 6.25" con CarPlay y Android Auto para quienes buscan una solución compacta y confiable de una marca conocida en intercomunicadores.',
+  theme: { bg: '#0b0c10', surface: '#151720', scheme: 'dark' },
+  visual: displaySand,
+  highlights: [
+    { title: spec('Marca reconocida'), body: spec('FreedConn, conocida por intercomunicadores, también en pantallas.'), focus: { x: 50, y: 45, zoom: 1 } },
+    { title: spec('6.25 pulgadas'), body: spec('Compacta pero suficiente para navegación y música.'), focus: { x: 56, y: 40, zoom: 1.7 } },
+    { title: spec('CarPlay y Android Auto'), body: spec('Compatible con los dos ecosistemas principales.'), focus: { x: 50, y: 86, zoom: 1.9 } },
+  ],
+  details: [
+    { caption: spec('Vista frontal'), visual: displaySand, focus: { x: 58, y: 38, zoom: 2 } },
+    { caption: spec('Accesos'), visual: displaySand, focus: { x: 22, y: 40, zoom: 2.2 } },
+    { caption: spec('Soporte'), visual: displaySand, focus: { x: 50, y: 88, zoom: 2.4 } },
+  ],
+  benefits: [
+    { title: spec('Marca de confianza'), body: spec('FreedConn es referente en comunicación para motociclistas.') },
+    { title: spec('Compacta'), body: spec('6.25" cabe donde otras pantallas no entran.') },
+    { title: spec('Dual'), body: spec('CarPlay y Android Auto en la misma pantalla.') },
+  ],
+  specs: displaySpecs({
+    tamano: spec('6.25"'),
+    resolucion: specPending('No disponible — verificar con fabricante'),
+    carplay: spec('Sí'),
+    androidAuto: spec('Sí'),
+    camaras: specPending('No disponible — verificar modelo'),
+    tpms: specPending('No disponible — verificar modelo'),
+    alimentacion: spec('Cable a batería 12V'),
+    resistencia: specPending('No disponible — verificar con fabricante'),
+    montaje: spec('Abrazadera al manillar'),
+  }),
+  gallery: [
+    { visual: displaySand, caption: 'Vista general' },
+    { visual: displaySand, focus: { x: 22, y: 40, zoom: 2 }, caption: 'Accesos' },
+    { visual: displaySand, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
+  ],
+  faqs: [
+    { question: '¿Es compatible con mi teléfono?', answer: spec('Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo.') },
+    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
+    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
+    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
+  ],
+  commerce: noCommerce,
+}
+
+/* ---------- exportar catálogo ---------- */
 
 export const products: Product[] = [
-  /* ===== INTERCOMUNICADORES ===== */
-
-  {
-    slug: 'p30-pro',
-    category: 'intercomunicadores',
-    name: 'P30 PRO',
-    isDemo: true,
-    tagline: 'Cada ruta se disfruta más cuando sigues conectado.',
-    summary:
-      'Intercomunicador grupal para quienes viajan en grupo y necesitan mantenerse en contacto con todos. Perfil compacto, controles intuitivos y la autonomía que acompaña todo el día.',
-    theme: { bg: '#0b0c10', surface: '#15171d', scheme: 'dark' },
-    visual: intercomCutout,
-    highlights: [
-      { title: 'Diseño compacto', body: 'Perfil discreto que se integra al casco sin llamar la atención.', focus: { x: 50, y: 50, zoom: 1 } },
-      { title: 'Controles accesibles', body: 'Botones que puedes manejar con guantes, sin buscarlos.', focus: { x: 72, y: 50, zoom: 1.4 } },
-      { title: 'Comunicación grupal', body: 'Conecta con varios motociclistas al mismo tiempo.', focus: { x: 36, y: 38, zoom: 1.35 } },
-    ],
-    details: [
-      { caption: 'Vista general del intercomunicador', visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.55 } },
-      { caption: 'Controles principales', visual: intercomCutout, focus: { x: 38, y: 72, zoom: 1.6 } },
-      { caption: 'Instalado en el casco', visual: intercomHelmet, focus: { x: 60, y: 52, zoom: 1.35 } },
-    ],
-    benefits: [
-      { title: 'Grupo conectado', body: 'Varios motociclistas en la misma conversación, sin perder la señal en ruta.' },
-      { title: 'Todo el día', body: 'Batería diseñada para trayectos largos sin necesidad de recargar.' },
-      { title: 'Fácil instalación', body: 'Se fija al casco con el montaje incluido y está listo en minutos.' },
-    ],
-    specs: intercomSpecs({
-      bluetooth: 'Bluetooth 5.0',
-      alcance: null,
-      participantes: 'Grupal',
-      autonomia: null,
-      carga: null,
-      resistencia: null,
-      peso: null,
-      montaje: 'Abrazadera al casco',
-    }),
-    gallery: [
-      { visual: intercomCutout, caption: 'Vista general' },
-      { visual: intercomCutout, focus: { x: 74, y: 50, zoom: 1.5 }, caption: 'Control principal' },
-      { visual: intercomCutout, focus: { x: 34, y: 32, zoom: 1.45 }, caption: 'Perfil superior' },
-      { visual: intercomHelmet, caption: 'Montado en el casco' },
-    ],
-    faqs: [
-      { question: '¿Cuántos participantes puede conectar el P30 PRO?', answer: null },
-      { question: '¿Es compatible con mi casco?', answer: 'El montaje tipo abrazadera se adapta a la mayoría de cascos. Consúltanos para confirmar.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'ejeas-q8',
-    category: 'intercomunicadores',
-    name: 'EJEAS Q8',
-    isDemo: true,
-    tagline: 'Las mejores rutas también se comparten.',
-    summary:
-      'El EJEAS Q8 ofrece comunicación clara entre motociclistas con un diseño pensado para el día a día. Ideal para parejas de viaje y grupos reducidos.',
-    theme: { bg: '#090b10', surface: '#131824', scheme: 'dark' },
-    visual: intercomHelmet,
-    highlights: [
-      { title: 'Comunicación clara', body: 'Voz nítida incluso a velocidad de carretera.', focus: { x: 55, y: 50, zoom: 1 } },
-      { title: 'Controles directos', body: 'Todo lo necesario sin complicaciones.', focus: { x: 60, y: 51, zoom: 1.45 } },
-      { title: 'Diseño resistente', body: 'Preparado para las condiciones del camino.', focus: { x: 42, y: 54, zoom: 1.5 } },
-    ],
-    details: [
-      { caption: 'Vista lateral', visual: intercomHelmet, focus: { x: 60, y: 51, zoom: 1.6 } },
-      { caption: 'Botonera', visual: intercomHelmet, focus: { x: 42, y: 54, zoom: 1.65 } },
-      { caption: 'Detalle de montaje', visual: intercomHelmet, focus: { x: 48, y: 62, zoom: 1.75 } },
-    ],
-    benefits: [
-      { title: 'Voz nítida', body: 'Cancelación de ruido para que tu voz llegue clara, con viento o sin él.' },
-      { title: 'Duo o grupo', body: 'Conecta con tu acompañante o amplía a un pequeño grupo de viaje.' },
-      { title: 'Uso diario', body: 'Encendido rápido y controles que no requieren dejar de mirar la ruta.' },
-    ],
-    specs: intercomSpecs({
-      bluetooth: 'Bluetooth 5.0',
-      alcance: null,
-      participantes: '2–3 usuarios',
-      autonomia: null,
-      carga: null,
-      resistencia: null,
-      peso: null,
-      montaje: 'Abrazadera al casco',
-    }),
-    gallery: [
-      { visual: intercomHelmet, caption: 'Vista general' },
-      { visual: intercomHelmet, focus: { x: 60, y: 51, zoom: 1.5 }, caption: 'Control principal' },
-      { visual: intercomHelmet, focus: { x: 42, y: 55, zoom: 1.55 }, caption: 'Botonera' },
-    ],
-    faqs: [
-      { question: '¿Cuántos usuarios puede conectar el EJEAS Q8?', answer: null },
-      { question: '¿Es compatible con mi casco?', answer: 'Compatible con la mayoría de cascos mediante abrazadera. Escríbenos para confirmar.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'freedconn-hero',
-    category: 'intercomunicadores',
-    name: 'FreedConn Hero',
-    isDemo: true,
-    tagline: 'Kilómetros de camino. Conversaciones que continúan.',
-    summary:
-      'El FreedConn Hero está diseñado para los que recorren largas distancias y necesitan un intercomunicador que no los deje a mitad de ruta. Autonomía, alcance y resistencia pensados para el viaje largo.',
-    theme: { bg: '#0c0d10', surface: '#161820', scheme: 'dark' },
-    visual: intercomCutout,
-    highlights: [
-      { title: 'Larga autonomía', body: 'Diseñado para trayectos que duran más que una carga convencional.', focus: { x: 50, y: 50, zoom: 1 } },
-      { title: 'Mayor alcance', body: 'Más distancia entre motociclistas sin perder comunicación.', focus: { x: 68, y: 45, zoom: 1.3 } },
-      { title: 'Resistente al agua', body: 'Preparado para la lluvia sin dejar de funcionar.', focus: { x: 40, y: 58, zoom: 1.4 } },
-    ],
-    details: [
-      { caption: 'Vista general del FreedConn Hero', visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
-      { caption: 'Puerto de carga', visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 } },
-      { caption: 'Instalado en casco', visual: intercomHelmet, focus: { x: 55, y: 48, zoom: 1.3 } },
-    ],
-    benefits: [
-      { title: 'Rutas largas', body: 'Autonomía extendida para que la batería no sea un límite.' },
-      { title: 'Más alcance', body: 'Comunicación estable a mayor distancia entre miembros del grupo.' },
-      { title: 'Todo clima', body: 'Resistente al agua para que la lluvia no interrumpa tu viaje.' },
-    ],
-    specs: intercomSpecs({
-      bluetooth: 'Bluetooth 5.0',
-      alcance: null,
-      participantes: 'Grupal',
-      autonomia: null,
-      carga: null,
-      resistencia: 'IPX6',
-      peso: null,
-      montaje: 'Abrazadera al casco',
-    }),
-    gallery: [
-      { visual: intercomCutout, caption: 'Vista general' },
-      { visual: intercomCutout, focus: { x: 70, y: 68, zoom: 1.7 }, caption: 'Puerto de carga' },
-      { visual: intercomCutout, focus: { x: 34, y: 40, zoom: 1.5 }, caption: 'Controles' },
-      { visual: intercomHelmet, caption: 'Montado en el casco' },
-    ],
-    faqs: [
-      { question: '¿Cuál es la autonomía real del FreedConn Hero?', answer: null },
-      { question: '¿Cuántos participantes puede conectar?', answer: null },
-      { question: '¿Es compatible con mi casco?', answer: 'Compatible con la mayoría de cascos mediante abrazadera. Consúltanos si tienes dudas.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'ejeas-v6-pro-plus',
-    category: 'intercomunicadores',
-    name: 'EJEAS V6 Pro Plus',
-    isDemo: true,
-    tagline: 'Todo lo que necesitas para comunicarte en la ruta.',
-    summary:
-      'El EJEAS V6 Pro Plus es una opción equilibrada para comunicación entre dos o tres motociclistas. Funciones completas en un paquete accesible.',
-    theme: { bg: '#0a0b0f', surface: '#141620', scheme: 'dark' },
-    visual: intercomCutout,
-    highlights: [
-      { title: 'Equilibrado', body: 'Funciones completas sin complicaciones innecesarias.', focus: { x: 50, y: 50, zoom: 1 } },
-      { title: 'Fácil de usar', body: 'Configuración sencilla y controles intuitivos.', focus: { x: 62, y: 48, zoom: 1.35 } },
-      { title: 'Buena relación calidad-precio', body: 'Intercomunicador completo a un precio accesible.', focus: { x: 40, y: 42, zoom: 1.3 } },
-    ],
-    details: [
-      { caption: 'Vista general', visual: intercomCutout, focus: { x: 50, y: 50, zoom: 1.4 } },
-      { caption: 'Detalle de controles', visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 } },
-      { caption: 'Instalado en casco', visual: intercomHelmet, focus: { x: 55, y: 50, zoom: 1.3 } },
-    ],
-    benefits: [
-      { title: 'Completo y accesible', body: 'Todo lo esencial para comunicarte en ruta sin pagar de más.' },
-      { title: 'Configuración simple', body: 'Emparejar y listo. Sin menús complicados.' },
-      { title: 'Versátil', body: 'Funciona para duo o grupo pequeño, música y llamadas.' },
-    ],
-    specs: intercomSpecs({
-      bluetooth: 'Bluetooth 5.0',
-      alcance: null,
-      participantes: '2–6 usuarios',
-      autonomia: null,
-      carga: null,
-      resistencia: null,
-      peso: null,
-      montaje: 'Abrazadera al casco',
-    }),
-    gallery: [
-      { visual: intercomCutout, caption: 'Vista general' },
-      { visual: intercomCutout, focus: { x: 68, y: 55, zoom: 1.6 }, caption: 'Controles' },
-      { visual: intercomHelmet, caption: 'Montado en el casco' },
-    ],
-    faqs: [
-      { question: '¿Cuántos participantes puede conectar el V6 Pro Plus?', answer: null },
-      { question: '¿Es compatible con mi casco?', answer: 'Compatible con la mayoría de cascos. Escríbenos si necesitas confirmar.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-
-  /* ===== CARPLAY ===== */
-
-  {
-    slug: 'carplay-625-full',
-    category: 'carplay',
-    name: 'CarPlay 6.25" Full',
-    isDemo: true,
-    tagline: 'Tu navegación y conectividad, en una pantalla para tu moto.',
-    summary:
-      'Pantalla compacta con Apple CarPlay y Android Auto para llevar la navegación al manillar sin ocupar demasiado espacio. Ideal para motos de cualquier cilindrada.',
-    theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
-    visual: displayGraphite,
-    highlights: [
-      { title: 'Tamaño compacto', body: 'Cabe en cualquier manillar sin estorbar.', focus: { x: 50, y: 45, zoom: 1 } },
-      { title: 'CarPlay y Android Auto', body: 'Tu teléfono, proyectado en la pantalla de la moto.', focus: { x: 56, y: 40, zoom: 1.7 } },
-      { title: 'Instalación sencilla', body: 'Se fija al manillar y se conecta para funcionar.', focus: { x: 50, y: 86, zoom: 1.9 } },
-    ],
-    details: [
-      { caption: 'Vista frontal', visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-      { caption: 'Lateral', visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-      { caption: 'Soporte de montaje', visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-    ],
-    benefits: [
-      { title: 'Navegación a la vista', body: 'Mapas claros en una pantalla dedicada, sin sacar el teléfono.' },
-      { title: 'Compatible con tu teléfono', body: 'Apple CarPlay y Android Auto incluidos.' },
-      { title: 'Compacta y práctica', body: '6.25 pulgadas que caben en cualquier manillar.' },
-    ],
-    specs: displaySpecs({
-      tamano: '6.25"',
-      resolucion: null,
-      carplay: 'Sí',
-      androidAuto: 'Sí',
-      camaras: null,
-      tpms: null,
-      alimentacion: 'Cable a batería 12V',
-      resistencia: null,
-      montaje: 'Abrazadera al manillar',
-    }),
-    gallery: [
-      { visual: displayGraphite, caption: 'Vista general' },
-      { visual: displayGraphite, focus: { x: 58, y: 38, zoom: 1.9 }, caption: 'Pantalla' },
-      { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-    ],
-    faqs: [
-      { question: '¿Es compatible con mi teléfono?', answer: 'Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas sobre tu modelo.' },
-      { question: '¿Cómo se instala?', answer: 'Se fija al manillar con una abrazadera incluida y se conecta a la batería de la moto.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'carplay-81-hd',
-    category: 'carplay',
-    name: 'CarPlay 8.1" HD',
-    isDemo: true,
-    tagline: 'Más espacio para ver lo que importa en tu ruta.',
-    summary:
-      'Pantalla grande de 8.1 pulgadas para quienes prefieren ver el mapa con más detalle. CarPlay y Android Auto en un formato que no te deja con dudas en la ruta.',
-    theme: { bg: '#0b0c10', surface: '#161820', scheme: 'dark' },
-    visual: displayGraphite,
-    highlights: [
-      { title: 'Pantalla grande', body: '8.1 pulgadas para ver el mapa con comodidad.', focus: { x: 50, y: 45, zoom: 1 } },
-      { title: 'Alta definición', body: 'Detalles claros incluso bajo el sol.', focus: { x: 56, y: 40, zoom: 1.7 } },
-      { title: 'Con todo', body: 'CarPlay, Android Auto y funciones adicionales.', focus: { x: 50, y: 86, zoom: 1.9 } },
-    ],
-    details: [
-      { caption: 'Vista frontal', visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-      { caption: 'Detalle de conexiones', visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-      { caption: 'Soporte', visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-    ],
-    benefits: [
-      { title: 'Más pantalla, más claridad', body: '8.1 pulgadas para ver el mapa, las indicaciones y las apps con comodidad.' },
-      { title: 'Visible al sol', body: 'Panel HD con brillo suficiente para condiciones de luz directa.' },
-      { title: 'Completa', body: 'CarPlay y Android Auto con espacio para funciones adicionales.' },
-    ],
-    specs: displaySpecs({
-      tamano: '8.1" HD',
-      resolucion: null,
-      carplay: 'Sí',
-      androidAuto: 'Sí',
-      camaras: null,
-      tpms: null,
-      alimentacion: 'Cable a batería 12V',
-      resistencia: null,
-      montaje: 'Abrazadera al manillar',
-    }),
-    gallery: [
-      { visual: displayGraphite, caption: 'Vista general' },
-      { visual: displayGraphite, focus: { x: 50, y: 50, zoom: 1.8 }, caption: 'Pantalla' },
-      { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-    ],
-    faqs: [
-      { question: '¿Es compatible con mi teléfono?', answer: 'Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas.' },
-      { question: '¿Cabe en mi manillar?', answer: '8.1 pulgadas requiere un manillar con espacio suficiente. Escríbenos con el modelo de tu moto y te confirmamos.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'carplay-7-magnetica',
-    category: 'carplay',
-    name: 'CarPlay 7" Base magnética',
-    isDemo: true,
-    tagline: 'Se pone y se quita en un segundo.',
-    summary:
-      'Pantalla de 7 pulgadas con base magnética para quienes quieren llevarla y traerla sin herramientas. Ideal si compartes la moto o prefieres no dejarla puesta.',
-    theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
-    visual: displayGraphite,
-    highlights: [
-      { title: 'Base magnética', body: 'Se monta y retira sin herramientas, en un segundo.', focus: { x: 50, y: 45, zoom: 1 } },
-      { title: '7 pulgadas', body: 'Tamaño intermedio: más que la compacta, menos que la grande.', focus: { x: 56, y: 40, zoom: 1.7 } },
-      { title: 'CarPlay y Android Auto', body: 'Compatible con los teléfonos más usados.', focus: { x: 50, y: 86, zoom: 1.9 } },
-    ],
-    details: [
-      { caption: 'Vista frontal', visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-      { caption: 'Base magnética', visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-      { caption: 'Lateral', visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-    ],
-    benefits: [
-      { title: 'Montaje magnético', body: 'La base queda fija en la moto y la pantalla se pone y quita fácilmente.' },
-      { title: 'Tamaño versátil', body: '7 pulgadas para ver bien sin ocupar demasiado espacio.' },
-      { title: 'Llévala contigo', body: 'Si no quieres dejarla en la moto, simplemente retírala.' },
-    ],
-    specs: displaySpecs({
-      tamano: '7"',
-      resolucion: null,
-      carplay: 'Sí',
-      androidAuto: 'Sí',
-      camaras: null,
-      tpms: null,
-      alimentacion: 'Cable a batería 12V',
-      resistencia: null,
-      montaje: 'Base magnética',
-    }),
-    gallery: [
-      { visual: displayGraphite, caption: 'Vista general' },
-      { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 }, caption: 'Base magnética' },
-      { visual: displayGraphite, focus: { x: 56, y: 40, zoom: 1.8 }, caption: 'Pantalla' },
-    ],
-    faqs: [
-      { question: '¿La base magnética es segura en ruta?', answer: null },
-      { question: '¿Es compatible con mi teléfono?', answer: 'Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo con nosotros.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
-  {
-    slug: 'carplay-625-freedconn',
-    category: 'carplay',
-    name: 'CarPlay 6.25" FreedConn',
-    isDemo: true,
-    tagline: 'La compacta de FreedConn para tu moto.',
-    summary:
-      'FreedConn ofrece esta pantalla de 6.25" con CarPlay y Android Auto para quienes buscan una solución compacta y confiable de una marca conocida en intercomunicadores.',
-    theme: { bg: '#0b0c10', surface: '#151720', scheme: 'dark' },
-    visual: displaySand,
-    highlights: [
-      { title: 'Marca reconocida', body: 'FreedConn, conocida por intercomunicadores, también en pantallas.', focus: { x: 50, y: 45, zoom: 1 } },
-      { title: '6.25 pulgadas', body: 'Compacta pero suficiente para navegación y música.', focus: { x: 56, y: 40, zoom: 1.7 } },
-      { title: 'CarPlay y Android Auto', body: 'Compatible con los dos ecosistemas principales.', focus: { x: 50, y: 86, zoom: 1.9 } },
-    ],
-    details: [
-      { caption: 'Vista frontal', visual: displaySand, focus: { x: 58, y: 38, zoom: 2 } },
-      { caption: 'Accesos', visual: displaySand, focus: { x: 22, y: 40, zoom: 2.2 } },
-      { caption: 'Soporte', visual: displaySand, focus: { x: 50, y: 88, zoom: 2.4 } },
-    ],
-    benefits: [
-      { title: 'Marca de confianza', body: 'FreedConn es referente en comunicación para motociclistas.' },
-      { title: 'Compacta', body: '6.25" cabe donde otras pantallas no entran.' },
-      { title: 'Dual', body: 'CarPlay y Android Auto en la misma pantalla.' },
-    ],
-    specs: displaySpecs({
-      tamano: '6.25"',
-      resolucion: null,
-      carplay: 'Sí',
-      androidAuto: 'Sí',
-      camaras: null,
-      tpms: null,
-      alimentacion: 'Cable a batería 12V',
-      resistencia: null,
-      montaje: 'Abrazadera al manillar',
-    }),
-    gallery: [
-      { visual: displaySand, caption: 'Vista general' },
-      { visual: displaySand, focus: { x: 22, y: 40, zoom: 2 }, caption: 'Accesos' },
-      { visual: displaySand, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-    ],
-    faqs: [
-      { question: '¿Es compatible con mi teléfono?', answer: 'Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo.' },
-      { question: '¿Qué incluye la caja?', answer: null },
-      { question: '¿Qué garantía tiene?', answer: null },
-      { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: 'Escríbenos desde el botón de consulta de esta página y te responderemos con la información actualizada.' },
-    ],
-    commerce: noCommerce,
-  },
+  p30Pro,
+  ejeasQ8,
+  freedConnHero,
+  ejeasV6ProPlus,
+  carplay625Full,
+  carplay81HD,
+  carplay7Magnetica,
+  carplay625FreedConn,
 ]
 
 /* ---------- consultas ---------- */

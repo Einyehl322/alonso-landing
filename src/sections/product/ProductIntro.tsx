@@ -89,10 +89,10 @@ export function ProductIntro({ product }: { product: Product }) {
             {highlights.map((h, i) => (
               <div key={i} className="pintro__caption">
                 <h3 className="t-h3">
-                  <Maybe value={h.title} label={`Característica ${i + 1} · pendiente`} />
+                  <Maybe value={h.title} />
                 </h3>
                 <p className="t-muted">
-                  <Maybe value={h.body} label="Descripción verificada pendiente de la ficha oficial." />
+                  <Maybe value={h.body} />
                 </p>
               </div>
             ))}
@@ -108,10 +108,10 @@ export function ProductIntro({ product }: { product: Product }) {
               <ProductVisual visual={product.visual} focus={h.focus} sizes="92vw" />
             </div>
             <h3 className="t-h3">
-              <Maybe value={h.title} label={`Característica ${i + 1} · pendiente`} />
+              <Maybe value={h.title} />
             </h3>
             <p className="t-muted">
-              <Maybe value={h.body} label="Descripción verificada pendiente." />
+              <Maybe value={h.body} />
             </p>
           </div>
         ))}

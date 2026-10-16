@@ -5,7 +5,7 @@ import type { Product } from '../../data/types'
 import { gsap, MQ, useGSAP } from '../../motion/gsap'
 import { Link } from '../../router/Link'
 import { ContactActions } from '../ui/ContactActions'
-import { Maybe } from '../ui/Placeholders'
+import { Pending } from '../ui/Placeholders'
 import { BrandMark } from './Brand'
 
 const YEAR = new Date().getFullYear()
@@ -64,23 +64,19 @@ export function Footer({ product }: { product?: Product }) {
           <dl className="contact__data">
             <div>
               <dt>Correo</dt>
-              <dd>{contact.email ? <a href={`mailto:${contact.email}`}>{contact.email}</a> : <Maybe value={null} />}</dd>
+              <dd>{contact.email ? <a href={`mailto:${contact.email}`}>{contact.email}</a> : <Pending />}</dd>
             </div>
             <div>
               <dt>Teléfono</dt>
-              <dd>{contact.phone ? <a href={`tel:${contact.phone}`}>{contact.phone}</a> : <Maybe value={null} />}</dd>
+              <dd>{contact.phone ? <a href={`tel:${contact.phone}`}>{contact.phone}</a> : <Pending />}</dd>
             </div>
             <div>
               <dt>Dirección</dt>
-              <dd>
-                <Maybe value={contact.address} />
-              </dd>
+              <dd>{contact.address ? <span>{contact.address}</span> : <Pending />}</dd>
             </div>
             <div>
               <dt>Horario</dt>
-              <dd>
-                <Maybe value={contact.hours} />
-              </dd>
+              <dd>{contact.hours ? <span>{contact.hours}</span> : <Pending />}</dd>
             </div>
           </dl>
         </div>

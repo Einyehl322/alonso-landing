@@ -23,7 +23,7 @@ export function MobileBuyBar({ product }: { product: Product }) {
       <div className="buybar__info">
         <strong>{product.name}</strong>
         <span>
-          <Maybe value={product.commerce.price} label="Precio pendiente" />
+          <Maybe value={product.commerce.price} />
         </span>
       </div>
       <ContactActions product={product} size="sm" />

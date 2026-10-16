@@ -35,10 +35,10 @@ export function ProductBenefits({ product }: { product: Product }) {
             <li key={i} className="benefit">
               <span className="benefit__index">{String(i + 1).padStart(2, '0')}</span>
               <h3 className="benefit__title t-h3">
-                <Maybe value={b.title} label={`Beneficio ${i + 1} · pendiente`} />
+                <Maybe value={b.title} />
               </h3>
               <p className="benefit__body t-muted">
-                <Maybe value={b.body} label="Beneficio real, basado en la ficha oficial." />
+                <Maybe value={b.body} />
               </p>
             </li>
           ))}

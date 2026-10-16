@@ -54,7 +54,7 @@ export function ProductDetails({ product }: { product: Product }) {
                 <ProductVisual visual={d.visual} focus={d.focus} sizes="(min-width: 900px) 50vw, 92vw" />
               </div>
               <figcaption>
-                <Maybe value={d.caption} label="Pie de imagen pendiente" />
+                <Maybe value={d.caption} />
               </figcaption>
             </figure>
           ))}

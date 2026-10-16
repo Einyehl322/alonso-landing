@@ -7,7 +7,7 @@ import './product.css'
 /** Especificaciones técnicas. Los valores `null` se muestran como pendientes. */
 export function ProductSpecs({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null)
-  const missing = product.specs.some((g) => g.items.some((i) => i.value === null))
+  const missing = product.specs.some((g) => g.items.some((i) => i.value === null || i.value?.status === 'pending'))
 
   useGSAP(
     () => {

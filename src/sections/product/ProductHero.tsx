@@ -97,10 +97,10 @@ export function ProductHero({ product }: { product: Product }) {
               <Maybe value={product.commerce.availability} />
             </dd>
           </div>
-          {product.commerce.promotion ? (
+          {product.commerce.promotion && product.commerce.promotion.status !== 'pending' ? (
             <div>
               <dt>Promoción</dt>
-              <dd>{product.commerce.promotion}</dd>
+              <dd>{product.commerce.promotion.display}</dd>
             </div>
           ) : null}
         </dl>

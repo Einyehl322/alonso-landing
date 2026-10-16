@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { productWhatsappMessage, whatsappHref } from '../../config/site'
+import { specDisplay } from '../ui/Placeholders'
 import type { Product } from '../../data/types'
 import { Link } from '../../router/Link'
 import { Icon } from '../ui/Icon'
@@ -19,7 +20,8 @@ export function WhatsAppFab({ product }: { product?: Product }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const href = whatsappHref(product ? productWhatsappMessage(product.name, product.commerce.price) : undefined)
+  const price = product ? specDisplay(product.commerce.price) : null
+  const href = whatsappHref(product ? productWhatsappMessage(product.name, price) : undefined)
   const label = product ? `Consultar ${product.name}` : 'Consultar'
   const className = `wa-fab ${visible ? 'is-visible' : ''}`
   const content = (

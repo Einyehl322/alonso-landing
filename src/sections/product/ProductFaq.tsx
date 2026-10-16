@@ -23,7 +23,7 @@ export function ProductFaq({ product }: { product: Product }) {
               </summary>
               <div className="faq__answer">
                 <p>
-                  <Maybe value={f.answer} label="Respuesta pendiente de información oficial." />
+                  <Maybe value={f.answer} />
                 </p>
               </div>
             </details>

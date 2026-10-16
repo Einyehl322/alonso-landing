@@ -47,12 +47,36 @@ export interface Category {
   visual: Visual
 }
 
-/** `null` significa "pendiente de información oficial" y se muestra como tal. */
-export type Pending<T = string> = T | null
+/**
+ * Estado de verificación de un dato comercial.
+ * - 'confirmed': verificado por catálogo oficial o manual.
+ * - 'pending': pendiente de validación; se muestra como "Consultar".
+ * - 'discrepancy': existen fuentes contradictorias; se muestra la del catálogo
+ *   con nota interna para revisión.
+ */
+export type SpecStatus = 'confirmed' | 'pending' | 'discrepancy'
+
+/**
+ * Un valor de especificación con metadatos de procedencia.
+ * `display` es el texto que se muestra al usuario.
+ * `status` controla cómo se presenta (valor directo / "Consultar").
+ * `note` es interno: no se muestra en la web, sirve para tracking de validación.
+ */
+export interface SpecValue {
+  /** Texto visible en la tabla / ficha. */
+  display: string
+  /** Estado de verificación. */
+  status: SpecStatus
+  /** Observación interna (fuente, discrepancia, etc.). */
+  note?: string
+}
+
+/** `null` significa "sin información; ocultar fila si todos son null". */
+export type SpecCell = SpecValue | null
 
 export interface SpecGroup {
   group: string
-  items: { label: string; value: Pending }[]
+  items: { label: string; value: SpecCell }[]
 }
 
 /**
@@ -81,7 +105,10 @@ export interface Product {
   slug: string
   category: CategoryId
   name: string
-  /** Marca el producto como demostrativo (no disponible para la venta). */
+  /**
+   * Marca el producto como demostrativo (no disponible para la venta).
+   * Cuando los datos reales están cargados, poner `false`.
+   */
   isDemo: boolean
   /** Etiqueta opcional: "Nuevo", "Popular", etc. */
   badge?: string
@@ -96,20 +123,35 @@ export interface Product {
   }
   visual: Visual
   /** Introducción visual: la cámara recorre estos puntos del producto. */
-  highlights: { title: Pending; body: Pending; focus: Focus }[]
+  highlights: { title: SpecCell; body: SpecCell; focus: Focus }[]
   /** Acercamientos de detalle. */
-  details: { caption: Pending; visual: Visual; focus: Focus }[]
-  benefits: { title: Pending; body: Pending }[]
+  details: { caption: SpecCell; visual: Visual; focus: Focus }[]
+  benefits: { title: SpecCell; body: SpecCell }[]
   specs: SpecGroup[]
   gallery: { visual: Visual; focus?: Focus; caption: string }[]
-  faqs: { question: string; answer: Pending }[]
+  faqs: { question: string; answer: SpecCell }[]
   /** Visor 360°. Si no existe, el producto mantiene su presentación actual. */
   view360?: View360
   commerce: {
-    price: Pending
-    promotion: Pending
-    availability: Pending
+    price: SpecCell
+    promotion: SpecCell
+    availability: SpecCell
     /** Enlace a una tienda real, si existe. */
-    buyUrl: Pending
+    buyUrl: SpecCell
   }
+}
+
+/** Helper: crea un SpecValue confirmado. */
+export function spec(value: string, note?: string): SpecValue {
+  return { display: value, status: 'confirmed', note }
+}
+
+/** Helper: crea un SpecValue pendiente (se mostrará como "Consultar"). */
+export function specPending(note?: string): SpecCell {
+  return { display: '', status: 'pending', note }
+}
+
+/** Helper: crea un SpecValue con discrepancia (usa el dato del catálogo). */
+export function specDiscrepancy(catalogValue: string, note: string): SpecValue {
+  return { display: catalogValue, status: 'discrepancy', note }
 }
