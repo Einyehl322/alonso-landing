@@ -1,4 +1,9 @@
-export type CategoryId = 'intercomunicadores' | 'carplay'
+import type { FeatureKey } from './features'
+
+export type CategoryId = 'intercomunicadores' | 'carplay' | 'accesorios'
+
+/** Tamaños de pantalla publicados en el catálogo CarPlay. */
+export type ScreenSize = '5"' | '6.25"' | '7"'
 
 export type RenderTone = 'graphite' | 'sand'
 
@@ -8,7 +13,16 @@ export type RenderTone = 'graphite' | 'sand'
  * con usar `kind: 'image'`.
  */
 export type Visual =
-  | { kind: 'render'; render: 'display'; tone: RenderTone; alt: string }
+  | {
+      kind: 'render'
+      render: 'display'
+      tone: RenderTone
+      alt: string
+      /** Solo la pantalla, sin manillar ni soporte (no se conoce su montaje real). */
+      bare?: boolean
+    }
+  /** Producto sin fotografía todavía: marcador sobrio, sin dibujar un diseño inventado. */
+  | { kind: 'render'; render: 'pending'; alt: string; label: string }
   | {
       kind: 'image'
       src: string
@@ -103,6 +117,34 @@ export interface View360 {
   isTestPattern?: boolean
 }
 
+/**
+ * Modelo 3D real del producto (GLB). Se detecta solo al dejar el archivo en
+ * `src/assets/models/<slug>.glb` (ver `src/data/productAssets.ts`).
+ */
+export interface Model3D {
+  src: string
+  /** Giro inicial en grados para que la vista coincida con la foto principal. */
+  initialYaw?: number
+  /** Solo para el banco de pruebas: no es el producto. */
+  isTestModel?: boolean
+}
+
+/** Datos de exhibición: tamaño de pantalla y características del catálogo. */
+export interface Showroom {
+  screen?: ScreenSize
+  /** Características tal como figuran en el catálogo, en su orden. */
+  features: FeatureKey[]
+  /** Modelo destacado en el showroom. */
+  featured?: boolean
+  /**
+   * Las fotos son de una publicación del mismo modelo en el mercado, no de la
+   * unidad de SMART RIDE. Se indica como "imagen referencial".
+   */
+  reference?: { source: string; url: string }
+  /** Piezas reales del kit que flotan junto al equipo (cámaras, sensores…). */
+  accessories?: { visual: Visual; label: string }[]
+}
+
 export interface Product {
   slug: string
   category: CategoryId
@@ -136,6 +178,10 @@ export interface Product {
   faqs: { question: string; answer: SpecCell }[]
   /** Visor 360°. Si no existe, el producto mantiene su presentación actual. */
   view360?: View360
+  /** Visor 3D. Tiene prioridad sobre `view360` en la ficha. */
+  model3d?: Model3D
+  /** Presentación tipo showroom (CarPlay y accesorios). */
+  showroom?: Showroom
   commerce: {
     price: SpecCell
     promotion: SpecCell

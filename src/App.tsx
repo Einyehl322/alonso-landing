@@ -9,6 +9,7 @@ import { CategoryPage } from './pages/CategoryPage'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { ProductPage } from './pages/ProductPage'
+import { ShowroomProductPage } from './pages/ShowroomProductPage'
 import { useRouter } from './router/context'
 import { RouterProvider } from './router/router'
 import { matchRoute } from './router/routes'
@@ -17,7 +18,7 @@ function Shell() {
   const { pathname } = useRouter()
   const route = matchRoute(pathname)
   const product = route.name === 'product' ? route.product : undefined
-  const headerScheme = product?.theme.scheme ?? (route.name === 'category' && route.category.id === 'carplay' ? 'light' : 'dark')
+  const headerScheme = product?.theme.scheme ?? 'dark'
   const [ilistOpen, setIlistOpen] = useState(false)
 
   // Anuncia el cambio de página a lectores de pantalla.
@@ -36,7 +37,12 @@ function Shell() {
       <main id="main" tabIndex={-1}>
         {route.name === 'home' && <HomePage />}
         {route.name === 'category' && <CategoryPage key={route.category.id} category={route.category} />}
-        {route.name === 'product' && <ProductPage key={route.product.slug} product={route.product} />}
+        {route.name === 'product' &&
+          (route.product.showroom ? (
+            <ShowroomProductPage key={route.product.slug} product={route.product} />
+          ) : (
+            <ProductPage key={route.product.slug} product={route.product} />
+          ))}
         {route.name === 'not-found' && <NotFoundPage />}
       </main>
       <Footer product={product} />

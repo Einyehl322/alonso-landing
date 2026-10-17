@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { categories, categoryPath, getProducts, productPath } from '../../data/catalog'
 import { gsap, prefersReducedMotion } from '../../motion/gsap'
 import { Link } from '../../router/Link'
-import { useRouter } from '../../router/context'
 import { Icon } from '../ui/Icon'
 import { Brand } from './Brand'
 import './layout.css'
@@ -15,36 +14,20 @@ const NAV = [
 
 /**
  * Cabecera global. Transparente sobre el hero; vidrio oscuro al desplazarse.
- * Se oculta al bajar y reaparece al subir para dejar todo el protagonismo al producto.
+ * Permanece fija durante el scroll; en móvil mantiene a la vista el acceso a CarPlay.
  */
 export function Header({ scheme }: { scheme: 'dark' | 'light' }) {
-  const { pathname } = useRouter()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    let lastY = window.scrollY
-    const root = document.documentElement
-    const onScroll = () => {
-      const y = window.scrollY
-      setScrolled(y > 24)
-      const hide = y > 160 && y > lastY + 4
-      const show = y < lastY - 4 || y <= 160
-      if (hide) root.dataset.header = 'hidden'
-      else if (show) root.dataset.header = 'visible'
-      lastY = y
-    }
+    const onScroll = () => setScrolled(window.scrollY > 24)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  // Al cambiar de página, la cabecera vuelve a mostrarse.
-  useEffect(() => {
-    document.documentElement.dataset.header = 'visible'
-  }, [pathname])
 
   // Menú móvil: coreografía de entrada, Escape para cerrar, bloqueo de scroll.
   useEffect(() => {
@@ -92,6 +75,9 @@ export function Header({ scheme }: { scheme: 'dark' | 'light' }) {
             ))}
           </ul>
         </nav>
+        <Link to={categoryPath('carplay')} className="site-header__quick" onClick={close}>
+          CarPlay
+        </Link>
         <Link to="#contacto" className="btn btn--primary btn--sm site-header__cta">
           Consultar
         </Link>

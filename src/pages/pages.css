@@ -98,6 +98,12 @@
 
 /* ---------- salto a la otra categoría ---------- */
 
+.cross__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  column-gap: clamp(2rem, 5vw, 5rem);
+}
+
 .cross__link {
   display: grid;
   gap: 1.25rem;

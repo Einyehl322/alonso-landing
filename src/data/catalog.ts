@@ -1,7 +1,8 @@
 /**
  * Catálogo SMART RIDE.
  *
- * Modelos reales de intercomunicadores y pantallas CarPlay para motocicleta.
+ * Modelos reales de intercomunicadores, pantallas CarPlay y accesorios TPMS
+ * para motocicleta. CarPlay y accesorios viven en `showroom.ts`.
  * Los valores usan las funciones `spec()`, `specPending()` y `specDiscrepancy()`
  * para registrar el estado de verificación de cada dato.
  *
@@ -12,6 +13,7 @@
 import { media, productMedia } from './media'
 import type { Category, CategoryId, Product, SpecCell, SpecGroup, Visual } from './types'
 import { spec, specPending, specDiscrepancy } from './types'
+import { accessoryProducts, carplayProducts } from './showroom'
 
 /* ---------- visuales compartidos ---------- */
 
@@ -27,14 +29,8 @@ const displayGraphite: Visual = {
   kind: 'render',
   render: 'display',
   tone: 'graphite',
-  alt: 'Pantalla CarPlay para motocicleta con interfaz de navegación',
-}
-
-const displaySand: Visual = {
-  kind: 'render',
-  render: 'display',
-  tone: 'sand',
-  alt: 'Pantalla CarPlay para motocicleta en acabado claro',
+  bare: true,
+  alt: 'Render ilustrativo de pantalla CarPlay para motocicleta con interfaz de navegación',
 }
 
 const v12Visual: Visual = {
@@ -99,6 +95,16 @@ export const categories: Category[] = [
     ],
     visual: displayGraphite,
   },
+  {
+    id: 'accesorios',
+    slug: 'accesorios',
+    name: 'Accesorios',
+    eyebrow: 'Sensores TPMS',
+    headline: 'La presión de tus llantas, a la vista.',
+    lede: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
+    beats: [],
+    visual: { kind: 'render', render: 'pending', alt: 'Sensores TPMS para moto, fotografía pendiente', label: 'Fotografía próximamente' },
+  },
 ]
 
 /* ---------- helpers de especificaciones: intercomunicadores ---------- */
@@ -144,62 +150,13 @@ function intercomSpecs(opts: {
   ]
 }
 
-/* ---------- helpers de especificaciones: CarPlay ---------- */
-
-function displaySpecs(opts: {
-  tamano: SpecCell
-  resolucion: SpecCell
-  carplay: SpecCell
-  androidAuto: SpecCell
-  camaras: SpecCell
-  tpms: SpecCell
-  alimentacion: SpecCell
-  resistencia: SpecCell
-  montaje: SpecCell
-}): SpecGroup[] {
-  return [
-    {
-      group: 'Pantalla',
-      items: [
-        { label: 'Tamaño', value: opts.tamano },
-        { label: 'Resolución', value: opts.resolucion },
-      ],
-    },
-    {
-      group: 'Conectividad',
-      items: [
-        { label: 'Apple CarPlay', value: opts.carplay },
-        { label: 'Android Auto', value: opts.androidAuto },
-      ],
-    },
-    {
-      group: 'Funciones',
-      items: [
-        { label: 'Cámaras', value: opts.camaras },
-        { label: 'Sensor TPMS', value: opts.tpms },
-      ],
-    },
-    {
-      group: 'Instalación',
-      items: [
-        { label: 'Alimentación', value: opts.alimentacion },
-        { label: 'Resistencia al agua', value: opts.resistencia },
-        { label: 'Montaje', value: opts.montaje },
-      ],
-    },
-  ]
-}
-
-/** Commerce sin precio ni disponibilidad definidos. */
-const noCommerce = { price: null, promotion: null, availability: null, buyUrl: null } as const
-
 /** Commerce con precio en soles. */
 function commercePEN(price: string) {
   return { price: spec(price), promotion: null, availability: null, buyUrl: null } as const
 }
 
 /* ===================================================================
-   INTERCOMUNICADORES — 4 modelos con datos del catálogo SMART RIDE
+   INTERCOMUNICADORES — modelos con datos del catálogo SMART RIDE
    =================================================================== */
 
 /**
@@ -508,217 +465,6 @@ const ejeasV6ProPlus: Product = {
   commerce: commercePEN('S/ 125.00'),
 }
 
-/* ===================================================================
-   CARPLAY — 4 modelos con renders ilustrativos
-   =================================================================== */
-
-/** CarPlay 6.25" Full */
-const carplay625Full: Product = {
-  slug: 'carplay-625-full',
-  category: 'carplay',
-  name: 'CarPlay 6.25" Full',
-  isDemo: true,
-  tagline: 'Tu navegación y conectividad, en una pantalla para tu moto.',
-  summary:
-    'Pantalla compacta con Apple CarPlay y Android Auto para llevar la navegación al manillar sin ocupar demasiado espacio. Ideal para motos de cualquier cilindrada.',
-  theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
-  visual: displayGraphite,
-  highlights: [
-    { title: spec('Tamaño compacto'), body: spec('Cabe en cualquier manillar sin estorbar.'), focus: { x: 50, y: 45, zoom: 1 } },
-    { title: spec('CarPlay y Android Auto'), body: spec('Tu teléfono, proyectado en la pantalla de la moto.'), focus: { x: 56, y: 40, zoom: 1.7 } },
-    { title: spec('Instalación sencilla'), body: spec('Se fija al manillar y se conecta para funcionar.'), focus: { x: 50, y: 86, zoom: 1.9 } },
-  ],
-  details: [
-    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-    { caption: spec('Lateral'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-    { caption: spec('Soporte de montaje'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-  ],
-  benefits: [
-    { title: spec('Navegación a la vista'), body: spec('Mapas claros en una pantalla dedicada, sin sacar el teléfono.') },
-    { title: spec('Compatible con tu teléfono'), body: spec('Apple CarPlay y Android Auto incluidos.') },
-    { title: spec('Compacta y práctica'), body: spec('6.25 pulgadas que caben en cualquier manillar.') },
-  ],
-  specs: displaySpecs({
-    tamano: spec('6.25"'),
-    resolucion: specPending('No disponible — verificar con fabricante'),
-    carplay: spec('Sí'),
-    androidAuto: spec('Sí'),
-    camaras: specPending('No disponible — verificar modelo'),
-    tpms: specPending('No disponible — verificar modelo'),
-    alimentacion: spec('Cable a batería 12V'),
-    resistencia: specPending('No disponible — verificar con fabricante'),
-    montaje: spec('Abrazadera al manillar'),
-  }),
-  gallery: [
-    { visual: displayGraphite, caption: 'Vista general' },
-    { visual: displayGraphite, focus: { x: 58, y: 38, zoom: 1.9 }, caption: 'Pantalla' },
-    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-  ],
-  faqs: [
-    { question: '¿Es compatible con mi teléfono?', answer: spec('Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas sobre tu modelo.') },
-    { question: '¿Cómo se instala?', answer: spec('Se fija al manillar con una abrazadera incluida y se conecta a la batería de la moto.') },
-    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
-    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
-  ],
-  commerce: noCommerce,
-}
-
-/** CarPlay 8.1" HD */
-const carplay81HD: Product = {
-  slug: 'carplay-81-hd',
-  category: 'carplay',
-  name: 'CarPlay 8.1" HD',
-  isDemo: true,
-  tagline: 'Más espacio para ver lo que importa en tu ruta.',
-  summary:
-    'Pantalla grande de 8.1 pulgadas para quienes prefieren ver el mapa con más detalle. CarPlay y Android Auto en un formato que no te deja con dudas en la ruta.',
-  theme: { bg: '#0b0c10', surface: '#161820', scheme: 'dark' },
-  visual: displayGraphite,
-  highlights: [
-    { title: spec('Pantalla grande'), body: spec('8.1 pulgadas para ver el mapa con comodidad.'), focus: { x: 50, y: 45, zoom: 1 } },
-    { title: spec('Alta definición'), body: spec('Detalles claros incluso bajo el sol.'), focus: { x: 56, y: 40, zoom: 1.7 } },
-    { title: spec('Con todo'), body: spec('CarPlay, Android Auto y funciones adicionales.'), focus: { x: 50, y: 86, zoom: 1.9 } },
-  ],
-  details: [
-    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-    { caption: spec('Detalle de conexiones'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-    { caption: spec('Soporte'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-  ],
-  benefits: [
-    { title: spec('Más pantalla, más claridad'), body: spec('8.1 pulgadas para ver el mapa, las indicaciones y las apps con comodidad.') },
-    { title: spec('Visible al sol'), body: spec('Panel HD con brillo suficiente para condiciones de luz directa.') },
-    { title: spec('Completa'), body: spec('CarPlay y Android Auto con espacio para funciones adicionales.') },
-  ],
-  specs: displaySpecs({
-    tamano: spec('8.1" HD'),
-    resolucion: specPending('No disponible — verificar con fabricante'),
-    carplay: spec('Sí'),
-    androidAuto: spec('Sí'),
-    camaras: specPending('No disponible — verificar modelo'),
-    tpms: specPending('No disponible — verificar modelo'),
-    alimentacion: spec('Cable a batería 12V'),
-    resistencia: specPending('No disponible — verificar con fabricante'),
-    montaje: spec('Abrazadera al manillar'),
-  }),
-  gallery: [
-    { visual: displayGraphite, caption: 'Vista general' },
-    { visual: displayGraphite, focus: { x: 50, y: 50, zoom: 1.8 }, caption: 'Pantalla' },
-    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-  ],
-  faqs: [
-    { question: '¿Es compatible con mi teléfono?', answer: spec('Funciona con iPhone (CarPlay) y Android (Android Auto). Consúltanos si tienes dudas.') },
-    { question: '¿Cabe en mi manillar?', answer: spec('8.1 pulgadas requiere un manillar con espacio suficiente. Escríbenos con el modelo de tu moto y te confirmamos.') },
-    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
-    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
-  ],
-  commerce: noCommerce,
-}
-
-/** CarPlay 7" Base magnética */
-const carplay7Magnetica: Product = {
-  slug: 'carplay-7-magnetica',
-  category: 'carplay',
-  name: 'CarPlay 7" Base magnética',
-  isDemo: true,
-  tagline: 'Se pone y se quita en un segundo.',
-  summary:
-    'Pantalla de 7 pulgadas con base magnética para quienes quieren llevarla y traerla sin herramientas. Ideal si compartes la moto o prefieres no dejarla puesta.',
-  theme: { bg: '#0c0d0f', surface: '#17191d', scheme: 'dark' },
-  visual: displayGraphite,
-  highlights: [
-    { title: spec('Base magnética'), body: spec('Se monta y retira sin herramientas, en un segundo.'), focus: { x: 50, y: 45, zoom: 1 } },
-    { title: spec('7 pulgadas'), body: spec('Tamaño intermedio: más que la compacta, menos que la grande.'), focus: { x: 56, y: 40, zoom: 1.7 } },
-    { title: spec('CarPlay y Android Auto'), body: spec('Compatible con los teléfonos más usados.'), focus: { x: 50, y: 86, zoom: 1.9 } },
-  ],
-  details: [
-    { caption: spec('Vista frontal'), visual: displayGraphite, focus: { x: 58, y: 38, zoom: 2 } },
-    { caption: spec('Base magnética'), visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 } },
-    { caption: spec('Lateral'), visual: displayGraphite, focus: { x: 22, y: 40, zoom: 2.2 } },
-  ],
-  benefits: [
-    { title: spec('Montaje magnético'), body: spec('La base queda fija en la moto y la pantalla se pone y quita fácilmente.') },
-    { title: spec('Tamaño versátil'), body: spec('7 pulgadas para ver bien sin ocupar demasiado espacio.') },
-    { title: spec('Llévala contigo'), body: spec('Si no quieres dejarla en la moto, simplemente retírala.') },
-  ],
-  specs: displaySpecs({
-    tamano: spec('7"'),
-    resolucion: specPending('No disponible — verificar con fabricante'),
-    carplay: spec('Sí'),
-    androidAuto: spec('Sí'),
-    camaras: specPending('No disponible — verificar modelo'),
-    tpms: specPending('No disponible — verificar modelo'),
-    alimentacion: spec('Cable a batería 12V'),
-    resistencia: specPending('No disponible — verificar con fabricante'),
-    montaje: spec('Base magnética'),
-  }),
-  gallery: [
-    { visual: displayGraphite, caption: 'Vista general' },
-    { visual: displayGraphite, focus: { x: 50, y: 88, zoom: 2.4 }, caption: 'Base magnética' },
-    { visual: displayGraphite, focus: { x: 56, y: 40, zoom: 1.8 }, caption: 'Pantalla' },
-  ],
-  faqs: [
-    { question: '¿La base magnética es segura en ruta?', answer: specPending('Verificar con pruebas reales.') },
-    { question: '¿Es compatible con mi teléfono?', answer: spec('Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo con nosotros.') },
-    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
-    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
-  ],
-  commerce: noCommerce,
-}
-
-/** CarPlay 6.25" FreedConn */
-const carplay625FreedConn: Product = {
-  slug: 'carplay-625-freedconn',
-  category: 'carplay',
-  name: 'CarPlay 6.25" FreedConn',
-  isDemo: true,
-  tagline: 'La compacta de FreedConn para tu moto.',
-  summary:
-    'FreedConn ofrece esta pantalla de 6.25" con CarPlay y Android Auto para quienes buscan una solución compacta y confiable de una marca conocida en intercomunicadores.',
-  theme: { bg: '#0b0c10', surface: '#151720', scheme: 'dark' },
-  visual: displaySand,
-  highlights: [
-    { title: spec('Marca reconocida'), body: spec('FreedConn, conocida por intercomunicadores, también en pantallas.'), focus: { x: 50, y: 45, zoom: 1 } },
-    { title: spec('6.25 pulgadas'), body: spec('Compacta pero suficiente para navegación y música.'), focus: { x: 56, y: 40, zoom: 1.7 } },
-    { title: spec('CarPlay y Android Auto'), body: spec('Compatible con los dos ecosistemas principales.'), focus: { x: 50, y: 86, zoom: 1.9 } },
-  ],
-  details: [
-    { caption: spec('Vista frontal'), visual: displaySand, focus: { x: 58, y: 38, zoom: 2 } },
-    { caption: spec('Accesos'), visual: displaySand, focus: { x: 22, y: 40, zoom: 2.2 } },
-    { caption: spec('Soporte'), visual: displaySand, focus: { x: 50, y: 88, zoom: 2.4 } },
-  ],
-  benefits: [
-    { title: spec('Marca de confianza'), body: spec('FreedConn es referente en comunicación para motociclistas.') },
-    { title: spec('Compacta'), body: spec('6.25" cabe donde otras pantallas no entran.') },
-    { title: spec('Dual'), body: spec('CarPlay y Android Auto en la misma pantalla.') },
-  ],
-  specs: displaySpecs({
-    tamano: spec('6.25"'),
-    resolucion: specPending('No disponible — verificar con fabricante'),
-    carplay: spec('Sí'),
-    androidAuto: spec('Sí'),
-    camaras: specPending('No disponible — verificar modelo'),
-    tpms: specPending('No disponible — verificar modelo'),
-    alimentacion: spec('Cable a batería 12V'),
-    resistencia: specPending('No disponible — verificar con fabricante'),
-    montaje: spec('Abrazadera al manillar'),
-  }),
-  gallery: [
-    { visual: displaySand, caption: 'Vista general' },
-    { visual: displaySand, focus: { x: 22, y: 40, zoom: 2 }, caption: 'Accesos' },
-    { visual: displaySand, focus: { x: 50, y: 88, zoom: 2.2 }, caption: 'Soporte' },
-  ],
-  faqs: [
-    { question: '¿Es compatible con mi teléfono?', answer: spec('Compatible con iPhone (CarPlay) y Android (Android Auto). Confirma tu modelo.') },
-    { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
-    { question: '¿Qué garantía tiene?', answer: specPending('Consultar condiciones de garantía.') },
-    { question: '¿Cómo puedo consultar precio y disponibilidad?', answer: spec('Escríbenos desde el botón de consulta y te responderemos con la información actualizada.') },
-  ],
-  commerce: noCommerce,
-}
-
 /* ---------- exportar catálogo ---------- */
 
 export const products: Product[] = [
@@ -731,10 +477,8 @@ export const products: Product[] = [
   v12Earphone,
   ejeasQ8,
   ejeasV6ProPlus,
-  carplay625Full,
-  carplay81HD,
-  carplay7Magnetica,
-  carplay625FreedConn,
+  ...carplayProducts,
+  ...accessoryProducts,
 ]
 
 /* ---------- consultas ---------- */

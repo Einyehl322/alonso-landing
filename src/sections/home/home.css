@@ -232,7 +232,6 @@
 }
 
 .universe__copy,
-.carplay__beats,
 .chooser__copy {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -354,133 +353,6 @@
   }
 }
 
-/* CarPlay */
-
-.universe--carplay {
-  background: var(--c-paper);
-  padding-block: var(--section);
-  overflow: clip;
-}
-
-.universe__curtain {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 100vh;
-  background: var(--c-ink);
-  transform-origin: 50% 0;
-  transform: scaleY(0);
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .universe__curtain {
-    transform: scaleY(1);
-  }
-}
-
-.carplay__intro {
-  position: relative;
-}
-
-.carplay__intro .eyebrow {
-  margin-bottom: 1.5rem;
-}
-
-.carplay__title {
-  max-width: 13ch;
-}
-
-.carplay__lede {
-  max-width: 34rem;
-  margin-top: 1.75rem;
-}
-
-.carplay__layout {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(2rem, 5vw, 5rem);
-  margin-top: clamp(3rem, 8vw, 6rem);
-}
-
-.carplay__beats {
-  list-style: none;
-  padding: 0;
-}
-
-.carplay__beat {
-  min-height: 72vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0.28;
-  transition: opacity 600ms var(--ease-out);
-}
-
-.carplay__beat.is-active {
-  opacity: 1;
-}
-
-.carplay__beat .t-lead {
-  max-width: 24rem;
-  margin-top: 1rem;
-}
-
-.carplay__sticky {
-  position: sticky;
-  top: var(--header-h);
-  align-self: start;
-  height: calc(100svh - var(--header-h));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.carplay__device {
-  aspect-ratio: 4 / 3;
-  width: min(100%, calc((100svh - var(--header-h) - 6rem) * 4 / 3));
-  margin-left: auto;
-  border-radius: var(--radius-stage);
-  overflow: hidden;
-  background:
-    radial-gradient(70% 60% at 50% 40%, #fff 0%, transparent 70%),
-    var(--c-paper-2);
-}
-
-.carplay__device .pv {
-  padding: 6%;
-}
-
-.carplay__caption {
-  margin-top: 0.9rem;
-  text-align: right;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-@media (max-width: 899px), (prefers-reduced-motion: reduce) {
-  .carplay__beat {
-    min-height: 0;
-    opacity: 1;
-    padding-block: 2rem;
-    border-top: 1px solid var(--line);
-  }
-}
-
-@media (max-width: 899px) {
-  .carplay__layout {
-    grid-template-columns: 1fr;
-  }
-
-  .carplay__sticky {
-    position: relative;
-    top: 0;
-    order: -1;
-  }
-}
-
 /* ---------- cómo comprar ---------- */
 
 .steps {
@@ -592,9 +464,5 @@
 
   .universe__ticks {
     margin-top: 1.25rem;
-  }
-
-  .carplay__beat {
-    min-height: 80svh;
   }
 }

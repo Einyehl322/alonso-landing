@@ -41,8 +41,28 @@
   border-color: rgb(255 255 255 / 0.07);
 }
 
-html[data-header='hidden'] .site-header:not(.is-open) {
-  transform: translateY(-100%);
+/* Acceso directo a CarPlay: solo en móvil, donde el menú principal está plegado. */
+.site-header__quick {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .site-header__quick {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    margin-left: auto;
+    padding: 0 0.95rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+  }
+
+  .site-header__quick[aria-current='page'] {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
 }
 
 .site-header__bar {

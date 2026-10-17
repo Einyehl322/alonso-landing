@@ -14,7 +14,7 @@ export const site = {
   contact: {
     whatsappNumber: '51974470782' as string | null,
     whatsappDefaultMessage: 'Hola, vengo de SMART RIDE y quiero información sobre sus productos.',
-    whatsappProductMessage: 'Hola, vengo de SMART RIDE y quisiera consultar por {producto}. ¿Está disponible?',
+    whatsappProductMessage: 'Hola, vengo de SMART RIDE y quisiera consultar por {producto}.',
     email: null as string | null,
     phone: null as string | null,
     address: null as string | null,
@@ -46,6 +46,5 @@ export function whatsappHref(message: string = site.contact.whatsappDefaultMessa
 
 export function productWhatsappMessage(productName: string, price?: string | null) {
   const base = site.contact.whatsappProductMessage.replace('{producto}', productName)
-  if (price) return `${base} Lo veo a ${price}. ¿Está disponible?`
-  return base
+  return price ? `${base} Lo veo a ${price}. ¿Está disponible?` : `${base} ¿Está disponible?`
 }

@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { ProductCollection } from '../components/product/ProductCollection'
 import { ProductCompare } from '../components/product/ProductCompare'
+import { Showroom } from '../components/showroom/Showroom'
 import { Icon } from '../components/ui/Icon'
 import { ProductVisual } from '../components/visuals/ProductVisual'
 import { categories, categoryPath } from '../data/catalog'
@@ -11,10 +12,39 @@ import { usePageMeta } from '../router/usePageMeta'
 import './pages.css'
 
 export function CategoryPage({ category }: { category: Category }) {
-  const ref = useRef<HTMLElement>(null)
-  const scheme = category.id === 'carplay' ? 'light' : 'dark'
-  const other = categories.find((c) => c.id !== category.id)!
   usePageMeta(category.name, category.lede)
+  const others = categories.filter((c) => c.id !== category.id)
+
+  return (
+    <>
+      {category.id === 'intercomunicadores' ? (
+        <CollectionCategory category={category} />
+      ) : (
+        <Showroom category={category.id} level="h1" />
+      )}
+
+      <section className="cross section" data-scheme="dark" aria-label="Otras categorías">
+        <div className="container cross__list">
+          {others.map((other) => (
+            <Link key={other.id} to={categoryPath(other.id)} className="cross__link">
+              <span className="eyebrow">También te puede interesar</span>
+              <span className="cross__title t-display">{other.name}</span>
+              <span className="text-link">
+                <span>{other.eyebrow}</span>
+                <Icon name="arrow" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
+  )
+}
+
+/** Colección editorial (intercomunicadores): hero de categoría, modelos y comparador. */
+function CollectionCategory({ category }: { category: Category }) {
+  const ref = useRef<HTMLElement>(null)
+  const scheme = 'dark'
 
   useGSAP(
     () => {
@@ -67,7 +97,7 @@ export function CategoryPage({ category }: { category: Category }) {
               priority
               className="chero__visual"
               sizes="(min-width: 900px) 50vw, 92vw"
-              spin={category.id === 'intercomunicadores'}
+              spin
             />
           </div>
         </div>
@@ -75,19 +105,6 @@ export function CategoryPage({ category }: { category: Category }) {
 
       <ProductCollection category={category.id} scheme={scheme} title={`Modelos de ${category.name.toLowerCase()}`} />
       <ProductCompare category={category.id} />
-
-      <section className="cross section" data-scheme="dark" aria-label={`Ver ${other.name}`}>
-        <div className="container">
-          <Link to={categoryPath(other.id)} className="cross__link">
-            <span className="eyebrow">También te puede interesar</span>
-            <span className="cross__title t-display">{other.name}</span>
-            <span className="text-link">
-              <span>{other.eyebrow}</span>
-              <Icon name="arrow" />
-            </span>
-          </Link>
-        </div>
-      </section>
     </>
   )
 }

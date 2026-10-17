@@ -15,16 +15,18 @@ interface Props {
   tone: RenderTone
   title: string
   className?: string
+  /** Solo la pantalla: sin manillar ni soporte, cuyo diseño real no se conoce. */
+  bare?: boolean
 }
 
-export function DisplayRender({ tone, title, className }: Props) {
+export function DisplayRender({ tone, title, className, bare }: Props) {
   const uid = useId().replace(/:/g, '')
   const id = (name: string) => `${name}-${uid}`
   const t = TONES[tone]
 
   return (
     <svg
-      viewBox="0 0 800 600"
+      viewBox={bare ? '62 42 676 436' : '0 0 800 600'}
       role="img"
       aria-label={title}
       className={className}
@@ -60,17 +62,21 @@ export function DisplayRender({ tone, title, className }: Props) {
         </clipPath>
       </defs>
 
-      {/* sombra de contacto */}
-      <ellipse cx="400" cy="590" rx="330" ry="16" fill={`url(#${id('shadow')})`} />
+      {bare ? null : (
+        <>
+          {/* sombra de contacto */}
+          <ellipse cx="400" cy="590" rx="330" ry="16" fill={`url(#${id('shadow')})`} />
 
-      {/* manillar y soporte */}
-      <rect x="30" y="552" width="740" height="26" rx="13" fill={`url(#${id('bar')})`} />
-      <rect x="372" y="462" width="56" height="64" rx="12" fill={`url(#${id('neck')})`} />
-      <circle cx="400" cy="532" r="27" fill={`url(#${id('ball')})`} />
-      <rect x="318" y="544" width="164" height="42" rx="21" fill={`url(#${id('frame')})`} />
-      <rect x="318.5" y="544.5" width="163" height="41" rx="20.5" fill="none" stroke={t.edge} strokeOpacity="0.5" />
-      <circle cx="346" cy="565" r="5" fill="#000" opacity="0.35" />
-      <circle cx="454" cy="565" r="5" fill="#000" opacity="0.35" />
+          {/* manillar y soporte */}
+          <rect x="30" y="552" width="740" height="26" rx="13" fill={`url(#${id('bar')})`} />
+          <rect x="372" y="462" width="56" height="64" rx="12" fill={`url(#${id('neck')})`} />
+          <circle cx="400" cy="532" r="27" fill={`url(#${id('ball')})`} />
+          <rect x="318" y="544" width="164" height="42" rx="21" fill={`url(#${id('frame')})`} />
+          <rect x="318.5" y="544.5" width="163" height="41" rx="20.5" fill="none" stroke={t.edge} strokeOpacity="0.5" />
+          <circle cx="346" cy="565" r="5" fill="#000" opacity="0.35" />
+          <circle cx="454" cy="565" r="5" fill="#000" opacity="0.35" />
+        </>
+      )}
 
       {/* carcasa */}
       <rect x="70" y="50" width="660" height="420" rx="40" fill={`url(#${id('frame')})`} />

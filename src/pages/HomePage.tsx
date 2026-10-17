@@ -1,6 +1,6 @@
 import { ProductCollection } from '../components/product/ProductCollection'
+import { Showroom } from '../components/showroom/Showroom'
 import { usePageMeta } from '../router/usePageMeta'
-import { CarplayUniverse } from '../sections/home/CarplayUniverse'
 import { CategoryChooser } from '../sections/home/CategoryChooser'
 import { Hero } from '../sections/home/Hero'
 import { HowToBuy } from '../sections/home/HowToBuy'
@@ -23,8 +23,8 @@ export function HomePage() {
       <RoadFeature />
       <IntercomUniverse />
       <ProductCollection category="intercomunicadores" scheme="dark" linkToCategory title="Intercomunicadores" />
-      <CarplayUniverse />
-      <ProductCollection category="carplay" scheme="light" linkToCategory title="Pantallas CarPlay" />
+      <Showroom category="carplay" level="h2" linkToCategory />
+      <Showroom category="accesorios" level="h2" linkToCategory />
       <HowToBuy />
     </>
   )

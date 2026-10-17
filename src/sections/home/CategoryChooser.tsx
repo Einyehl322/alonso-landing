@@ -50,7 +50,7 @@ export function CategoryChooser() {
           </h2>
         </div>
         <div className="chooser__grid">
-          {categories.map((c, i) => (
+          {categories.filter((c) => c.id !== 'accesorios').map((c, i) => (
             <Link
               key={c.id}
               to={categoryPath(c.id)}

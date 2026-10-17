@@ -1,4 +1,5 @@
-import { getCategoryBySlug, getProduct } from '../data/catalog'
+import { getCategory, getCategoryBySlug, getProduct } from '../data/catalog'
+import { retiredSlugs } from '../data/showroom'
 import type { Category, Product } from '../data/types'
 
 export type Route =
@@ -16,7 +17,10 @@ export function matchRoute(pathname: string): Route {
   }
   if (parts.length === 2) {
     const product = getProduct(parts[0], parts[1])
-    return product ? { name: 'product', product } : { name: 'not-found' }
+    if (product) return { name: 'product', product }
+    // Modelos demostrativos retirados: sus enlaces llevan a la categoría.
+    const retired = retiredSlugs[parts[1]]
+    return retired && getCategory(retired).slug === parts[0] ? { name: 'category', category: getCategory(retired) } : { name: 'not-found' }
   }
   return { name: 'not-found' }
 }

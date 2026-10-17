@@ -56,3 +56,49 @@ El hero anterior permitía que el título ocupase todo el ancho por encima de la
 Los títulos de categoría también se ajustan a su columna. Las vistas de acercamiento fijadas al hacer scroll separan la cámara y los textos en columnas; el encuadre animado permanece dentro de su marco. Se revisaron además las tarjetas y secciones de tecnología de inicio.
 
 Validación adicional: los 13 productos y ambas categorías, en 360, 768, 900, 1024, 1366, 1876 y 2560 píxeles de ancho, con comprobaciones de rectángulos y texto. Las secciones de tecnología y paneles de inicio se verificaron en cuatro tamaños. Se comprobó la separación de imagen y textos durante scroll real en CarPlay, Y13 Pro y EJEAS Q8, así como la transición de tarjeta CarPlay a ficha y el regreso con historial. Build de producción correcto; sin cambios en datos comerciales, rutas o despliegue.
+
+## Showroom CarPlay y accesorios TPMS (17/10/2026)
+
+La sección CarPlay deja de ser una colección editorial y pasa a ser un showroom: el modelo destacado (FreedConn) como protagonista y los siete modelos como objetos flotantes, con filtros por pantalla (5", 6.25" y 7"), orden por precio y un comparador de hasta tres modelos. Los TPMS forman la categoría **Accesorios** (`/accesorios`), separada de las pantallas.
+
+- Datos: `src/data/showroom.ts` (nombres, precios y características literales del catálogo) y `src/data/features.ts` (texto, icono y fila del comparador de cada característica). Agregar un modelo es una llamada más a `showroomProduct()`.
+- Ficha: `src/pages/ShowroomProductPage.tsx`. Incluye visor protagonista, precio, WhatsApp con nombre y precio, características, galería si hay fotos, comparación y otros modelos.
+- Visor, por orden de prioridad: modelo 3D (`src/assets/models/<slug>.glb`, three.js en un chunk aparte que solo se descarga si hay modelo) → giro 360° real con fotos → foto con inclinación acotada → render ilustrativo. La inclinación nunca simula caras que no existen en el material.
+- Recursos: se detectan por carpeta (`src/data/productAssets.ts`). Los originales van en `assets-src/` y `npm run images` genera los WebP (ver `assets-src/README.md`).
+- Banco de pruebas en desarrollo: `?modelo3d=prueba` en cualquier ficha carga un modelo de muestra de Khronos (no es el producto).
+
+### Cambios de catálogo
+
+Los cuatro CarPlay demostrativos (6.25" Full, 8.1" HD, 7" Base magnética y la ficha anterior del FreedConn, con datos no confirmados) se reemplazaron por los siete del catálogo. El FreedConn conserva su URL. Las URLs `carplay-625-full`, `carplay-81-hd` y `carplay-7-magnetica` llevan a `/carplay`.
+
+### Por confirmar con el propietario
+
+- **8.1" HD**: no figura en el catálogo; se retiró.
+- **5" + Cámaras 2K**: el catálogo dice «Sensores de llanta (TPMS)», sin «(opcional)». Confirmar si vienen incluidos.
+- **5" Dual BT y 5" Navegación**: mismo precio; solo difieren en Dual o Single Bluetooth + WiFi. El nombre «Navegación» no corresponde a una característica distinta.
+- **7" (S/ 420) y 7" Waterproof (S/ 400)**: ambos son IP67; el nombre «Waterproof» no los diferencia.
+- **TPMS Kit solar**: el catálogo no menciona carga solar (solo «Pantalla recargable USB»). Ambos TPMS tienen las mismas características; la diferencia publicada es solo el precio.
+- **FreedConn**: no se encontró ficha del fabricante ni modelo 3D de esta pantalla; las ofertas en línea de pantallas similares de 6.25" se contradicen (1080p o 2K, IP67 o IP69).
+- No existe una categoría de neblineros en el proyecto.
+
+### Imágenes referenciales del mercado
+
+Cada modelo usa la foto de una publicación del mismo tipo de equipo en el mercado. No es la foto de la unidad de SMART RIDE, y la web la marca como «Imagen referencial». La fuente está en `reference` de cada modelo en `src/data/showroom.ts`; los recortes sin fondo están en `assets-src/products/`. No se generó ni se modificó el diseño de ningún equipo: solo se recortó la toma y se eliminó el fondo con rembg.
+
+| Modelo | Publicación de origen | Por confirmar |
+| --- | --- | --- |
+| 6.25" FreedConn | AliExpress «Freedconn» 6.25" GPS DVR | La publicación anuncia grabación 1080P; el catálogo dice 2K |
+| 6.25" Magnético | AliExpress «Freedconn» 6.25" extraíble | La publicación anuncia Dual Bluetooth; el catálogo dice Single |
+| 7" | Carpuride W702S Pro | Lleva el logo Carpuride; precio oficial ~US$ 370 |
+| 7" Waterproof | AliExpress 7" con soporte de liberación rápida | Foto de 718 px; no confirma base magnética |
+| 5" Dual BT | AliExpress 5" Bluetooth dual con TPMS | — |
+| 5" Navegación | Linkifun MT11 / MT11A | — |
+| 5" + Cámaras 2K | AliExpress 5" con cámara dual | La publicación no dice 2K |
+| TPMS Kit solar | Amazon B0GTQPXY82 | — |
+| TPMS Compacto | Amazon B0CYT1QC8B (M3) | — |
+
+Las fotos de origen miden entre 700 y 1600 px, así que en la ficha se ven algo suaves en pantallas grandes. Reemplazarlas por fotos propias o del proveedor en alta resolución basta con dejar el PNG en `assets-src/products/<slug>/hero.png` y ejecutar `npm run images`.
+
+### Recursos pendientes
+
+Faltan fotos propias de cada unidad (las actuales son referenciales). Para el giro 360° auténtico del FreedConn se necesita una de estas dos opciones: 36 fotos en plataforma giratoria (secuencia 360°) o fotos de las 6 caras con medidas (para modelarlo en 3D).

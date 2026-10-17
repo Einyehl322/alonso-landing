@@ -65,8 +65,17 @@ export function ProductVisual({ visual, focus, priority, sizes, className = '', 
             draggable={false}
             style={visual.position ? { objectPosition: visual.position } : undefined}
           />
+        ) : visual.render === 'pending' ? (
+          <div className="pv__pending" role="img" aria-label={visual.alt}>
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect x="6" y="11" width="36" height="27" rx="7" />
+              <circle cx="24" cy="24.5" r="7" />
+              <path d="M17 11l2.5-4h9L31 11" />
+            </svg>
+            <span>{visual.label}</span>
+          </div>
         ) : (
-          <DisplayRender tone={visual.tone} title={visual.alt} />
+          <DisplayRender tone={visual.tone} title={visual.alt} bare={visual.bare} />
         )}
       </div>
     </div>
