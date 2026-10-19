@@ -3,7 +3,7 @@ import { gsap, MQ, useGSAP } from '../../motion/gsap'
 import './home.css'
 
 const TEXT =
-  'Conectados a cada aventura. Hablar con tu grupo. Ver tu ruta. Escuchar tu música. Todo mientras el camino sigue frente a ti, sin distracciones.'
+  'Hablar con tu grupo. Ver tu ruta. Escuchar tu música. Todo mientras el camino sigue frente a ti, sin distracciones.'
 
 /**
  * Manifiesto: las palabras se "encienden" una a una al ritmo del scroll,
@@ -19,12 +19,12 @@ export function Manifesto() {
       mm.add(MQ.motion, () => {
         gsap.fromTo(
           '.manifesto__word',
-          { opacity: 0.14 },
+          { opacity: 0.16 },
           {
             opacity: 1,
             ease: 'none',
             stagger: 0.1,
-            scrollTrigger: { trigger: '.manifesto__text', start: 'top 80%', end: 'bottom 45%', scrub: 0.4 },
+            scrollTrigger: { trigger: '.manifesto__text', start: 'top 82%', end: 'bottom 50%', scrub: 0.4 },
           },
         )
       })
@@ -33,7 +33,7 @@ export function Manifesto() {
   )
 
   return (
-    <section ref={ref} id="manifiesto" className="manifesto section" data-scheme="dark" aria-label="Manifiesto">
+    <section ref={ref} id="manifiesto" className="manifesto section" data-scheme="light" aria-label="Manifiesto" data-section="manifiesto">
       <div className="container">
         <p className="eyebrow">Por qué existimos</p>
         <p className="manifesto__text t-h2">

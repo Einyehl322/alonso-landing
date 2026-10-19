@@ -19,7 +19,7 @@ export function MobileBuyBar({ product }: { product: Product }) {
   }, [])
 
   return (
-    <div className={`buybar ${visible ? 'is-visible' : ''}`} data-scheme="dark" aria-hidden={!visible} inert={!visible}>
+    <div className={`buybar ${visible ? 'is-visible' : ''}`} data-scheme="light" aria-hidden={!visible} inert={!visible}>
       <div className="buybar__info">
         <strong>{product.name}</strong>
         <span>

@@ -195,8 +195,9 @@ export function Viewer360({ product, sequence, source, onClosed }: Props) {
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
-      data-scheme={product.theme.scheme}
-      style={{ '--v360-bg': product.theme.bg, '--v360-ar': ar } as CSSProperties}
+      // Estudio claro: los equipos (negros en su mayoría) muestran mejor sus detalles.
+      data-scheme="light"
+      style={{ '--v360-bg': 'var(--c-mist)', '--v360-ar': ar } as CSSProperties}
       onKeyDown={onKeyDown}
       onPointerDown={() => setHint(false)}
     >

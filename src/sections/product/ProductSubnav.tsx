@@ -46,7 +46,7 @@ export function ProductSubnav({ product, items }: { product: Product; items: Sub
   )
 
   return (
-    <div ref={ref} className="psubnav" data-scheme="dark">
+    <div ref={ref} className="psubnav" data-scheme="light">
       <div className="psubnav__bar container">
         <p className="psubnav__name">{product.name}</p>
         <nav aria-label={`Secciones de ${product.name}`} className="psubnav__links">

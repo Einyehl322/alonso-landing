@@ -1,16 +1,20 @@
-import { ProductCollection } from '../components/product/ProductCollection'
-import { Showroom } from '../components/showroom/Showroom'
 import { usePageMeta } from '../router/usePageMeta'
+import { CarPlayFeature } from '../sections/home/CarPlayFeature'
 import { CategoryChooser } from '../sections/home/CategoryChooser'
+import { Collections } from '../sections/home/Collections'
+import { CompareHome } from '../sections/home/CompareHome'
+import { Favorites } from '../sections/home/Favorites'
+import { FinalCta } from '../sections/home/FinalCta'
 import { Hero } from '../sections/home/Hero'
 import { HowToBuy } from '../sections/home/HowToBuy'
-import { IntercomUniverse } from '../sections/home/IntercomUniverse'
 import { Manifesto } from '../sections/home/Manifesto'
-import { RoadFeature } from '../sections/home/RoadFeature'
+import { Spotlight } from '../sections/home/Spotlight'
+import { WhySmartRide } from '../sections/home/WhySmartRide'
 
 /**
- * Recorrido de la home: impresión → qué ofrecemos → acceso rápido →
- * inspiración → cada universo con sus modelos → cómo comprar → contacto.
+ * Recorrido de la home, del interés a la consulta:
+ * mensaje → categorías → favoritos → manifiesto → spotlight (oscuro) →
+ * colecciones → CarPlay → comparador → confianza y compra → cierre (oscuro).
  */
 export function HomePage() {
   usePageMeta(null)
@@ -18,14 +22,16 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <Manifesto />
       <CategoryChooser />
-      <RoadFeature />
-      <IntercomUniverse />
-      <ProductCollection category="intercomunicadores" scheme="dark" linkToCategory title="Intercomunicadores" />
-      <Showroom category="carplay" level="h2" linkToCategory />
-      <Showroom category="accesorios" level="h2" linkToCategory />
+      <Favorites />
+      <Manifesto />
+      <Spotlight />
+      <Collections />
+      <CarPlayFeature />
+      <CompareHome />
+      <WhySmartRide />
       <HowToBuy />
+      <FinalCta />
     </>
   )
 }

@@ -50,6 +50,22 @@ export function focusToTransform({ x, y, zoom }: Focus) {
   }
 }
 
+/**
+ * Revela elementos por lotes al entrar en pantalla, una sola vez: un único
+ * ScrollTrigger.batch en lugar de un trigger por tarjeta. Llamar dentro de
+ * useGSAP + matchMedia(MQ.motion) para que se revierta solo.
+ */
+export function revealOnEnter(targets: gsap.DOMTarget, { y = 28, stagger = 0.08, start = 'top 88%' } = {}) {
+  const els = gsap.utils.toArray<HTMLElement>(targets)
+  if (!els.length) return
+  gsap.set(els, { autoAlpha: 0, y })
+  ScrollTrigger.batch(els, {
+    start,
+    once: true,
+    onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.9, stagger, ease: EASE.cinematic, overwrite: true }),
+  })
+}
+
 export function focusToCss(focus: Focus) {
   const t = focusToTransform(focus)
   return `translate(${t.xPercent}%, ${t.yPercent}%) scale(${t.scale})`

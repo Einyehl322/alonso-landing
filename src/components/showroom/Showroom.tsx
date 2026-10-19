@@ -4,16 +4,17 @@ import { getCategory, getProducts, productPath } from '../../data/catalog'
 import { feature } from '../../data/features'
 import { priceValue } from '../../data/price'
 import type { CategoryId, Product, ScreenSize } from '../../data/types'
-import { EASE, gsap, MQ, useGSAP } from '../../motion/gsap'
+import { EASE, gsap, MQ, revealOnEnter, useGSAP } from '../../motion/gsap'
 import { Link } from '../../router/Link'
 import { useRouter } from '../../router/context'
+import { ProductTile } from '../product/ProductTile'
 import { Icon } from '../ui/Icon'
 import { specDisplay } from '../ui/Placeholders'
 import { FeatureCompare } from './FeatureCompare'
 import { FeatureIcon } from './FeatureIcon'
 import { Price } from './Price'
-import { ShowroomCard } from './ShowroomCard'
 import { ShowroomObject } from './ShowroomObject'
+import '../product/product-tile.css'
 import './showroom.css'
 
 type Sort = 'featured' | 'price-asc' | 'price-desc'
@@ -76,16 +77,7 @@ export function Showroom({ category, level, linkToCategory }: Props) {
           tl.from('.showroom__feature .sobj', { autoAlpha: 0, scale: 0.9, y: 60, duration: 1.6, ease: EASE.cinematic })
             .from('.showroom__feature-copy > *', { autoAlpha: 0, y: 20, stagger: 0.07, duration: 1, ease: EASE.cinematic }, 0.25)
         }
-        gsap.utils.toArray<HTMLElement>('.scard').forEach((card, i) => {
-          gsap.from(card, {
-            autoAlpha: 0,
-            y: 48,
-            duration: 1.1,
-            delay: (i % 3) * 0.08,
-            ease: EASE.cinematic,
-            scrollTrigger: { trigger: card, start: 'top 90%' },
-          })
-        })
+        revealOnEnter('.showroom__grid .ptile')
       })
     },
     { scope: ref },
@@ -100,7 +92,7 @@ export function Showroom({ category, level, linkToCategory }: Props) {
     }
     if (window.matchMedia(MQ.reduced).matches) return
     gsap.fromTo(
-      ref.current!.querySelectorAll('.scard'),
+      ref.current!.querySelectorAll('.showroom__grid .ptile'),
       { autoAlpha: 0, y: 24 },
       { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.05, ease: EASE.snappy, overwrite: true },
     )
@@ -119,8 +111,7 @@ export function Showroom({ category, level, linkToCategory }: Props) {
   const featuredWa = featured ? whatsappHref(productWhatsappMessage(featured.name, specDisplay(featured.commerce.price))) : null
 
   return (
-    <section ref={ref} className={`showroom showroom--${category}`} data-scheme="dark" aria-labelledby={`showroom-${category}`}>
-      <div className="showroom__glow" aria-hidden="true" />
+    <section ref={ref} className={`showroom showroom--${category}`} data-scheme="light" aria-labelledby={`showroom-${category}`}>
       <div className="container">
         <header className="showroom__head" data-fade-on-enter>
           {level === 'h1' ? (
@@ -207,23 +198,25 @@ export function Showroom({ category, level, linkToCategory }: Props) {
           </div>
         </div>
 
-        <ul className="showroom__grid">
+        <ul className="showroom__grid tile-grid">
           {list.map((p) => (
-            <ShowroomCard
-              key={p.slug}
-              product={p}
-              compare={{
-                checked: selected.includes(p.slug),
-                disabled: !selected.includes(p.slug) && selected.length >= MAX_COMPARE,
-                onChange: (on) => toggle(p.slug, on),
-              }}
-            />
+            <li key={p.slug}>
+              <ProductTile
+                product={p}
+                shared
+                compare={{
+                  checked: selected.includes(p.slug),
+                  disabled: !selected.includes(p.slug) && selected.length >= MAX_COMPARE,
+                  onChange: (on) => toggle(p.slug, on),
+                }}
+              />
+            </li>
           ))}
         </ul>
       </div>
 
       {selected.length ? (
-        <div className="ctray" data-scheme="dark" role="region" aria-label="Modelos para comparar">
+        <div className="ctray" data-scheme="light" role="region" aria-label="Modelos para comparar">
           <ul className="ctray__list">
             {selectedProducts.map((p) => (
               <li key={p.slug}>
@@ -241,7 +234,7 @@ export function Showroom({ category, level, linkToCategory }: Props) {
         </div>
       ) : null}
 
-      <dialog ref={dialog} className="cdialog" data-scheme="dark" aria-labelledby="cdialog-title" onClose={() => setComparing(false)} onClick={(e) => e.target === e.currentTarget && setComparing(false)}>
+      <dialog ref={dialog} className="cdialog" data-scheme="light" aria-labelledby="cdialog-title" onClose={() => setComparing(false)} onClick={(e) => e.target === e.currentTarget && setComparing(false)}>
         <div className="cdialog__inner">
           <header className="cdialog__head">
             <h2 id="cdialog-title" className="t-h3">Comparar modelos</h2>

@@ -14,7 +14,7 @@
 .ilist__backdrop {
   position: absolute;
   inset: 0;
-  background: rgb(0 0 0 / 0.55);
+  background: rgb(16 24 40 / 0.4);
   backdrop-filter: blur(6px);
   opacity: 0;
 }
@@ -25,13 +25,13 @@
   right: 0;
   bottom: 0;
   width: min(420px, 92vw);
-  background: var(--c-graphite-900);
+  background: var(--c-white);
   color: var(--fg);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
   opacity: 0;
-  box-shadow: -8px 0 32px rgb(0 0 0 / 0.3);
+  box-shadow: -12px 0 40px rgb(16 24 40 / 0.16);
 }
 
 .ilist__header {
@@ -147,7 +147,7 @@
 
 .ilist__clear:hover {
   color: var(--fg);
-  background: var(--line);
+  background: var(--c-mist);
 }
 
 .ilist__clear:disabled {
@@ -159,24 +159,25 @@
 
 .ilist-fab {
   position: fixed;
-  bottom: 2.5rem;
-  right: 1.25rem;
-  z-index: 100;
+  /* Sobre el botón de WhatsApp (56px + separación). */
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 68px);
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 41;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--c-accent-strong);
+  background: var(--c-ink-900);
   color: #fff;
-  box-shadow: 0 4px 20px rgb(79 104 238 / 0.35);
+  box-shadow: 0 10px 24px -10px rgb(16 24 40 / 0.5);
   transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
 }
 
 .ilist-fab:hover {
   transform: scale(1.06);
-  box-shadow: 0 6px 28px rgb(79 104 238 / 0.5);
+  box-shadow: 0 14px 30px -10px rgb(16 24 40 / 0.55);
 }
 
 .ilist-fab:active {
@@ -195,7 +196,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #e74c3c;
+  background: var(--c-accent);
   color: #fff;
   font-size: 0.7rem;
   font-weight: 700;
@@ -210,13 +211,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  min-height: 40px;
+  padding: 0 1rem;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  font-size: 0.82rem;
+  font-size: var(--fs-caption);
   font-weight: 500;
-  color: var(--fg-muted);
-  transition: all var(--dur-micro) var(--ease-out);
+  color: var(--fg-soft);
+  transition:
+    border-color var(--dur-micro) var(--ease-out),
+    background-color var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out);
 }
 
 .ilist-toggle:hover {
@@ -225,9 +230,35 @@
 }
 
 .ilist-toggle.is-active {
-  border-color: var(--c-accent);
-  color: var(--c-accent);
+  border-color: var(--accent-fg);
+  color: var(--accent-fg);
   background: var(--c-accent-glow);
+}
+
+/* Variante solo icono, flotando sobre la imagen de una tarjeta. */
+.ilist-toggle--compact {
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-height: 0;
+  padding: 0;
+  border-color: rgb(255 255 255 / 0.6);
+  background: rgb(255 255 255 / 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--c-ink-900);
+}
+
+.ilist-toggle--compact:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--c-ink-900);
+}
+
+.ilist-toggle--compact.is-active {
+  background: #fff;
+  border-color: #fff;
+  color: var(--c-accent);
 }
 
 .ilist-toggle svg {
@@ -236,13 +267,11 @@
 }
 
 .ilist-toggle.is-active svg {
-  fill: var(--c-accent);
+  fill: currentColor;
 }
 
 @media (max-width: 899px) {
   .ilist-fab {
-    bottom: 1.5rem;
-    right: 1rem;
     width: 48px;
     height: 48px;
   }

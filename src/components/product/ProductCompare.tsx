@@ -1,17 +1,11 @@
 import { getCategory, getProducts, productCategoryLabel, productPath } from '../../data/catalog'
 import type { CategoryId, Product, SpecCell } from '../../data/types'
 import { Link } from '../../router/Link'
+import { Price } from '../showroom/Price'
 import { Icon } from '../ui/Icon'
-import { DemoBadge, Maybe } from '../ui/Placeholders'
+import { DemoBadge, Pending } from '../ui/Placeholders'
 import { ProductVisual } from '../visuals/ProductVisual'
 import './compare.css'
-
-interface Props {
-  category: CategoryId
-  /** Modelo actual (se resalta y se muestra primero). */
-  current?: Product
-  id?: string
-}
 
 /** Una fila del comparador: etiqueta + un valor por producto. */
 interface CompareRow {
@@ -32,18 +26,33 @@ function compareLabel(label: string) {
   return label
 }
 
+/** Funciones de intercomunicación que no aplican a un audífono individual. */
+const INTERCOM_ONLY = ['Alcance declarado', 'Participantes', 'Autonomía (intercom)']
+
+function Cell({ product, row, cell }: { product: Product; row: CompareRow; cell: SpecCell }) {
+  if (product.productType === 'helmet-audio' && INTERCOM_ONLY.includes(row.itemLabel)) return <span className="t-muted">No aplica</span>
+  if (cell === null) {
+    return (
+      <span className="none-mark" title="No figura en el catálogo del modelo">
+        <span aria-hidden="true">—</span>
+        <span className="sr-only">No figura en el catálogo</span>
+      </span>
+    )
+  }
+  if (cell.status === 'pending') return <Pending />
+  return <>{cell.display}</>
+}
+
 /**
- * Comparativa entre modelos de la misma categoría.
+ * Tabla comparativa de especificaciones.
  * Reglas:
  *  - Filas sin ningún dato confirmado → se ocultan.
- *  - Celdas pendientes → "Consultar".
+ *  - Celda sin dato en el catálogo del modelo → "—".
+ *  - Celda pendiente de verificación → "Consultar".
  *  - Celdas con discrepancia → valor del catálogo mostrado normalmente.
- *  - Precio siempre se muestra (fila separada del grupo).
+ *  - El precio siempre se muestra.
  */
-export function ProductCompare({ category, current, id = 'comparar' }: Props) {
-  const all = getProducts(category)
-  if (all.length < 2) return null
-  const list = current ? [current, ...all.filter((p) => p !== current)] : all
+export function SpecCompare({ products: list, current, caption = 'Comparativa de modelos' }: { products: Product[]; current?: Product; caption?: string }) {
   // Unión de especificaciones: el modelo actual no determina las filas ajenas.
   const groups = new Map<string, Set<string>>()
   for (const product of list) {
@@ -54,7 +63,6 @@ export function ProductCompare({ category, current, id = 'comparar' }: Props) {
     }
   }
 
-  // Construir filas
   const rows: CompareRow[] = Array.from(groups).flatMap(([group, labels]) =>
     Array.from(labels).map((label) => ({
       key: `${group}-${label}`,
@@ -66,92 +74,106 @@ export function ProductCompare({ category, current, id = 'comparar' }: Props) {
     })),
   )
 
-  // Filtrar filas que no tienen ningún dato confirmado
-  const visibleRows = rows.filter(rowHasData)
-
-  // Agrupar filas visibles por grupo para mostrar encabezados de grupo
   const groupedRows: { group: string; rows: CompareRow[] }[] = []
-  for (const row of visibleRows) {
+  for (const row of rows.filter(rowHasData)) {
     const last = groupedRows[groupedRows.length - 1]
-    if (last && last.group === row.groupLabel) {
-      last.rows.push(row)
-    } else {
-      groupedRows.push({ group: row.groupLabel, rows: [row] })
-    }
+    if (last && last.group === row.groupLabel) last.rows.push(row)
+    else groupedRows.push({ group: row.groupLabel, rows: [row] })
   }
 
   return (
-    <section id={id} className="compare section" data-scheme="dark" aria-labelledby={`${id}-title`}>
-      <div className="container">
-        <p className="eyebrow">Comparar</p>
-        <h2 id={`${id}-title`} className="t-h2 compare__title">
-          {current ? '¿Cuál es el tuyo?' : `Compara ${getCategory(category).name.toLowerCase()}`}
-        </h2>
-
-        <div className="compare__scroller" tabIndex={0} role="region" aria-label="Tabla comparativa, desplazable horizontalmente">
-          <table className="compare__table">
-            <caption className="sr-only">Comparativa de modelos</caption>
-            <thead>
-              <tr>
-                <th scope="col" className="compare__corner">
-                  <span className="sr-only">Característica</span>
+    <div className="compare__wrap">
+      <div className="compare__scroller" tabIndex={0} role="region" aria-label={`${caption}, desplazable horizontalmente`}>
+        <table className="compare__table">
+          <caption className="sr-only">{caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col" className="compare__corner">
+                <span className="sr-only">Característica</span>
+              </th>
+              {list.map((p) => (
+                <th key={p.slug} scope="col" className={p === current ? 'is-current' : ''}>
+                  <div className="compare__product">
+                    <Link to={productPath(p)} className="compare__thumb" style={{ background: p.theme.bg }} tabIndex={-1} aria-hidden="true">
+                      <ProductVisual visual={p.visual} sizes="160px" />
+                    </Link>
+                    <span className="compare__name">{p.name}</span>
+                    <span className="compare__category">{productCategoryLabel(p)}</span>
+                    {p.isDemo && <DemoBadge>Fotos pendientes</DemoBadge>}
+                    {p === current ? (
+                      <span className="compare__here">Estás viendo este modelo</span>
+                    ) : (
+                      <Link to={productPath(p)} className="text-link">
+                        <span>Explorar</span>
+                        <Icon name="arrow" />
+                      </Link>
+                    )}
+                  </div>
                 </th>
-                {list.map((p) => (
-                  <th key={p.slug} scope="col" className={p === current ? 'is-current' : ''}>
-                    <div className="compare__product">
-                      <div className="compare__thumb" style={{ background: p.theme.bg }}>
-                        <ProductVisual visual={p.visual} sizes="160px" />
-                      </div>
-                      <span className="compare__name">{p.name}</span>
-                      <span className="compare__category">{productCategoryLabel(p)}</span>
-                      {p.isDemo && <DemoBadge>Fotos pendientes</DemoBadge>}
-                      {p === current ? (
-                        <span className="compare__here">Estás viendo este modelo</span>
-                      ) : (
-                        <Link to={productPath(p)} className="text-link">
-                          <span>Explorar</span>
-                          <Icon name="arrow" />
-                        </Link>
-                      )}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {/* Precio — siempre visible */}
-              <tr>
-                <th scope="row">Precio</th>
-                {list.map((p) => (
-                  <td key={p.slug} className="compare__price">
-                    <Maybe value={p.commerce.price} />
-                  </td>
-                ))}
-              </tr>
-            </tbody>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Precio</th>
+              {list.map((p) => (
+                <td key={p.slug} className={`compare__price ${p === current ? 'is-current' : ''}`}>
+                  <Price product={p} size="md" />
+                </td>
+              ))}
+            </tr>
+          </tbody>
 
-            {/* Filas agrupadas */}
-            {groupedRows.map((grp) => (
-              <tbody key={grp.group}>
-                {grp.rows.map((row) => (
-                  <tr key={row.key}>
-                    <th scope="row">
-                      <span className="compare__group">{row.groupLabel}</span>
-                      {row.itemLabel}
-                    </th>
-                    {row.cells.map((cell, i) => (
-                      <td key={`${row.key}-${list[i].slug}`}>
-                        {list[i].productType === 'helmet-audio' && ['Alcance', 'Alcance declarado', 'Participantes', 'Autonomía (intercom)'].includes(row.itemLabel)
-                          ? <span className="t-muted">No aplica</span>
-                          : <Maybe value={cell} />}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            ))}
-          </table>
-        </div>
+          {groupedRows.map((grp) => (
+            <tbody key={grp.group}>
+              {grp.rows.map((row) => (
+                <tr key={row.key}>
+                  <th scope="row">
+                    <span className="compare__group">{row.groupLabel}</span>
+                    {row.itemLabel}
+                  </th>
+                  {row.cells.map((cell, i) => (
+                    <td key={`${row.key}-${list[i].slug}`} className={list[i] === current ? 'is-current' : undefined}>
+                      <Cell product={list[i]} row={row} cell={cell} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
+        </table>
+      </div>
+      <p className="compare__legend t-muted">— No figura en el catálogo del modelo. «Consultar»: dato pendiente de confirmar.</p>
+    </div>
+  )
+}
+
+interface Props {
+  category: CategoryId
+  /** Modelo actual (se resalta y se muestra primero). */
+  current?: Product
+  id?: string
+}
+
+/** Sección de comparación entre todos los modelos de una categoría. */
+export function ProductCompare({ category, current, id = 'comparar' }: Props) {
+  const all = getProducts(category)
+  if (all.length < 2) return null
+  const list = current ? [current, ...all.filter((p) => p !== current)] : all
+
+  return (
+    <section id={id} className="compare section" data-scheme="light" aria-labelledby={`${id}-title`}>
+      <div className="container">
+        <header className="section-head">
+          <div className="section-head__copy">
+            <p className="eyebrow">Comparar</p>
+            <h2 id={`${id}-title`} className="t-h2">
+              {current ? '¿Cuál es el tuyo?' : `Compara ${getCategory(category).name.toLowerCase()}`}
+            </h2>
+            <p>Desliza la tabla para ver todos los modelos. La primera columna queda fija.</p>
+          </div>
+        </header>
+        <SpecCompare products={list} current={current} caption={`Comparativa de ${getCategory(category).name.toLowerCase()}`} />
       </div>
     </section>
   )

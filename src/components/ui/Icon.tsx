@@ -9,6 +9,12 @@ const PATHS = {
   'chevron-left': 'M15 6l-6 6 6 6',
   'chevron-right': 'M9 6l6 6-6 6',
   heart: 'M12 20.5l-1.45-1.32C5.4 14.36 2 11.25 2 7.5 2 4.42 4.42 2 7.5 2c1.74 0 3.41.81 4.5 2.09A5.99 5.99 0 0 1 16.5 2C19.58 2 22 4.42 22 7.5c0 3.75-3.4 6.86-8.55 11.68L12 20.5Z',
+  /* Confianza */
+  advice: 'M12 3a6 6 0 0 0-3.6 10.8c.6.45.9 1.1.9 1.8V17h5.4v-1.4c0-.7.3-1.35.9-1.8A6 6 0 0 0 12 3ZM9.5 20.5h5',
+  sheet: 'M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5ZM14 3.5V8h4M8.5 12h7M8.5 15.5h7',
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  chat: 'M5 5.5h14A1.5 1.5 0 0 1 20.5 7v8.5A1.5 1.5 0 0 1 19 17h-8l-4.5 3.5V17H5a1.5 1.5 0 0 1-1.5-1.5V7A1.5 1.5 0 0 1 5 5.5ZM8 10.5h8M8 13.5h5',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
 } as const
 
 export type IconName = keyof typeof PATHS | 'whatsapp' | 'heart-filled' | 'interest'

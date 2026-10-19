@@ -13,6 +13,8 @@ export function ProductIntro({ product }: { product: Product }) {
   const ref = useRef<HTMLElement>(null)
   const camera = useRef<HTMLDivElement>(null)
   const { highlights } = product
+  // Todos los momentos usan prácticamente el mismo encuadre (foto única).
+  const sameFrame = highlights.every((h) => Math.abs(h.focus.zoom - highlights[0].focus.zoom) < 0.1)
 
   useGSAP(
     () => {
@@ -64,7 +66,7 @@ export function ProductIntro({ product }: { product: Product }) {
   )
 
   return (
-    <section ref={ref} id="resumen" className="pintro" data-scheme={product.theme.scheme} aria-labelledby="pintro-title">
+    <section ref={ref} id="resumen" className="pintro" data-scheme="dark" aria-labelledby="pintro-title">
       <h2 id="pintro-title" className="sr-only">
         Introducción a {product.name}
       </h2>
@@ -102,19 +104,40 @@ export function ProductIntro({ product }: { product: Product }) {
 
       {/* Móvil y movimiento reducido: secuencia vertical */}
       <div className="pintro__mobile container">
-        {highlights.map((h, i) => (
-          <div key={i} className="pintro__m-item">
+        {sameFrame ? (
+          // Un solo encuadre: una foto y los datos debajo, sin repetir la imagen.
+          <div className="pintro__m-item">
             <div className="pintro__m-frame" style={{ background: product.theme.surface }}>
-              <ProductVisual visual={product.visual} focus={h.focus} sizes="92vw" />
+              <ProductVisual visual={product.visual} focus={highlights[0]?.focus} sizes="92vw" />
             </div>
-            <h3 className="t-h3">
-              <Maybe value={h.title} />
-            </h3>
-            <p className="t-muted">
-              <Maybe value={h.body} />
-            </p>
+            <dl className="pintro__m-facts">
+              {highlights.map((h, i) => (
+                <div key={i}>
+                  <dt>
+                    <Maybe value={h.title} />
+                  </dt>
+                  <dd className="t-muted">
+                    <Maybe value={h.body} />
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        ))}
+        ) : (
+          highlights.map((h, i) => (
+            <div key={i} className="pintro__m-item">
+              <div className="pintro__m-frame" style={{ background: product.theme.surface }}>
+                <ProductVisual visual={product.visual} focus={h.focus} sizes="92vw" />
+              </div>
+              <h3 className="t-h3">
+                <Maybe value={h.title} />
+              </h3>
+              <p className="t-muted">
+                <Maybe value={h.body} />
+              </p>
+            </div>
+          ))
+        )}
       </div>
     </section>
   )

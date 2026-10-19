@@ -18,7 +18,8 @@ function Shell() {
   const { pathname } = useRouter()
   const route = matchRoute(pathname)
   const product = route.name === 'product' ? route.product : undefined
-  const headerScheme = product?.theme.scheme ?? 'dark'
+  // La ficha de CarPlay y accesorios abre en su vitrina oscura; el resto es claro.
+  const headerScheme = product?.showroom ? 'dark' : 'light'
   const [ilistOpen, setIlistOpen] = useState(false)
 
   // Anuncia el cambio de página a lectores de pantalla.

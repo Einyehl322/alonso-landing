@@ -37,7 +37,17 @@ const v12Visual: Visual = {
   kind: 'image',
   ...media.v12Hero,
   fit: 'contain',
+  presentation: 'photograph',
   alt: 'V12 Pro Wireless Earphone con iluminación RGB, vista en tres cuartos',
+}
+
+/** Intercomunicador grupal real (FreedConn Hero) para representar la categoría. */
+const freedConnVisual: Visual = {
+  kind: 'image',
+  ...productMedia['freedconn-hero'],
+  fit: 'contain',
+  presentation: 'photograph',
+  alt: 'Intercomunicador FreedConn Hero con iluminación azul sobre superficie mojada',
 }
 
 /* ---------- categorías ---------- */
@@ -50,6 +60,7 @@ export const categories: Category[] = [
     eyebrow: 'Comunicación en ruta',
     headline: 'Cada voz del grupo, dentro del casco.',
     lede: 'Intercomunicadores y audífonos Bluetooth para hablar con tu acompañante, escuchar música y atender lo importante sin soltar el manillar. Tecnología que se instala en tu casco y te acompaña en cada ruta.',
+    benefit: 'Habla con tu acompañante o tu grupo, escucha música y atiende llamadas desde el casco.',
     beats: [
       {
         title: 'Comunicación',
@@ -67,7 +78,7 @@ export const categories: Category[] = [
         focus: { x: 40, y: 42, zoom: 1.18 },
       },
     ],
-    visual: v12Visual,
+    visual: freedConnVisual,
   },
   {
     id: 'carplay',
@@ -76,6 +87,7 @@ export const categories: Category[] = [
     eyebrow: 'Navegación a la vista',
     headline: 'Tu ruta, siempre a la vista.',
     lede: 'Pantallas para motocicleta que llevan la navegación y las apps compatibles de tu teléfono al manillar, con Apple CarPlay y Android Auto. Mapas, música y llamadas en un solo lugar.',
+    benefit: 'Mapas, música y llamadas de tu teléfono en una pantalla para el manillar.',
     beats: [
       {
         title: 'Navegación',
@@ -102,6 +114,7 @@ export const categories: Category[] = [
     eyebrow: 'Sensores TPMS',
     headline: 'La presión de tus llantas, a la vista.',
     lede: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
+    benefit: 'Presión y temperatura de tus llantas en tiempo real, con alerta automática.',
     beats: [],
     visual: { kind: 'render', render: 'pending', alt: 'Sensores TPMS para moto, fotografía pendiente', label: 'Fotografía próximamente' },
   },
@@ -167,6 +180,7 @@ function commercePEN(price: string) {
 const v12Earphone: Product = {
   slug: 'v12-earphone',
   category: 'intercomunicadores',
+  productType: 'helmet-audio',
   name: 'V12 Pro Motorcycle Earphone',
   isDemo: false,
   badge: 'Nuevo',

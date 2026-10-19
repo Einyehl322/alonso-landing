@@ -39,7 +39,7 @@ export function ProductDetails({ product }: { product: Product }) {
   )
 
   return (
-    <section ref={ref} id="detalles" className="pdetails section" data-scheme={product.theme.scheme} aria-labelledby="pdetails-title">
+    <section ref={ref} id="detalles" className="pdetails section" data-scheme="light" aria-labelledby="pdetails-title">
       <div className="container">
         <div className="pdetails__head">
           <p className="eyebrow">De cerca</p>

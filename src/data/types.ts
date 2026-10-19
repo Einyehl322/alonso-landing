@@ -58,6 +58,8 @@ export interface Category {
   eyebrow: string
   headline: string
   lede: string
+  /** Beneficio breve para tarjetas de categoría. */
+  benefit: string
   /** Momentos narrativos de la sección de universo. */
   beats: { title: string; body: string; focus: Focus }[]
   visual: Visual

@@ -12,7 +12,9 @@ import ruta1280 from '../assets/media/ruta-1280.webp'
 import ruta1920 from '../assets/media/ruta-1920.webp'
 import ruta2560 from '../assets/media/ruta-2560.webp'
 import ruta3840 from '../assets/media/ruta-3840.webp'
-import v12Hero from '../assets/media/v12-pro-hero.png'
+import v12Pro480 from '../assets/media/products/v12-pro-480.webp'
+import v12Pro960 from '../assets/media/products/v12-pro-960.webp'
+import v12Pro1448 from '../assets/media/products/v12-pro-1448.webp'
 
 /** Fotografías premium aportadas por SMART RIDE, una fuente distinta por modelo. */
 import y13Pro480 from '../assets/media/products/y13-pro-480.webp'
@@ -49,11 +51,12 @@ export const media = {
     width: 3840,
     height: 3840,
   },
-  /** V12 Pro: Audífono con iluminación RGB. */
+  /** V12 Pro: audífono con iluminación RGB (fuente PNG 1448 × 1086 en src/assets/media). */
   v12Hero: {
-    src: v12Hero,
-    width: 1920, /* Estimated width */
-    height: 1080, /* Estimated height */
+    src: v12Pro1448,
+    srcSet: `${v12Pro480} 480w, ${v12Pro960} 960w, ${v12Pro1448} 1448w`,
+    width: 1448,
+    height: 1086,
   },
 } as const
 

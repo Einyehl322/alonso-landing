@@ -14,6 +14,8 @@ export function ProductGallery({ product }: { product: Product }) {
   const [zoomed, setZoomed] = useState(false)
   const start = useRef<number | null>(null)
   const count = gallery.length
+  // Las fotografías de escena conservan su fondo; los recortes van sobre estudio claro.
+  const surface = product.showroom ? undefined : { background: product.theme.surface }
 
   const go = (i: number) => {
     setIndex((i + count) % count)
@@ -39,7 +41,7 @@ export function ProductGallery({ product }: { product: Product }) {
   }
 
   return (
-    <section id="galeria" className="gallery section" data-scheme={product.theme.scheme} aria-labelledby="gallery-title">
+    <section id="galeria" className="gallery section" data-scheme="light" aria-labelledby="gallery-title">
       <div className="container">
         <div className="gallery__head">
           <div>
@@ -78,7 +80,7 @@ export function ProductGallery({ product }: { product: Product }) {
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerCancel={() => (start.current = null)}
-          style={{ background: product.theme.surface }}
+          style={surface}
         >
           {gallery.map((g, i) => (
             <div
@@ -109,7 +111,7 @@ export function ProductGallery({ product }: { product: Product }) {
                 aria-label={g.caption}
                 className="gallery__thumb"
                 onClick={() => go(i)}
-                style={{ background: product.theme.surface }}
+                style={surface}
               >
                 <ProductVisual visual={g.visual} focus={g.focus} sizes="120px" />
               </button>

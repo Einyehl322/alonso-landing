@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
 import { InterestToggleButton } from '../components/interest/InterestToggleButton'
+import { ProductTile } from '../components/product/ProductTile'
+import '../components/product/product-tile.css'
 import { FeatureCompare } from '../components/showroom/FeatureCompare'
 import { FeatureIcon } from '../components/showroom/FeatureIcon'
 import { Price } from '../components/showroom/Price'
 import { ProductViewer } from '../components/showroom/ProductViewer'
-import { ShowroomCard } from '../components/showroom/ShowroomCard'
 import { viewerMode } from '../components/showroom/viewerMode'
 import '../components/showroom/showroom.css'
 import { ContactActions } from '../components/ui/ContactActions'
@@ -69,9 +70,8 @@ export function ShowroomProductPage({ product }: { product: Product }) {
   )
 
   return (
-    <div ref={ref} className="spot-page" data-scheme="dark">
-      <section className="spot" aria-labelledby="product-title">
-        <div className="showroom__glow" aria-hidden="true" />
+    <div ref={ref} className="spot-page">
+      <section className="spot" data-scheme="dark" aria-labelledby="product-title">
         <div className="container spot__layout">
           <div className="spot__stage">
             <div className="spot__object">
@@ -109,7 +109,7 @@ export function ShowroomProductPage({ product }: { product: Product }) {
             </h1>
             <p className="spot__tagline">{product.tagline}</p>
             <Price product={product} size="xl" />
-            <ul className="scard__tags spot__tags" aria-label="Características destacadas">
+            <ul className="spot__tags" aria-label="Características destacadas">
               {features
                 .filter((k) => feature(k).tag)
                 .map((key) => (
@@ -132,7 +132,7 @@ export function ShowroomProductPage({ product }: { product: Product }) {
         </div>
       </section>
 
-      <section id="caracteristicas" className="spot-section section" aria-labelledby="features-title">
+      <section id="caracteristicas" className="spot-section section" data-scheme="light" aria-labelledby="features-title">
         <div className="container">
           <p className="eyebrow" data-reveal>Características</p>
           <h2 id="features-title" className="t-h2 spot-section__title" data-reveal>
@@ -164,7 +164,7 @@ export function ShowroomProductPage({ product }: { product: Product }) {
       ) : null}
 
       {others.length ? (
-        <section id="comparar" className="spot-section section" aria-labelledby="compare-title">
+        <section id="comparar" className="spot-section section" data-scheme="light" aria-labelledby="compare-title">
           <div className="container">
             <p className="eyebrow" data-reveal>Comparar</p>
             <h2 id="compare-title" className="t-h2 spot-section__title" data-reveal>
@@ -178,15 +178,17 @@ export function ShowroomProductPage({ product }: { product: Product }) {
       ) : null}
 
       {others.length ? (
-        <section className="spot-section section" aria-labelledby="others-title">
+        <section className="spot-section section section--alt" data-scheme="light" aria-labelledby="others-title">
           <div className="container">
             <p className="eyebrow" data-reveal>Explora</p>
             <h2 id="others-title" className="t-h2 spot-section__title" data-reveal>
-              Otros modelos
+              Productos relacionados
             </h2>
-            <ul className="showroom__grid">
+            <ul className="tile-grid">
               {others.slice(0, 3).map((p) => (
-                <ShowroomCard key={p.slug} product={p} shared={false} />
+                <li key={p.slug} data-reveal>
+                  <ProductTile product={p} />
+                </li>
               ))}
             </ul>
           </div>

@@ -30,7 +30,7 @@ export function ProductSpecs({ product }: { product: Product }) {
   )
 
   return (
-    <section ref={ref} id="especificaciones" className="specs section" data-scheme="dark" aria-labelledby="specs-title">
+    <section ref={ref} id="especificaciones" className="specs section section--alt" data-scheme="light" aria-labelledby="specs-title">
       <div className="container specs__layout">
         <div className="specs__intro">
           <p className="eyebrow">Especificaciones</p>

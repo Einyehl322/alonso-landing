@@ -1,51 +1,36 @@
-.compare {
-  background: var(--c-graphite-900);
-}
-
-.compare .eyebrow {
-  margin-bottom: 1.25rem;
-}
-
-.compare__title {
-  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
-}
+/* ---------- comparador de especificaciones (claro) ---------- */
 
 .compare__scroller {
+  position: relative;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   border-radius: var(--radius-panel);
   border: 1px solid var(--line);
+  background: var(--c-white);
   scrollbar-width: thin;
-  scrollbar-color: var(--c-graphite-600) transparent;
+  scrollbar-color: #c7ccd4 transparent;
 }
 
-.compare__scroller::-webkit-scrollbar {
-  height: 6px;
-}
-
-.compare__scroller::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.compare__scroller::-webkit-scrollbar-thumb {
-  background: var(--c-graphite-600);
-  border-radius: 3px;
+.compare__scroller:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
 }
 
 .compare__table {
   width: 100%;
-  min-width: 580px;
+  min-width: 620px;
   border-collapse: collapse;
   font-size: var(--fs-small);
+  color: var(--c-ink-900);
 }
 
 .compare__table th,
 .compare__table td {
-  padding: 0.9rem 1.25rem;
+  padding: 0.9rem 1.1rem;
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--c-fog);
 }
 
 .compare__table tbody tr:last-child > * {
@@ -54,20 +39,22 @@
 
 .compare__table thead th {
   font-weight: 400;
-  padding-block: 1.5rem;
+  padding-block: 1.25rem;
   vertical-align: bottom;
 }
 
 .compare__table tbody th {
   font-weight: 500;
-  color: var(--fg-soft);
-  min-width: 160px;
-  font-size: 0.92rem;
+  color: var(--c-ink-600);
+  min-width: 150px;
+  font-size: 0.9rem;
 }
 
-.compare__table tbody tr:hover td,
-.compare__table tbody tr:hover th {
-  background: rgb(255 255 255 / 0.02);
+@media (hover: hover) {
+  .compare__table tbody tr:hover td,
+  .compare__table tbody tr:hover th {
+    background: var(--c-snow);
+  }
 }
 
 /* Primera columna fija al desplazar en móvil. */
@@ -75,42 +62,39 @@
   position: sticky;
   left: 0;
   z-index: 1;
-  background: var(--c-graphite-900);
-  border-right: 1px solid var(--line);
-}
-
-.compare__table thead tr > :first-child {
-  background: var(--c-graphite-900);
-  border-right: 1px solid var(--line);
+  background: var(--c-white);
+  border-right: 1px solid var(--c-fog);
 }
 
 .compare__table .is-current {
-  background: rgb(112 136 255 / 0.04);
+  background: #f4f7fe;
 }
 
 .compare__table thead .is-current {
-  background: rgb(112 136 255 / 0.06);
+  background: var(--c-accent-soft);
+  box-shadow: inset 0 3px 0 var(--c-accent);
 }
 
 .compare__product {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.4rem;
   justify-items: start;
-  min-width: 155px;
+  min-width: 150px;
 }
 
 .compare__category {
-  color: var(--fg-muted);
+  color: var(--c-slate);
   font-size: 0.75rem;
   max-width: 22ch;
 }
 
 .compare__thumb {
-  width: 110px;
-  aspect-ratio: 1;
-  border-radius: 14px;
+  display: block;
+  width: 112px;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
   overflow: hidden;
-  padding: 8px;
+  margin-bottom: 0.35rem;
   transition: transform var(--dur-micro) var(--ease-out);
 }
 
@@ -118,61 +102,61 @@
   transform: scale(1.04);
 }
 
-.compare__thumb .pv--cover {
-  margin: -8px;
-  width: calc(100% + 16px);
-  height: calc(100% + 16px);
+.compare__thumb .pv--cover img {
+  object-fit: cover;
 }
 
 .compare__name {
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
+  font-weight: var(--fw-semibold);
+  font-size: 1rem;
+  letter-spacing: -0.015em;
 }
 
 .compare__here {
-  font-size: 0.82rem;
-  color: var(--link);
+  font-size: 0.78rem;
+  font-weight: var(--fw-medium);
+  color: var(--c-accent-ink);
 }
 
 .compare__group {
   display: block;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  margin-bottom: 0.15rem;
+  font-size: 0.68rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  color: var(--c-slate);
+  margin-bottom: 0.1rem;
 }
 
-/* Precio destacado */
-.compare__price {
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
+.compare__price .price {
+  font-size: 1.1rem;
 }
 
 /* Separador entre grupos */
 .compare__table tbody + tbody tr:first-child > * {
-  border-top: 2px solid var(--line-strong);
+  border-top: 1px solid #d0d5dd;
+}
+
+.compare__legend {
+  margin-top: 0.85rem;
+  font-size: var(--fs-caption);
 }
 
 @media (max-width: 899px) {
   .compare__thumb {
-    width: 80px;
+    width: 84px;
   }
 
   .compare__table th,
   .compare__table td {
-    padding: 0.75rem 0.9rem;
+    padding: 0.75rem 0.85rem;
     font-size: 0.85rem;
+  }
+
+  .compare__table tbody th {
+    min-width: 118px;
   }
 
   .compare__name {
     font-size: 0.95rem;
-  }
-
-  .compare__price {
-    font-size: 0.92rem;
   }
 }

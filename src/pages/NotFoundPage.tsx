@@ -6,7 +6,7 @@ import './pages.css'
 export function NotFoundPage() {
   usePageMeta('Página no encontrada')
   return (
-    <section className="notfound" data-scheme="dark" aria-labelledby="nf-title">
+    <section className="notfound" data-scheme="light" aria-labelledby="nf-title">
       <div className="container">
         <p className="eyebrow">Error 404</p>
         <h1 id="nf-title" className="t-display">
