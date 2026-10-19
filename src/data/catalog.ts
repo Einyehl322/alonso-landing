@@ -33,12 +33,12 @@ const displayGraphite: Visual = {
   alt: 'Render ilustrativo de pantalla CarPlay para motocicleta con interfaz de navegación',
 }
 
-const v12Visual: Visual = {
+const y12Visual: Visual = {
   kind: 'image',
   ...media.v12Hero,
   fit: 'contain',
   presentation: 'photograph',
-  alt: 'V12 Pro Wireless Earphone con iluminación RGB, vista en tres cuartos',
+  alt: 'Audífono Y12 para casco con iluminación RGB, vista en tres cuartos',
 }
 
 /** Intercomunicador grupal real (FreedConn Hero) para representar la categoría. */
@@ -173,31 +173,31 @@ function commercePEN(price: string) {
    =================================================================== */
 
 /**
- * V12 Motorcycle Earphone — Audífono Bluetooth para casco.
+ * Y12 — Audífono Bluetooth para casco (el Y12 Pro, intercomunicador, es otro modelo).
  * NO es intercomunicador: es un audífono individual para música y llamadas.
  * Diseño con iluminación RGB, botones hexagonales y perfil compacto.
  */
-const v12Earphone: Product = {
-  slug: 'v12-earphone',
+const y12: Product = {
+  slug: 'y12',
   category: 'intercomunicadores',
   productType: 'helmet-audio',
-  name: 'V12 Pro Motorcycle Earphone',
+  name: 'Y12',
   isDemo: false,
   badge: 'Nuevo',
   tagline: 'Tu música, tus llamadas. Tu casco.',
   summary:
     'Audífono Bluetooth diseñado para integrarse al casco de motocicleta. Iluminación RGB, botones hexagonales intuitivos y sonido envolvente para disfrutar cada ruta con tu música o atender llamadas sin distracciones.',
   theme: { bg: '#0b0c10', surface: '#15171d', scheme: 'dark' },
-  visual: v12Visual,
+  visual: y12Visual,
   highlights: [
     { title: spec('Iluminación RGB'), body: spec('Anillo de luz personalizable que destaca en la ruta.'), focus: { x: 65, y: 45, zoom: 1.4 } },
     { title: spec('Botones hexagonales'), body: spec('Controles intuitivos: volumen, micrófono y multimedia.'), focus: { x: 40, y: 55, zoom: 1.5 } },
     { title: spec('Perfil compacto'), body: spec('Diseño angular que se integra al casco sin protuberancias.'), focus: { x: 50, y: 50, zoom: 1 } },
   ],
   details: [
-    { caption: spec('Vista general del V12'), visual: v12Visual, focus: { x: 50, y: 50, zoom: 1.1 } },
-    { caption: spec('Anillo RGB y logo M'), visual: v12Visual, focus: { x: 68, y: 42, zoom: 1.7 } },
-    { caption: spec('Botones + / mic / -'), visual: v12Visual, focus: { x: 38, y: 58, zoom: 1.6 } },
+    { caption: spec('Vista general del Y12'), visual: y12Visual, focus: { x: 50, y: 50, zoom: 1.1 } },
+    { caption: spec('Anillo RGB y logo M'), visual: y12Visual, focus: { x: 68, y: 42, zoom: 1.7 } },
+    { caption: spec('Botones + / mic / -'), visual: y12Visual, focus: { x: 38, y: 58, zoom: 1.6 } },
   ],
   benefits: [
     { title: spec('Audio inmersivo'), body: spec('Drivers de 40 mm con graves profundos para música y navegación.') },
@@ -217,13 +217,13 @@ const v12Earphone: Product = {
     reduccionRuido: spec('Sí (pasiva)'),
   }),
   gallery: [
-    { visual: v12Visual, caption: 'Vista general' },
-    { visual: v12Visual, focus: { x: 68, y: 42, zoom: 1.7 }, caption: 'Anillo RGB' },
-    { visual: v12Visual, focus: { x: 38, y: 58, zoom: 1.6 }, caption: 'Botones hexagonales' },
+    { visual: y12Visual, caption: 'Vista general' },
+    { visual: y12Visual, focus: { x: 68, y: 42, zoom: 1.7 }, caption: 'Anillo RGB' },
+    { visual: y12Visual, focus: { x: 38, y: 58, zoom: 1.6 }, caption: 'Botones hexagonales' },
     { visual: intercomHelmet, caption: 'Montado en el casco' },
   ],
   faqs: [
-    { question: '¿El V12 permite comunicarme con otro motociclista?', answer: spec('No. El V12 es un audífono Bluetooth individual para escuchar música y atender llamadas desde tu teléfono. No tiene función de intercomunicador.') },
+    { question: '¿El Y12 permite comunicarme con otro motociclista?', answer: spec('No. El Y12 es un audífono Bluetooth individual para escuchar música y atender llamadas desde tu teléfono. No tiene función de intercomunicador.') },
     { question: '¿Puedo usarlo para GPS y música al mismo tiempo?', answer: spec('Sí. El audio de la navegación se mezcla con la música automáticamente.') },
     { question: '¿Es resistente a la lluvia?', answer: spec('Sí, certificación IP55: protegido contra polvo y chorros de agua.') },
     { question: '¿Qué incluye la caja?', answer: specPending('Verificar contenido con el producto físico.') },
@@ -488,7 +488,7 @@ export const products: Product[] = [
   s7,
   q58Max,
   p30Pro,
-  v12Earphone,
+  y12,
   ejeasQ8,
   ejeasV6ProPlus,
   ...carplayProducts,
