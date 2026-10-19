@@ -70,7 +70,12 @@ export function Collections() {
                 ))}
               </ul>
               <div className="coll__foot">
-                <p className="coll__criterion">{c.criterion}</p>
+                <p className="coll__criterion">
+                  {c.products.length > MAX_ROWS && c.products.some((p) => p.category !== c.products[0].category)
+                    ? `y ${c.products.length - MAX_ROWS} más · `
+                    : ''}
+                  {c.criterion}
+                </p>
                 {c.products.length > MAX_ROWS && c.products.every((p) => p.category === c.products[0].category) ? (
                   <Link to={categoryPath(c.products[0].category)} className="text-link">
                     <span>Ver los {c.products.length} modelos</span>

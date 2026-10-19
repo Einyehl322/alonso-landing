@@ -111,12 +111,12 @@ export const categories: Category[] = [
     id: 'accesorios',
     slug: 'accesorios',
     name: 'Accesorios',
-    eyebrow: 'Sensores TPMS',
-    headline: 'La presión de tus llantas, a la vista.',
-    lede: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
-    benefit: 'Presión y temperatura de tus llantas en tiempo real, con alerta automática.',
+    eyebrow: 'Equipamiento para tu moto',
+    headline: 'Equipa tu moto para cada ruta.',
+    lede: 'Sensores de presión y temperatura de llantas con alerta automática, y neblineros LED con varios modos de luz. Accesorios para rodar con más control.',
+    benefit: 'Sensores de presión de llantas y neblineros LED para tu moto.',
     beats: [],
-    visual: { kind: 'render', render: 'pending', alt: 'Sensores TPMS para moto, fotografía pendiente', label: 'Fotografía próximamente' },
+    visual: { kind: 'render', render: 'pending', alt: 'Accesorios para moto, fotografía pendiente', label: 'Fotografía próximamente' },
   },
 ]
 
@@ -182,6 +182,8 @@ const y12: Product = {
   category: 'intercomunicadores',
   productType: 'helmet-audio',
   name: 'Y12',
+  // La foto disponible muestra el equipo con la serigrafía "V12".
+  referencePhoto: true,
   isDemo: false,
   badge: 'Nuevo',
   tagline: 'Tu música, tus llamadas. Tu casco.',

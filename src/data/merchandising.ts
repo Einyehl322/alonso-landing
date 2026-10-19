@@ -35,7 +35,7 @@ export const favorites: { id: CategoryId; label: string; products: Product[] }[]
       'carplay-5-dual-bt',
     ]),
   },
-  { id: 'accesorios', label: 'Sensores TPMS', products: getProducts('accesorios') },
+  { id: 'accesorios', label: 'Accesorios', products: getProducts('accesorios') },
 ]
 
 /* ---------- portadas de categoría ---------- */
@@ -133,8 +133,8 @@ export const collections: Collection[] = [
   {
     id: 'equipar',
     title: 'Para equipar tu moto',
-    body: 'Sensores de presión de llantas y pantallas con cámaras delantera y trasera.',
-    criterion: 'Sensores TPMS o cámaras delantera y trasera 2K.',
+    body: 'Sensores de presión de llantas, neblineros LED y pantallas con cámaras delantera y trasera.',
+    criterion: 'Accesorios, o pantallas con cámaras delantera y trasera 2K.',
     products: [
       ...getProducts('accesorios'),
       ...getProducts('carplay').filter((p) => p.showroom?.features.includes('cameras2k')),

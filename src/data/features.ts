@@ -20,6 +20,10 @@ export type FeatureIconName =
   | 'battery'
   | 'alert'
   | 'pulse'
+  | 'beam'
+  | 'bolt'
+  | 'heat'
+  | 'kit'
 
 export interface Feature {
   label: string
@@ -52,6 +56,14 @@ export const FEATURES = {
   sensorBattery: { label: 'Sensores con batería hasta 2 años', short: 'Batería hasta 2 años', icon: 'battery', row: 'Batería de sensores', value: 'Hasta 2 años' },
   waterproof: { label: 'Impermeable', short: 'Impermeable', icon: 'drop', row: 'Impermeable' },
   autoAlert: { label: 'Alerta automática', short: 'Alerta automática', icon: 'alert', row: 'Alerta automática' },
+
+  /* Neblineros LED */
+  lightModes6: { label: '6 modos de iluminación', short: '6 modos', icon: 'beam', row: 'Modos de iluminación', value: '6', tag: true },
+  lightColors: { label: 'Luz blanca, amarilla y efectos adicionales', short: 'Blanca y amarilla', icon: 'beam', row: 'Colores de luz', value: 'Blanca, amarilla y efectos', tag: true },
+  lumens28k: { label: 'Hasta 28,000 lúmenes declarados por el fabricante', short: '28,000 lm declarados', icon: 'beam', row: 'Potencia lumínica', value: 'Hasta 28,000 lm (declarado)', tag: true },
+  voltage12to24: { label: 'Alimentación de 12–24 V', short: '12–24 V', icon: 'bolt', row: 'Alimentación', value: '12–24 V' },
+  aluminumHousing: { label: 'Carcasa de aluminio con disipación térmica', short: 'Carcasa de aluminio', icon: 'heat', row: 'Carcasa', value: 'Aluminio con disipación térmica' },
+  mountKit: { label: 'Incluye interruptor, cableado y soportes de montaje', short: 'Kit de instalación', icon: 'kit', row: 'Incluye', value: 'Interruptor, cableado y soportes' },
 } as const satisfies Record<string, Feature>
 
 export type FeatureKey = keyof typeof FEATURES

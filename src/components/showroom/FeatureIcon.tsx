@@ -15,6 +15,10 @@ const PATHS: Record<FeatureIconName, string> = {
   battery: 'M4 8.5A1.5 1.5 0 0 1 5.5 7h11A1.5 1.5 0 0 1 18 8.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 15.5v-7ZM20.5 10.5v3M7 10v4M10 10v4',
   alert: 'M12 4l9 16H3l9-16ZM12 10v4M12 17v.01',
   pulse: 'M3 12h4l2-5 4 10 2-5h6',
+  beam: 'M4 9.5A2.5 2.5 0 0 1 6.5 7H10v10H6.5A2.5 2.5 0 0 1 4 14.5v-5ZM10 9l3-2v10l-3-2M15.5 8.5 20 7M15.5 12H21M15.5 15.5 20 17',
+  bolt: 'M13 3 5 13.5h6L10 21l8-10.5h-6L13 3Z',
+  heat: 'M5 4.5h14v4H5zM6.5 8.5v11M10.5 8.5v11M13.5 8.5v11M17.5 8.5v11',
+  kit: 'M4 8l8-4 8 4v8l-8 4-8-4V8ZM4 8l8 4 8-4M12 12v8',
 }
 
 export function FeatureIcon({ name, className = 'ficon' }: { name: FeatureIconName; className?: string }) {

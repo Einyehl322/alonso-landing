@@ -24,7 +24,7 @@ const REASONS: { icon: IconName; title: string; body: string }[] = [
   {
     icon: 'grid',
     title: 'Variedad para tu moto',
-    body: `${products.length} modelos entre intercomunicadores, audífonos para casco, pantallas CarPlay y sensores TPMS.`,
+    body: `${products.length} modelos entre intercomunicadores, audífonos para casco, pantallas CarPlay, sensores TPMS y neblineros LED.`,
   },
   {
     icon: 'chat',

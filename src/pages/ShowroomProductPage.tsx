@@ -134,9 +134,9 @@ export function ShowroomProductPage({ product }: { product: Product }) {
 
       <section id="caracteristicas" className="spot-section section" data-scheme="light" aria-labelledby="features-title">
         <div className="container">
-          <p className="eyebrow" data-reveal>Características</p>
+          <p className="eyebrow" data-reveal>Características · {product.name}</p>
           <h2 id="features-title" className="t-h2 spot-section__title" data-reveal>
-            Lo que incluye el {product.name}
+            Todo lo que incluye.
           </h2>
           <ul className="spot-features">
             {features.map((key) => (

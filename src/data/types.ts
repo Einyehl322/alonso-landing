@@ -160,6 +160,11 @@ export interface Product {
   isDemo: boolean
   /** Etiqueta opcional: "Nuevo", "Popular", etc. */
   badge?: string
+  /**
+   * La fotografía no es de la unidad que se vende (otro modelo de la misma
+   * línea o del mercado): se muestra como "Imagen referencial".
+   */
+  referencePhoto?: boolean
   tagline: string
   summary: string
   theme: {

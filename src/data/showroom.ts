@@ -176,7 +176,7 @@ export const carplayProducts: Product[] = [
   }),
 ]
 
-/* ---------- Accesorios TPMS ---------- */
+/* ---------- Accesorios: sensores TPMS e iluminación auxiliar ---------- */
 
 const tpmsFeatures: FeatureKey[] = ['liveReadings', 'usbDisplay', 'sensorBattery', 'waterproof', 'autoAlert']
 
@@ -200,6 +200,16 @@ export const accessoryProducts: Product[] = [
     features: tpmsFeatures,
     tagline: 'Presión y temperatura de tus llantas, en tiempo real.',
     summary: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
+  }),
+  showroomProduct({
+    slug: 'neblineros-led-proyector',
+    category: 'accesorios',
+    name: 'Neblineros LED tipo proyector — Kit x2',
+    price: 180,
+    features: ['lightModes6', 'lightColors', 'lumens28k', 'voltage12to24', 'aluminumHousing', 'mountKit'],
+    tagline: 'Seis modos de luz, blanca y amarilla, en un kit listo para instalar.',
+    summary:
+      'Kit de 2 neblineros LED tipo proyector con 6 modos de iluminación: luz blanca, amarilla y efectos adicionales. Hasta 28,000 lúmenes declarados por el fabricante, alimentación de 12–24 V y carcasa de aluminio con disipación térmica. Incluye interruptor, cableado y soportes de montaje.',
   }),
 ]
 
