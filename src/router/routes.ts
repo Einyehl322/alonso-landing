@@ -5,6 +5,7 @@ import type { Category, Product } from '../data/types'
 /** URLs anteriores de modelos renombrados: siguen abriendo su ficha. */
 const movedSlugs: Record<string, string> = {
   'v12-earphone': 'y12',
+  'tpms-compacto': 'tpms-panel-solar',
 }
 
 export type Route =

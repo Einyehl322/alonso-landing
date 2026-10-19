@@ -192,14 +192,14 @@ export const accessoryProducts: Product[] = [
     summary: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
   }),
   showroomProduct({
-    slug: 'tpms-compacto',
-    reference: { source: 'Amazon · TPMS M3 para moto (B0CYT1QC8B)', url: 'https://www.amazon.com/dp/B0CYT1QC8B' },
+    slug: 'tpms-panel-solar',
     category: 'accesorios',
-    name: 'TPMS para moto — Compacto',
+    name: 'Sensores TPMS para moto con panel solar',
     price: 110,
-    features: tpmsFeatures,
+    features: ['liveReadings', 'displayRuntime12h', 'usbDisplay', 'sensorBattery', 'waterproof', 'autoAlert'],
     tagline: 'Presión y temperatura de tus llantas, en tiempo real.',
-    summary: 'Sensores de presión y temperatura de llantas para moto, con pantalla recargable por USB y alerta automática.',
+    summary:
+      'Sensores de presión y temperatura de llantas para moto con panel solar. Pantalla recargable por USB, duración de 12 horas, sensores con batería de hasta 2 años, impermeable y con alerta automática.',
   }),
   showroomProduct({
     slug: 'neblineros-led-proyector',
@@ -210,6 +210,16 @@ export const accessoryProducts: Product[] = [
     tagline: 'Seis modos de luz, blanca y amarilla, en un kit listo para instalar.',
     summary:
       'Kit de 2 neblineros LED tipo proyector con 6 modos de iluminación: luz blanca, amarilla y efectos adicionales. Hasta 28,000 lúmenes declarados por el fabricante, alimentación de 12–24 V y carcasa de aluminio con disipación térmica. Incluye interruptor, cableado y soportes de montaje.',
+  }),
+  showroomProduct({
+    slug: 'neblineros-led-doble-lente',
+    category: 'accesorios',
+    name: 'Neblineros LED doble lente — Kit x2',
+    price: 140,
+    features: ['lightModes6', 'lightColors', 'lumens18k', 'voltage12to24', 'aluminumHousing', 'mountKit'],
+    tagline: 'Doble lente y seis modos de luz, blanca y amarilla.',
+    summary:
+      'Kit de 2 neblineros LED tipo proyector con 6 modos de iluminación: luz blanca, amarilla y efectos adicionales. Hasta 18,000 lúmenes declarados por el fabricante, alimentación de 12–24 V y carcasa de aluminio con disipación térmica. Incluye interruptor, cableado y soportes de montaje.',
   }),
 ]
 
