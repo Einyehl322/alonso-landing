@@ -368,7 +368,7 @@ function rideSpecs(opts: {
 }
 
 const y13Pro = rideProduct({
-  slug: 'y13-pro', name: 'Y13 Pro', price: 'S/ 75.00',
+  slug: 'y13-pro', name: 'Y13 Pro', price: 'S/ 40.00',
   tagline: 'Comparte la ruta. Mantén la conexión.',
   summary: 'Disfruta de tus recorridos con comunicación entre dos motociclistas y funciones para compartir música. Una alternativa accesible para mantenerte conectado durante tus viajes.',
   specs: rideSpecs({ bluetooth: 'Bluetooth 6.0', alcance: '700 metros', participantes: '2 riders', autonomia: spec('22 horas'), proteccion: 'IP56', funciones: [{ label: 'Music Sharing', value: 'Sí' }, { label: 'Modo mixto', value: 'Sí' }] }),
@@ -396,7 +396,7 @@ const s7Pro = rideProduct({
 })
 
 const s7 = rideProduct({
-  slug: 's7', name: 'S7', price: 'S/ 75.00', productType: 'helmet-audio',
+  slug: 's7', name: 'S7', price: 'S/ 45.00', productType: 'helmet-audio',
   tagline: 'Tu música también forma parte del viaje.',
   summary: 'Disfruta de conectividad Bluetooth y funciones de audio durante tus recorridos, con un diseño pensado para integrarse con tu equipamiento.',
   specs: rideSpecs({ bluetooth: 'Bluetooth 5.4', autonomia: spec('30 horas'), proteccion: 'IP67', funciones: [{ label: 'Emparejamiento universal', value: 'Sí' }] }),
